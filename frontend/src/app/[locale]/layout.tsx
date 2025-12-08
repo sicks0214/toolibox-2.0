@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
+import { AuthProvider } from '@/contexts/AuthContext';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -27,14 +28,16 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <head>
-        <title>TooliBox - Free Online Tools for Everyone</title>
+        <title>TooliBox - Free Tools in one box</title>
         <meta name="description" content="30+ free online tools for text processing, file conversion, image editing, and more. No sign-up required." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

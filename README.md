@@ -1,4 +1,4 @@
-# TooliBox - Free Online Tools Platform
+# TooliBox - Free Tools in one box
 
 TooliBox is a free online tool aggregation platform providing 30+ tools for text processing, file conversion, image editing, and more.
 

@@ -4,6 +4,9 @@ import { useState, useTransition } from 'react'
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname, useRouter } from '@/lib/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from '@/components/auth/LoginModal';
+import RegisterModal from '@/components/auth/RegisterModal';
 import {
   Dialog,
   DialogPanel,
@@ -19,6 +22,7 @@ import {
   Bars3Icon,
   XMarkIcon,
   GlobeAltIcon,
+  UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import tools from '@/data/tools.json'
@@ -33,11 +37,15 @@ const developerTools = tools.filter(tool => tool.categoryId === 'developer-tools
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const t = useTranslations('header');
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const { user, logout, loading: authLoading } = useAuth();
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -247,8 +255,9 @@ export default function Header() {
           </Popover>
         </PopoverGroup>
 
-        {/* Language Dropdown */}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        {/* Language Dropdown & User Menu */}
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
+          {/* Language Dropdown */}
           <div className="relative">
             <button
               onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
@@ -291,8 +300,89 @@ export default function Header() {
               </>
             )}
           </div>
+
+          {/* User Authentication */}
+          {!authLoading && (
+            <>
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center space-x-2 text-base font-semibold text-neutral hover:text-primary transition-colors"
+                  >
+                    <UserCircleIcon className="size-6" />
+                    <span>{user.username}</span>
+                    <ChevronDownIcon
+                      className={`size-4 transition-transform ${
+                        isUserMenuOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {isUserMenuOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      />
+                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                        <div className="px-4 py-2 border-b border-gray-200">
+                          <p className="text-sm font-semibold text-neutral">{user.username}</p>
+                          <p className="text-xs text-gray-500">{user.email}</p>
+                        </div>
+                        <Link
+                          href="/profile"
+                          className="block px-4 py-2 text-sm text-neutral hover:bg-surface transition-colors"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setIsUserMenuOpen(false);
+                            router.push('/');
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
+            </>
+          )}
         </div>
       </nav>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onSwitchToRegister={() => {
+          setIsLoginModalOpen(false);
+          setIsRegisterModalOpen(true);
+        }}
+      />
+
+      {/* Register Modal */}
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onSwitchToLogin={() => {
+          setIsRegisterModalOpen(false);
+          setIsLoginModalOpen(true);
+        }}
+      />
 
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
