@@ -13,7 +13,9 @@
     "categories": {
       "title": "Explore Categories",
       "tools": "tools"
-    }
+    },
+    "seeAll": "See all",
+    "open": "Open"
   },
   "category": {
     "breadcrumb": {

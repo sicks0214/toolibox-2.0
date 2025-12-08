@@ -38,26 +38,26 @@ export default function CategoryCard({
   return (
     <Link href={getLocalizedPath(`/category/${slug}`)}>
       <div
-        className="category-card relative overflow-hidden group"
+        className="category-card relative overflow-hidden group !p-6 min-h-[280px] flex flex-col"
         style={{ background: gradient }}
       >
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="text-4xl mb-4">{icon}</div>
-            <h3 className="text-2xl font-bold mb-2">
+        <div className="flex-1 flex flex-col">
+          <div className="text-center">
+            <div className="text-5xl mb-4">{icon}</div>
+            <h3 className="text-xl font-bold mb-2 line-clamp-2">
               {name[locale as 'en' | 'zh']}
             </h3>
-            <p className="text-white/90 mb-4">
+            <p className="text-white/90 text-sm mb-4 line-clamp-2">
               {description[locale as 'en' | 'zh']}
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/20">
           <span className="text-sm text-white/80">
             {toolCount} {t('tools')}
           </span>
           <ArrowRight
-            size={24}
+            size={20}
             className="group-hover:translate-x-1 transition-transform"
           />
         </div>

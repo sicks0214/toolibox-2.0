@@ -13,7 +13,9 @@
     "categories": {
       "title": "浏览类目",
       "tools": "个工具"
-    }
+    },
+    "seeAll": "查看全部",
+    "open": "打开"
   },
   "category": {
     "breadcrumb": {

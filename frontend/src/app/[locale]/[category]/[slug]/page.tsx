@@ -10,32 +10,39 @@ import tools from '@/data/tools.json';
 
 interface ToolPageProps {
   params: {
+    category: string;
     slug: string;
     locale: string;
   };
 }
 
 export function generateStaticParams() {
-  return tools.map((tool) => ({
-    slug: tool.slug,
-  }));
+  // Generate all category-slug combinations
+  // Locale params will be automatically combined from parent route
+  return tools.map((tool) => {
+    const category = categories.find((c) => c.id === tool.categoryId);
+    return {
+      category: category?.slug || tool.categoryId,
+      slug: tool.slug,
+    };
+  });
 }
 
 export default function ToolPage({ params }: ToolPageProps) {
   const t = useTranslations();
-  const { slug, locale } = params;
+  const { category: categorySlug, slug, locale } = params;
 
-  // 查找工具
-  const tool = tools.find((t) => t.slug === slug);
+  // 查找类目
+  const category = categories.find((c) => c.slug === categorySlug);
 
-  if (!tool) {
+  if (!category) {
     notFound();
   }
 
-  // 查找所属类目
-  const category = categories.find((c) => c.id === tool.categoryId);
+  // 查找工具
+  const tool = tools.find((t) => t.slug === slug && t.categoryId === category.id);
 
-  if (!category) {
+  if (!tool) {
     notFound();
   }
 
@@ -121,7 +128,7 @@ export default function ToolPage({ params }: ToolPageProps) {
                 {relatedTools.map((relatedTool) => (
                   <Link
                     key={relatedTool.id}
-                    href={getLocalizedPath(`/tools/${relatedTool.slug}`)}
+                    href={getLocalizedPath(`/${category.slug}/${relatedTool.slug}`)}
                     className="card p-4 hover:border-primary border-2 border-transparent text-center"
                   >
                     <div className="text-3xl mb-2">{relatedTool.icon}</div>
