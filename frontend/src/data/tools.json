@@ -1,0 +1,452 @@
+[
+  {
+    "id": "word-counter",
+    "slug": "word-counter",
+    "categoryId": "text-tools",
+    "icon": "📊",
+    "name": {
+      "en": "Word Counter",
+      "zh": "字数统计工具"
+    },
+    "description": {
+      "en": "Count words, characters, and more",
+      "zh": "统计字数、字符数等信息"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "case-converter",
+    "slug": "case-converter",
+    "categoryId": "text-tools",
+    "icon": "🔤",
+    "name": {
+      "en": "Case Converter",
+      "zh": "大小写转换器"
+    },
+    "description": {
+      "en": "Convert text case instantly",
+      "zh": "快速转换文本大小写"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "text-diff",
+    "slug": "text-diff",
+    "categoryId": "text-tools",
+    "icon": "⚖️",
+    "name": {
+      "en": "Text Diff Checker",
+      "zh": "文本差异对比"
+    },
+    "description": {
+      "en": "Compare two texts side by side",
+      "zh": "并排比较两段文本"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "lorem-ipsum",
+    "slug": "lorem-ipsum",
+    "categoryId": "text-tools",
+    "icon": "📝",
+    "name": {
+      "en": "Lorem Ipsum Generator",
+      "zh": "占位文本生成器"
+    },
+    "description": {
+      "en": "Generate placeholder text",
+      "zh": "生成占位文本内容"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "remove-line-breaks",
+    "slug": "remove-line-breaks",
+    "categoryId": "text-tools",
+    "icon": "🔄",
+    "name": {
+      "en": "Remove Line Breaks",
+      "zh": "删除换行符"
+    },
+    "description": {
+      "en": "Remove unwanted line breaks",
+      "zh": "删除不需要的换行符"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "reverse-text",
+    "slug": "reverse-text",
+    "categoryId": "text-tools",
+    "icon": "↩️",
+    "name": {
+      "en": "Reverse Text",
+      "zh": "文本反转工具"
+    },
+    "description": {
+      "en": "Reverse your text instantly",
+      "zh": "快速反转您的文本"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "pdf-merger",
+    "slug": "pdf-merger",
+    "categoryId": "file-tools",
+    "icon": "📄",
+    "name": {
+      "en": "PDF Merger",
+      "zh": "PDF合并工具"
+    },
+    "description": {
+      "en": "Merge multiple PDFs into one",
+      "zh": "将多个PDF合并为一个"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "pdf-to-image",
+    "slug": "pdf-to-image",
+    "categoryId": "file-tools",
+    "icon": "🖼️",
+    "name": {
+      "en": "PDF to Image",
+      "zh": "PDF转图片"
+    },
+    "description": {
+      "en": "Convert PDF pages to images",
+      "zh": "将PDF页面转换为图片"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "file-compressor",
+    "slug": "file-compressor",
+    "categoryId": "file-tools",
+    "icon": "🗜️",
+    "name": {
+      "en": "File Compressor",
+      "zh": "文件压缩工具"
+    },
+    "description": {
+      "en": "Compress files to save space",
+      "zh": "压缩文件节省空间"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "csv-to-json",
+    "slug": "csv-to-json",
+    "categoryId": "file-tools",
+    "icon": "🔄",
+    "name": {
+      "en": "CSV to JSON",
+      "zh": "CSV转JSON"
+    },
+    "description": {
+      "en": "Convert CSV files to JSON format",
+      "zh": "将CSV文件转换为JSON格式"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "excel-viewer",
+    "slug": "excel-viewer",
+    "categoryId": "file-tools",
+    "icon": "📊",
+    "name": {
+      "en": "Excel Viewer",
+      "zh": "Excel在线查看器"
+    },
+    "description": {
+      "en": "View Excel files online",
+      "zh": "在线查看Excel文件"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "file-hash",
+    "slug": "file-hash",
+    "categoryId": "file-tools",
+    "icon": "#️⃣",
+    "name": {
+      "en": "File Hash Calculator",
+      "zh": "文件哈希计算器"
+    },
+    "description": {
+      "en": "Calculate MD5, SHA256 hashes",
+      "zh": "计算MD5、SHA256哈希值"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "image-compressor",
+    "slug": "image-compressor",
+    "categoryId": "image-tools",
+    "icon": "🗜️",
+    "name": {
+      "en": "Image Compressor",
+      "zh": "图片压缩工具"
+    },
+    "description": {
+      "en": "Compress images without quality loss",
+      "zh": "无损压缩图片"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "image-resizer",
+    "slug": "image-resizer",
+    "categoryId": "image-tools",
+    "icon": "📐",
+    "name": {
+      "en": "Image Resizer",
+      "zh": "图片尺寸调整"
+    },
+    "description": {
+      "en": "Resize images to any dimension",
+      "zh": "调整图片到任意尺寸"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "image-converter",
+    "slug": "image-converter",
+    "categoryId": "image-tools",
+    "icon": "🔄",
+    "name": {
+      "en": "Image Format Converter",
+      "zh": "图片格式转换"
+    },
+    "description": {
+      "en": "Convert between JPG, PNG, WEBP",
+      "zh": "在JPG、PNG、WEBP间转换"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "image-cropper",
+    "slug": "image-cropper",
+    "categoryId": "image-tools",
+    "icon": "✂️",
+    "name": {
+      "en": "Image Cropper",
+      "zh": "图片裁剪工具"
+    },
+    "description": {
+      "en": "Crop images to perfect size",
+      "zh": "裁剪图片到完美尺寸"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "qr-code-generator",
+    "slug": "qr-code-generator",
+    "categoryId": "image-tools",
+    "icon": "📱",
+    "name": {
+      "en": "QR Code Generator",
+      "zh": "二维码生成器"
+    },
+    "description": {
+      "en": "Generate QR codes instantly",
+      "zh": "快速生成二维码"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "color-picker",
+    "slug": "color-picker",
+    "categoryId": "image-tools",
+    "icon": "🎨",
+    "name": {
+      "en": "Color Picker",
+      "zh": "颜色提取器"
+    },
+    "description": {
+      "en": "Pick colors from images",
+      "zh": "从图片中提取颜色"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "password-generator",
+    "slug": "password-generator",
+    "categoryId": "generate-tools",
+    "icon": "🔐",
+    "name": {
+      "en": "Password Generator",
+      "zh": "密码生成器"
+    },
+    "description": {
+      "en": "Generate strong passwords",
+      "zh": "生成强密码"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "uuid-generator",
+    "slug": "uuid-generator",
+    "categoryId": "generate-tools",
+    "icon": "🆔",
+    "name": {
+      "en": "UUID Generator",
+      "zh": "UUID生成器"
+    },
+    "description": {
+      "en": "Generate unique identifiers",
+      "zh": "生成唯一标识符"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "fake-data-generator",
+    "slug": "fake-data-generator",
+    "categoryId": "generate-tools",
+    "icon": "🎲",
+    "name": {
+      "en": "Fake Data Generator",
+      "zh": "测试数据生成器"
+    },
+    "description": {
+      "en": "Generate fake data for testing",
+      "zh": "生成测试用假数据"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "lorem-image",
+    "slug": "lorem-image",
+    "categoryId": "generate-tools",
+    "icon": "🖼️",
+    "name": {
+      "en": "Lorem Image Generator",
+      "zh": "占位图片生成器"
+    },
+    "description": {
+      "en": "Generate placeholder images",
+      "zh": "生成占位图片"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "gradient-generator",
+    "slug": "gradient-generator",
+    "categoryId": "generate-tools",
+    "icon": "🌈",
+    "name": {
+      "en": "Gradient Generator",
+      "zh": "渐变色生成器"
+    },
+    "description": {
+      "en": "Create beautiful CSS gradients",
+      "zh": "创建美丽的CSS渐变"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "invoice-generator",
+    "slug": "invoice-generator",
+    "categoryId": "generate-tools",
+    "icon": "🧾",
+    "name": {
+      "en": "Invoice Generator",
+      "zh": "发票生成器"
+    },
+    "description": {
+      "en": "Generate professional invoices",
+      "zh": "生成专业发票"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "json-formatter",
+    "slug": "json-formatter",
+    "categoryId": "developer-tools",
+    "icon": "{ }",
+    "name": {
+      "en": "JSON Formatter",
+      "zh": "JSON格式化工具"
+    },
+    "description": {
+      "en": "Format and validate JSON",
+      "zh": "格式化和验证JSON"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "base64-encoder",
+    "slug": "base64-encoder",
+    "categoryId": "developer-tools",
+    "icon": "🔐",
+    "name": {
+      "en": "Base64 Encoder",
+      "zh": "Base64编码工具"
+    },
+    "description": {
+      "en": "Encode and decode Base64",
+      "zh": "编码和解码Base64"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "url-encoder",
+    "slug": "url-encoder",
+    "categoryId": "developer-tools",
+    "icon": "🔗",
+    "name": {
+      "en": "URL Encoder",
+      "zh": "URL编码工具"
+    },
+    "description": {
+      "en": "Encode and decode URLs",
+      "zh": "编码和解码URL"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "regex-tester",
+    "slug": "regex-tester",
+    "categoryId": "developer-tools",
+    "icon": "🔍",
+    "name": {
+      "en": "Regex Tester",
+      "zh": "正则表达式测试"
+    },
+    "description": {
+      "en": "Test regular expressions",
+      "zh": "测试正则表达式"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "code-beautifier",
+    "slug": "code-beautifier",
+    "categoryId": "developer-tools",
+    "icon": "✨",
+    "name": {
+      "en": "Code Beautifier",
+      "zh": "代码美化工具"
+    },
+    "description": {
+      "en": "Beautify JavaScript, CSS, HTML",
+      "zh": "美化JavaScript、CSS、HTML"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "timestamp-converter",
+    "slug": "timestamp-converter",
+    "categoryId": "developer-tools",
+    "icon": "⏰",
+    "name": {
+      "en": "Unix Timestamp Converter",
+      "zh": "Unix时间戳转换"
+    },
+    "description": {
+      "en": "Convert Unix timestamps",
+      "zh": "转换Unix时间戳"
+    },
+    "comingSoon": true
+  }
+]

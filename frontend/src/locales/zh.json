@@ -1,0 +1,103 @@
+{
+  "header": {
+    "about": "关于我们",
+    "feedback": "反馈",
+    "language": "语言"
+  },
+  "home": {
+    "hero": {
+      "title": "免费在线工具，为每个人",
+      "subtitle": "使用30多个工具让您的工作更轻松",
+      "description": "无需注册。100%免费。"
+    },
+    "categories": {
+      "title": "浏览类目",
+      "tools": "个工具"
+    }
+  },
+  "category": {
+    "breadcrumb": {
+      "home": "首页"
+    },
+    "description": "{count}个免费工具"
+  },
+  "tool": {
+    "comingSoon": "即将推出",
+    "underDevelopment": "此工具目前正在开发中。",
+    "notifyReady": "准备好后我们会通知您！",
+    "backTo": "返回{category}",
+    "requestAccess": "申请提前体验",
+    "aboutTool": "关于此工具：",
+    "relatedTools": "相关工具："
+  },
+  "footer": {
+    "copyright": "© 2025 TooliBox。保留所有权利。",
+    "about": "关于我们",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "feedback": "反馈"
+  },
+  "about": {
+    "title": "关于 TooliBox",
+    "intro": "TooliBox 是一个免费的在线工具平台，旨在让您的日常任务更轻松。从文本处理到图像编辑，我们提供简单而强大的工具。",
+    "mission": "我们的使命：",
+    "missions": [
+      "提供100%免费的工具",
+      "无需注册",
+      "快速且安全",
+      "注重隐私"
+    ]
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "lastUpdated": "最后更新：{date}",
+    "sections": {
+      "collection": {
+        "title": "我们收集的信息",
+        "content": "除非您通过我们的反馈表单自愿提供，否则我们不会收集任何个人信息。所有工具尽可能在您的浏览器本地运行。"
+      },
+      "usage": {
+        "title": "我们如何使用您的数据",
+        "content": "您通过反馈表单提供的任何数据仅用于改进我们的服务和回复您的询问。我们不会向第三方出售或分享您的数据。"
+      },
+      "thirdParty": {
+        "title": "第三方服务",
+        "content": "我们使用 Cloudflare 进行内容分发和 DDoS 保护。我们可能使用分析服务来了解我们的网站如何被使用，但这些服务不会跟踪个人可识别信息。"
+      }
+    }
+  },
+  "terms": {
+    "title": "服务条款",
+    "lastUpdated": "最后更新：{date}",
+    "sections": {
+      "acceptance": {
+        "title": "接受条款",
+        "content": "使用 TooliBox，即表示您同意这些服务条款。如果您不同意，请不要使用我们的服务。"
+      },
+      "license": {
+        "title": "使用许可",
+        "content": "TooliBox 授予您个人的、非独占的、不可转让的许可，仅用于合法目的使用我们的工具。"
+      },
+      "disclaimer": {
+        "title": "免责声明",
+        "content": "我们的工具按「原样」提供，不提供任何保证。我们对使用我们的工具造成的任何损害或损失不承担责任。"
+      }
+    }
+  },
+  "feedback": {
+    "title": "向我们发送反馈",
+    "name": "姓名",
+    "nameOptional": "姓名（可选）",
+    "email": "邮箱",
+    "subject": "主题",
+    "message": "消息",
+    "submit": "提交反馈",
+    "success": "感谢您的反馈！",
+    "error": "提交反馈失败。请重试。",
+    "required": "此字段为必填项"
+  },
+  "languages": {
+    "en": "English",
+    "zh": "中文"
+  }
+}

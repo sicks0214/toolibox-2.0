@@ -1,0 +1,103 @@
+{
+  "header": {
+    "about": "About",
+    "feedback": "Feedback",
+    "language": "Language"
+  },
+  "home": {
+    "hero": {
+      "title": "Free Online Tools for Everyone",
+      "subtitle": "Make your work easier with 30+ tools",
+      "description": "No sign-up required. 100% free."
+    },
+    "categories": {
+      "title": "Explore Categories",
+      "tools": "tools"
+    }
+  },
+  "category": {
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "description": "{count} free tools"
+  },
+  "tool": {
+    "comingSoon": "Coming Soon",
+    "underDevelopment": "This tool is currently under development.",
+    "notifyReady": "We'll notify you when it's ready!",
+    "backTo": "Back to {category}",
+    "requestAccess": "Request Early Access",
+    "aboutTool": "About this tool:",
+    "relatedTools": "Related Tools:"
+  },
+  "footer": {
+    "copyright": "© 2025 TooliBox. All rights reserved.",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "feedback": "Feedback"
+  },
+  "about": {
+    "title": "About TooliBox",
+    "intro": "TooliBox is a free online tool platform designed to make your daily tasks easier. From text processing to image editing, we provide simple and powerful tools.",
+    "mission": "Our Mission:",
+    "missions": [
+      "Provide 100% free tools",
+      "No registration required",
+      "Fast and secure",
+      "Privacy-focused"
+    ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: {date}",
+    "sections": {
+      "collection": {
+        "title": "Information We Collect",
+        "content": "We do not collect any personal information unless you voluntarily provide it through our feedback form. All tools run locally in your browser whenever possible."
+      },
+      "usage": {
+        "title": "How We Use Your Data",
+        "content": "Any data you provide through feedback forms is used solely to improve our services and respond to your inquiries. We do not sell or share your data with third parties."
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "content": "We use Cloudflare for content delivery and DDoS protection. We may use analytics services to understand how our website is used, but these do not track personally identifiable information."
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: {date}",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "content": "By using TooliBox, you agree to these Terms of Service. If you do not agree, please do not use our services."
+      },
+      "license": {
+        "title": "Use License",
+        "content": "TooliBox grants you a personal, non-exclusive, non-transferable license to use our tools for lawful purposes only."
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "content": "Our tools are provided 'as is' without any warranties. We are not responsible for any damages or losses resulting from the use of our tools."
+      }
+    }
+  },
+  "feedback": {
+    "title": "Send us Feedback",
+    "name": "Name",
+    "nameOptional": "Name (Optional)",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "submit": "Submit Feedback",
+    "success": "Thank you for your feedback!",
+    "error": "Failed to submit feedback. Please try again.",
+    "required": "This field is required"
+  },
+  "languages": {
+    "en": "English",
+    "zh": "中文"
+  }
+}

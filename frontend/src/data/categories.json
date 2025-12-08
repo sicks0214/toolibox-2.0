@@ -1,0 +1,77 @@
+[
+  {
+    "id": "text-tools",
+    "slug": "text-tools",
+    "icon": "📝",
+    "name": {
+      "en": "Text Tools",
+      "zh": "文本工具"
+    },
+    "description": {
+      "en": "Process and manipulate text easily",
+      "zh": "轻松处理和转换文本"
+    },
+    "gradient": "linear-gradient(135deg, #4A9C82 0%, #2C3E3A 100%)",
+    "order": 1
+  },
+  {
+    "id": "file-tools",
+    "slug": "file-tools",
+    "icon": "📁",
+    "name": {
+      "en": "File Tools",
+      "zh": "文件工具"
+    },
+    "description": {
+      "en": "Convert and manage your files",
+      "zh": "转换和管理您的文件"
+    },
+    "gradient": "linear-gradient(135deg, #A8D5BA 0%, #4A9C82 100%)",
+    "order": 2
+  },
+  {
+    "id": "image-tools",
+    "slug": "image-tools",
+    "icon": "🖼️",
+    "name": {
+      "en": "Image Tools",
+      "zh": "图像工具"
+    },
+    "description": {
+      "en": "Edit and optimize images",
+      "zh": "编辑和优化图像"
+    },
+    "gradient": "linear-gradient(135deg, #FF9F66 0%, #4A9C82 100%)",
+    "order": 3
+  },
+  {
+    "id": "generate-tools",
+    "slug": "generate-tools",
+    "icon": "⚡",
+    "name": {
+      "en": "Generate Tools",
+      "zh": "生成工具"
+    },
+    "description": {
+      "en": "Generate passwords, UUIDs, and more",
+      "zh": "生成密码、UUID 等内容"
+    },
+    "gradient": "linear-gradient(135deg, #4A9C82 0%, #A8D5BA 100%)",
+    "order": 4
+  },
+  {
+    "id": "developer-tools",
+    "slug": "developer-tools",
+    "icon": "💻",
+    "name": {
+      "en": "Developer Tools",
+      "zh": "开发者工具"
+    },
+    "description": {
+      "en": "Essential tools for developers",
+      "zh": "开发者必备工具"
+    },
+    "gradient": "linear-gradient(135deg, #2C3E3A 0%, #4A9C82 100%)",
+    "order": 5
+  }
+]
