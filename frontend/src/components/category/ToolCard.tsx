@@ -31,8 +31,8 @@ export default function ToolCard({ slug, categoryId, icon, name, description }: 
 
   return (
     <Link href={getLocalizedPath(`/${categorySlug}/${slug}`)}>
-      <div className="card p-6 h-full hover:border-primary border-2 border-transparent">
-        <div className="text-3xl mb-4">{icon}</div>
+      <div className="card p-5 h-full hover:border-primary border-2 border-transparent">
+        <div className="text-3xl mb-3">{icon}</div>
         <h3 className="text-lg font-semibold text-neutral mb-2">
           {name[locale as 'en' | 'zh']}
         </h3>

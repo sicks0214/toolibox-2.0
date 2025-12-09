@@ -37,7 +37,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-2 md:px-3 lg:px-4 py-8 max-w-6xl">
         <Breadcrumb
           items={[
             { label: t('category.breadcrumb.home'), href: '/' },
@@ -57,7 +57,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {categoryTools.map((tool) => (
             <ToolCard key={tool.id} {...tool} />
           ))}
