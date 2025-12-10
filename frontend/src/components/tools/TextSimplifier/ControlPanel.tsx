@@ -130,7 +130,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   }
                 }}
               >
-                {labels[`level${option.value.charAt(0).toUpperCase() + option.value.slice(1)}` as keyof typeof labels] || option.label}
+                {String(labels[`level${option.value.charAt(0).toUpperCase() + option.value.slice(1)}` as 'levelLight' | 'levelMedium' | 'levelHeavy'] || option.label)}
               </button>
             ))}
           </div>
