@@ -5,6 +5,7 @@ import { errorHandler } from './middleware/errorHandler';
 import feedbackRoutes from './routes/feedback';
 import healthRoutes from './routes/health';
 import authRoutes from './routes/auth';
+import simplifyRoutes from './routes/simplify';
 import { startBackupCron } from './services/backupCron';
 
 // Load environment variables
@@ -22,6 +23,7 @@ app.use(corsMiddleware);
 app.use('/api', feedbackRoutes);
 app.use('/api', healthRoutes);
 app.use('/api', authRoutes);
+app.use('/api', simplifyRoutes);
 
 // Error handler
 app.use(errorHandler);

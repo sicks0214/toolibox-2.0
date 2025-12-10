@@ -16,9 +16,10 @@ interface ToolCardProps {
     en: string;
     zh: string;
   };
+  comingSoon?: boolean;
 }
 
-export default function ToolCard({ slug, categoryId, icon, name, description }: ToolCardProps) {
+export default function ToolCard({ slug, categoryId, icon, name, description, comingSoon = true }: ToolCardProps) {
   const locale = useLocale();
 
   // Find the category slug
@@ -29,8 +30,14 @@ export default function ToolCard({ slug, categoryId, icon, name, description }: 
     return locale === 'en' ? path : `/${locale}${path}`;
   };
 
+  // If tool is ready (not coming soon), link to /tools/{slug}
+  // Otherwise, link to /{category}/{slug} (coming soon page)
+  const toolPath = comingSoon
+    ? `/${categorySlug}/${slug}`
+    : `/tools/${slug}`;
+
   return (
-    <Link href={getLocalizedPath(`/${categorySlug}/${slug}`)}>
+    <Link href={getLocalizedPath(toolPath)}>
       <div className="card p-5 h-full hover:border-primary border-2 border-transparent">
         <div className="text-3xl mb-3">{icon}</div>
         <h3 className="text-lg font-semibold text-neutral mb-2">

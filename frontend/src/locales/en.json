@@ -101,5 +101,93 @@
   "languages": {
     "en": "English",
     "zh": "中文"
+  },
+  "tools": {
+    "text-simplifier": {
+      "title": "AI Text Simplifier",
+      "subtitle": "Simplify complex text with AI-powered assistance",
+      "originalText": "Original Text",
+      "simplifiedText": "Simplified Text",
+      "originalTextPlaceholder": "Enter or paste your text here (up to 20,000 characters)...",
+      "simplifiedTextPlaceholder": "Simplified text will appear here...",
+      "simplificationSettings": "Simplification Settings",
+      "keywordsLabel": "Keywords to Preserve (Optional)",
+      "keywordsPlaceholder": "Keywords to preserve (comma-separated, optional)",
+      "simplifyButton": "Simplify Text",
+      "copyButton": "Copy",
+      "copied": "Copied!",
+      "exportButton": "Export",
+      "exportTxt": "Export as TXT",
+      "exportMd": "Export as MD",
+      "exportDocx": "Export as DOCX",
+      "levelLight": "Light",
+      "levelMedium": "Medium",
+      "levelHeavy": "Heavy",
+      "levelDescription": "Simplification Level",
+      "processing": "Processing...",
+      "error": "An error occurred",
+      "success": "Simplified successfully!",
+      "charCount": "characters",
+      "words": "words",
+      "characters": "characters",
+      "clear": "Clear",
+      "uploadFile": "Upload File",
+      "textExceedsLimit": "Text exceeds maximum length!",
+      "poweredBy": "Powered by DeepSeek AI • Maximum {max} characters",
+      "features": {
+        "title": "Powerful Features",
+        "ai": "DeepSeek AI",
+        "aiDesc": "Powered by DeepSeek AI with intelligent text analysis and processing",
+        "keywords": "Preserve Keywords",
+        "keywordsDesc": "Specify keywords to keep intact during simplification",
+        "levels": "Three Levels",
+        "levelsDesc": "Light (80-90%), Medium (60-70%), or Heavy (40-50%) simplification",
+        "export": "Export Formats",
+        "exportDesc": "Export as TXT, MD, or DOCX files with one click"
+      },
+      "inputExport": {
+        "title": "Input & Export Options",
+        "inputTitle": "Text Input",
+        "inputItems": ["Manual paste or type (up to 20,000 characters)", "Preserves original formatting", "Real-time character count", "Instant validation"],
+        "exportTitle": "Export Options",
+        "exportItems": ["Plain Text (.txt)", "Markdown (.md)", "Word Document (.docx)", "Copy to Clipboard"]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "step1": "Paste Text",
+        "step1Desc": "Enter or paste your text into the input area",
+        "step2": "Set Options",
+        "step2Desc": "Add keywords and choose simplification level",
+        "step3": "Simplify",
+        "step3Desc": "Click the button and let AI process your text",
+        "step4": "Export",
+        "step4Desc": "Copy or download the simplified result"
+      },
+      "perfectFor": {
+        "title": "Perfect For",
+        "students": "Students",
+        "studentsDesc": "Simplify complex academic papers and course materials for better understanding",
+        "creators": "Content Creators",
+        "creatorsDesc": "Improve readability and SEO by making content accessible to wider audiences",
+        "professionals": "Professionals",
+        "professionalsDesc": "Create clear documentation and reports for business communication",
+        "learners": "Language Learners",
+        "learnersDesc": "Break down complex sentences to improve language comprehension",
+        "writers": "Technical Writers",
+        "writersDesc": "Make technical documentation more approachable for general audiences",
+        "teams": "Content Teams",
+        "teamsDesc": "Streamline content creation workflow with AI-assisted simplification"
+      },
+      "cta": {
+        "title": "Ready to Simplify Your Text?",
+        "subtitle": "Start transforming complex content into clear, accessible language in seconds. No sign-up required.",
+        "button": "Get Started Now",
+        "stats": {
+          "characters": "Characters Supported",
+          "levels": "Simplification Levels",
+          "formats": "Export Formats"
+        }
+      }
+    }
   }
 }

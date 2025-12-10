@@ -101,5 +101,93 @@
   "languages": {
     "en": "English",
     "zh": "中文"
+  },
+  "tools": {
+    "text-simplifier": {
+      "title": "AI文本简化工具",
+      "subtitle": "使用AI智能简化复杂文本",
+      "originalText": "原始文本",
+      "simplifiedText": "简化文本",
+      "originalTextPlaceholder": "在此输入或粘贴文本（最多20,000字符）...",
+      "simplifiedTextPlaceholder": "简化后的文本将显示在这里...",
+      "simplificationSettings": "简化设置",
+      "keywordsLabel": "需要保留的关键词（可选）",
+      "keywordsPlaceholder": "需要保留的关键词（用逗号分隔，可选）",
+      "simplifyButton": "简化文本",
+      "copyButton": "复制",
+      "copied": "已复制！",
+      "exportButton": "导出",
+      "exportTxt": "导出为TXT",
+      "exportMd": "导出为MD",
+      "exportDocx": "导出为DOCX",
+      "levelLight": "轻度",
+      "levelMedium": "中度",
+      "levelHeavy": "深度",
+      "levelDescription": "简化等级",
+      "processing": "处理中...",
+      "error": "发生错误",
+      "success": "简化成功！",
+      "charCount": "字符",
+      "words": "词",
+      "characters": "字符",
+      "clear": "清空",
+      "uploadFile": "上传文件",
+      "textExceedsLimit": "文本超出最大长度！",
+      "poweredBy": "由 DeepSeek AI 提供支持 • 最多 {max} 字符",
+      "features": {
+        "title": "强大功能",
+        "ai": "DeepSeek AI",
+        "aiDesc": "由 DeepSeek AI 提供智能文本分析和处理",
+        "keywords": "保留关键词",
+        "keywordsDesc": "指定在简化过程中保持不变的关键词",
+        "levels": "三档等级",
+        "levelsDesc": "轻度 (80-90%)、中度 (60-70%) 或深度 (40-50%) 简化",
+        "export": "导出格式",
+        "exportDesc": "一键导出为 TXT、MD 或 DOCX 文件"
+      },
+      "inputExport": {
+        "title": "输入和导出选项",
+        "inputTitle": "文本输入",
+        "inputItems": ["手动粘贴或输入（最多20,000字符）", "保留原始格式", "实时字符计数", "即时验证"],
+        "exportTitle": "导出选项",
+        "exportItems": ["纯文本 (.txt)", "Markdown (.md)", "Word 文档 (.docx)", "复制到剪贴板"]
+      },
+      "howItWorks": {
+        "title": "使用方法",
+        "step1": "粘贴文本",
+        "step1Desc": "在输入区域输入或粘贴您的文本",
+        "step2": "设置选项",
+        "step2Desc": "添加关键词并选择简化等级",
+        "step3": "简化",
+        "step3Desc": "点击按钮，让 AI 处理您的文本",
+        "step4": "导出",
+        "step4Desc": "复制或下载简化后的结果"
+      },
+      "perfectFor": {
+        "title": "适用人群",
+        "students": "学生",
+        "studentsDesc": "简化复杂的学术论文和课程材料，便于理解",
+        "creators": "内容创作者",
+        "creatorsDesc": "通过使内容更易于阅读来提高可读性和SEO",
+        "professionals": "专业人士",
+        "professionalsDesc": "为商业沟通创建清晰的文档和报告",
+        "learners": "语言学习者",
+        "learnersDesc": "分解复杂句子以提高语言理解能力",
+        "writers": "技术写作者",
+        "writersDesc": "使技术文档更易于普通读者理解",
+        "teams": "内容团队",
+        "teamsDesc": "通过AI辅助简化来简化内容创作流程"
+      },
+      "cta": {
+        "title": "准备好简化您的文本了吗？",
+        "subtitle": "立即开始将复杂内容转换为清晰、易懂的语言。无需注册。",
+        "button": "立即开始",
+        "stats": {
+          "characters": "支持字符数",
+          "levels": "简化等级",
+          "formats": "导出格式"
+        }
+      }
+    }
   }
 }

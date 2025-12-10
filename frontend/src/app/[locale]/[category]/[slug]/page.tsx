@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowLeft, Mail } from 'lucide-react';
@@ -44,6 +44,12 @@ export default function ToolPage({ params }: ToolPageProps) {
 
   if (!tool) {
     notFound();
+  }
+
+  // 如果工具已上线（comingSoon: false），重定向到实际工具页面
+  if (!tool.comingSoon) {
+    const toolPath = locale === 'en' ? `/tools/${slug}` : `/${locale}/tools/${slug}`;
+    redirect(toolPath);
   }
 
   // 获取相关工具（同类目的其他工具，最多显示3个）

@@ -11,6 +11,15 @@ const nextConfig = {
       '/': ['./src/locales/**/*'],
     },
   },
+  // API 代理配置 - 将 /api/* 请求代理到后端
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:8000/api/:path*',
+      },
+    ];
+  },
 };
 
 module.exports = withNextIntl(nextConfig);

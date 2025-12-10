@@ -1,18 +1,18 @@
 [
   {
-    "id": "word-counter",
-    "slug": "word-counter",
+    "id": "text-simplifier",
+    "slug": "text-simplifier",
     "categoryId": "text-tools",
-    "icon": "📊",
+    "icon": "✨",
     "name": {
-      "en": "Word Counter",
-      "zh": "字数统计工具"
+      "en": "AI Text Simplifier",
+      "zh": "AI文本简化工具"
     },
     "description": {
-      "en": "Count words, characters, and more",
-      "zh": "统计字数、字符数等信息"
+      "en": "Simplify complex text with AI",
+      "zh": "使用AI简化复杂文本"
     },
-    "comingSoon": true
+    "comingSoon": false
   },
   {
     "id": "case-converter",
