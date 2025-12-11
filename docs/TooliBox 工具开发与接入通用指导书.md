@@ -1,7 +1,8 @@
 # TooliBox 工具开发与接入通用指导书
 
-> **版本**: v1.0
+> **版本**: v1.1
 > **创建日期**: 2025-12-10
+> **更新日期**: 2025-12-11
 > **适用范围**: TooliBox 所有工具开发（30个工具）
 > **目标**: 标准化工具开发流程，实现快速开发与无缝接入
 
@@ -20,6 +21,8 @@
 9. [测试规范](#测试规范)
 10. [部署指南](#部署指南)
 11. [工具开发示例](#工具开发示例)
+12. [**前后端分离工具开发指南**](#前后端分离工具开发指南) ⭐ NEW
+13. [**外部 AI API 接入指南**](#外部-ai-api-接入指南) ⭐ NEW
 
 ---
 
@@ -1366,8 +1369,1231 @@ try {
 ---
 
 **版本历史**:
+- v1.1 (2025-12-11): 新增前后端分离工具开发指南、外部 AI API 接入指南
 - v1.0 (2025-12-10): 初始版本，包含完整开发流程
 
 **维护者**: TooliBox 开发团队
 
 **祝开发顺利！** 🚀
+
+---
+
+## 前后端分离工具开发指南
+
+> 本章节适用于需要后端 API 支持的工具，如 AI 工具、数据处理工具、需要服务端计算的工具等。
+
+### 工具类型判断
+
+首先判断你的工具属于哪种类型：
+
+| 类型 | 特点 | 示例 | 是否需要后端 |
+|------|------|------|-------------|
+| **纯前端工具** | 所有计算在浏览器完成 | Word Counter, JSON Formatter | ❌ 不需要 |
+| **前后端分离工具** | 需要服务端处理或存储 | 文件转换、数据持久化 | ✅ 需要 |
+| **AI 增强工具** | 调用外部 AI API | AI 写作、智能翻译 | ✅ 需要 |
+
+### 架构设计原则
+
+#### 为什么 AI API 必须走后端？
+
+```
+❌ 错误做法：前端直接调用 AI API
+┌─────────┐     ┌─────────────┐
+│ 前端    │────→│ OpenAI API  │
+│ (暴露Key)│     │             │
+└─────────┘     └─────────────┘
+问题：API Key 暴露在浏览器中，任何人都能看到并滥用
+
+✅ 正确做法：通过后端代理
+┌─────────┐     ┌─────────┐     ┌─────────────┐
+│ 前端    │────→│ 后端API │────→│ OpenAI API  │
+│         │     │ (安全存储Key)│ │             │
+└─────────┘     └─────────┘     └─────────────┘
+优势：API Key 安全存储在服务器，前端无法访问
+```
+
+#### 架构图
+
+```
+┌────────────────────────────────────────────────────────────┐
+│                        前端 (Next.js)                       │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  工具组件 (React)                                    │   │
+│  │  - 用户界面                                          │   │
+│  │  - 状态管理                                          │   │
+│  │  - 调用 /api/tools/{tool-name} 接口                  │   │
+│  └─────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────┘
+                              │
+                              ▼ HTTP 请求
+┌────────────────────────────────────────────────────────────┐
+│                        后端 (Express)                       │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  工具路由 /api/tools/{tool-name}                     │   │
+│  │  - 请求验证                                          │   │
+│  │  - 调用 AI 服务                                      │   │
+│  │  - 返回处理结果                                      │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                              │                              │
+│                              ▼                              │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  AI 服务层                                           │   │
+│  │  - API Key 安全管理                                  │   │
+│  │  - 请求封装                                          │   │
+│  │  - 错误处理                                          │   │
+│  └─────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────┘
+                              │
+                              ▼ 外部 API 调用
+┌────────────────────────────────────────────────────────────┐
+│                     外部 AI 服务                            │
+│  OpenAI / Claude / DeepSeek / 其他 AI 服务                  │
+└────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 后端开发规范
+
+#### 目录结构
+
+```
+backend/src/
+├── routes/
+│   └── tools/
+│       ├── index.ts              # 工具路由聚合
+│       └── {tool-name}.ts        # 具体工具路由
+├── controllers/
+│   └── tools/
+│       └── {tool-name}Controller.ts  # 工具控制器
+├── services/
+│   ├── ai/
+│   │   ├── index.ts              # AI 服务导出
+│   │   ├── openaiService.ts      # OpenAI 服务
+│   │   ├── claudeService.ts      # Claude 服务
+│   │   └── deepseekService.ts    # DeepSeek 服务
+│   └── tools/
+│       └── {tool-name}Service.ts # 工具业务逻辑
+├── config/
+│   └── ai.ts                     # AI 配置
+├── middleware/
+│   ├── auth.ts                   # 认证中间件
+│   ├── rateLimit.ts              # 速率限制
+│   └── validateRequest.ts        # 请求验证
+└── types/
+    └── tools/
+        └── {tool-name}.ts        # 工具类型定义
+```
+
+#### 步骤1: 创建 AI 服务配置
+
+**`backend/src/config/ai.ts`**
+
+```typescript
+/**
+ * AI 服务配置
+ * 所有 API Key 必须从环境变量读取，禁止硬编码
+ */
+
+export const aiConfig = {
+  openai: {
+    apiKey: process.env.OPENAI_API_KEY || '',
+    baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+    defaultModel: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+  },
+  claude: {
+    apiKey: process.env.CLAUDE_API_KEY || '',
+    baseUrl: process.env.CLAUDE_BASE_URL || 'https://api.anthropic.com',
+    defaultModel: process.env.CLAUDE_MODEL || 'claude-3-haiku-20240307',
+  },
+  deepseek: {
+    apiKey: process.env.DEEPSEEK_API_KEY || '',
+    baseUrl: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1',
+    defaultModel: process.env.DEEPSEEK_MODEL || 'deepseek-chat',
+  },
+};
+
+/**
+ * 验证 AI 配置是否有效
+ */
+export function validateAiConfig(provider: 'openai' | 'claude' | 'deepseek'): boolean {
+  const config = aiConfig[provider];
+  return !!(config.apiKey && config.baseUrl);
+}
+```
+
+#### 步骤2: 创建通用 AI 服务
+
+**`backend/src/services/ai/openaiService.ts`**
+
+```typescript
+import axios from 'axios';
+import { aiConfig } from '../../config/ai';
+
+interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+interface ChatCompletionOptions {
+  model?: string;
+  temperature?: number;
+  maxTokens?: number;
+  stream?: boolean;
+}
+
+interface ChatCompletionResponse {
+  content: string;
+  usage: {
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+  };
+}
+
+/**
+ * OpenAI 兼容 API 服务
+ * 支持 OpenAI、DeepSeek 等兼容接口
+ */
+export class OpenAIService {
+  private apiKey: string;
+  private baseUrl: string;
+  private defaultModel: string;
+
+  constructor(
+    apiKey: string = aiConfig.openai.apiKey,
+    baseUrl: string = aiConfig.openai.baseUrl,
+    defaultModel: string = aiConfig.openai.defaultModel
+  ) {
+    this.apiKey = apiKey;
+    this.baseUrl = baseUrl;
+    this.defaultModel = defaultModel;
+  }
+
+  /**
+   * 发送聊天请求
+   */
+  async chat(
+    messages: ChatMessage[],
+    options: ChatCompletionOptions = {}
+  ): Promise<ChatCompletionResponse> {
+    const {
+      model = this.defaultModel,
+      temperature = 0.7,
+      maxTokens = 2000,
+    } = options;
+
+    try {
+      const response = await axios.post(
+        `${this.baseUrl}/chat/completions`,
+        {
+          model,
+          messages,
+          temperature,
+          max_tokens: maxTokens,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.apiKey}`,
+          },
+          timeout: 60000, // 60秒超时
+        }
+      );
+
+      const data = response.data;
+      return {
+        content: data.choices[0].message.content,
+        usage: {
+          promptTokens: data.usage.prompt_tokens,
+          completionTokens: data.usage.completion_tokens,
+          totalTokens: data.usage.total_tokens,
+        },
+      };
+    } catch (error: any) {
+      // 统一错误处理
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data?.error?.message || 'AI service error';
+
+        if (status === 401) {
+          throw new Error('AI API authentication failed. Check API key.');
+        } else if (status === 429) {
+          throw new Error('AI API rate limit exceeded. Please try again later.');
+        } else if (status === 500) {
+          throw new Error('AI service temporarily unavailable.');
+        }
+        throw new Error(`AI API error: ${message}`);
+      }
+      throw new Error('Failed to connect to AI service.');
+    }
+  }
+
+  /**
+   * 流式响应（用于实时输出）
+   */
+  async chatStream(
+    messages: ChatMessage[],
+    options: ChatCompletionOptions = {},
+    onChunk: (chunk: string) => void
+  ): Promise<void> {
+    const {
+      model = this.defaultModel,
+      temperature = 0.7,
+      maxTokens = 2000,
+    } = options;
+
+    const response = await axios.post(
+      `${this.baseUrl}/chat/completions`,
+      {
+        model,
+        messages,
+        temperature,
+        max_tokens: maxTokens,
+        stream: true,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.apiKey}`,
+        },
+        responseType: 'stream',
+        timeout: 120000,
+      }
+    );
+
+    return new Promise((resolve, reject) => {
+      response.data.on('data', (chunk: Buffer) => {
+        const lines = chunk.toString().split('\n').filter(line => line.trim());
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              resolve();
+              return;
+            }
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices[0]?.delta?.content;
+              if (content) {
+                onChunk(content);
+              }
+            } catch (e) {
+              // 忽略解析错误
+            }
+          }
+        }
+      });
+
+      response.data.on('error', reject);
+      response.data.on('end', resolve);
+    });
+  }
+}
+
+// 导出默认实例
+export const openaiService = new OpenAIService();
+
+// 导出 DeepSeek 实例
+export const deepseekService = new OpenAIService(
+  aiConfig.deepseek.apiKey,
+  aiConfig.deepseek.baseUrl,
+  aiConfig.deepseek.defaultModel
+);
+```
+
+#### 步骤3: 创建工具路由
+
+**`backend/src/routes/tools/index.ts`**
+
+```typescript
+import { Router } from 'express';
+import aiWriterRoutes from './ai-writer';
+// 导入其他工具路由...
+
+const router = Router();
+
+// 注册工具路由
+router.use('/ai-writer', aiWriterRoutes);
+// router.use('/ai-translator', aiTranslatorRoutes);
+// router.use('/other-tool', otherToolRoutes);
+
+export default router;
+```
+
+**`backend/src/routes/tools/ai-writer.ts`**（示例）
+
+```typescript
+import { Router } from 'express';
+import {
+  generateContent,
+  improveContent,
+  streamGenerateContent
+} from '../../controllers/tools/aiWriterController';
+import { validateRequest } from '../../middleware/validateRequest';
+import { rateLimiter } from '../../middleware/rateLimit';
+
+const router = Router();
+
+// 应用速率限制
+router.use(rateLimiter({
+  windowMs: 60 * 1000, // 1分钟
+  max: 10, // 最多10次请求
+}));
+
+// 生成内容
+router.post('/generate', validateRequest, generateContent);
+
+// 改进内容
+router.post('/improve', validateRequest, improveContent);
+
+// 流式生成（SSE）
+router.get('/stream', streamGenerateContent);
+
+export default router;
+```
+
+#### 步骤4: 创建工具控制器
+
+**`backend/src/controllers/tools/aiWriterController.ts`**（示例）
+
+```typescript
+import { Request, Response } from 'express';
+import { openaiService } from '../../services/ai/openaiService';
+
+interface GenerateRequest {
+  prompt: string;
+  style?: 'professional' | 'casual' | 'creative';
+  length?: 'short' | 'medium' | 'long';
+}
+
+/**
+ * 生成内容
+ */
+export const generateContent = async (req: Request, res: Response) => {
+  try {
+    const { prompt, style = 'professional', length = 'medium' } = req.body as GenerateRequest;
+
+    // 输入验证
+    if (!prompt || prompt.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Prompt is required',
+      });
+    }
+
+    if (prompt.length > 5000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Prompt too long (max 5000 characters)',
+      });
+    }
+
+    // 构建系统提示
+    const systemPrompt = buildSystemPrompt(style, length);
+
+    // 调用 AI 服务
+    const result = await openaiService.chat([
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: prompt },
+    ], {
+      temperature: style === 'creative' ? 0.9 : 0.7,
+      maxTokens: length === 'long' ? 3000 : length === 'medium' ? 1500 : 500,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        content: result.content,
+        usage: result.usage,
+      },
+    });
+  } catch (error: any) {
+    console.error('AI Writer error:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to generate content',
+    });
+  }
+};
+
+/**
+ * 改进内容
+ */
+export const improveContent = async (req: Request, res: Response) => {
+  try {
+    const { content, instruction } = req.body;
+
+    if (!content) {
+      return res.status(400).json({
+        success: false,
+        message: 'Content is required',
+      });
+    }
+
+    const result = await openaiService.chat([
+      {
+        role: 'system',
+        content: 'You are a professional editor. Improve the given content based on the instruction.'
+      },
+      {
+        role: 'user',
+        content: `Content:\n${content}\n\nInstruction: ${instruction || 'Improve grammar and clarity'}`
+      },
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        content: result.content,
+        usage: result.usage,
+      },
+    });
+  } catch (error: any) {
+    console.error('AI Improve error:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to improve content',
+    });
+  }
+};
+
+/**
+ * 流式生成（SSE）
+ */
+export const streamGenerateContent = async (req: Request, res: Response) => {
+  const { prompt } = req.query;
+
+  if (!prompt || typeof prompt !== 'string') {
+    return res.status(400).json({
+      success: false,
+      message: 'Prompt is required',
+    });
+  }
+
+  // 设置 SSE 响应头
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  try {
+    await openaiService.chatStream(
+      [
+        { role: 'system', content: 'You are a helpful writing assistant.' },
+        { role: 'user', content: prompt },
+      ],
+      {},
+      (chunk) => {
+        res.write(`data: ${JSON.stringify({ content: chunk })}\n\n`);
+      }
+    );
+
+    res.write('data: [DONE]\n\n');
+    res.end();
+  } catch (error: any) {
+    res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+    res.end();
+  }
+};
+
+/**
+ * 构建系统提示
+ */
+function buildSystemPrompt(style: string, length: string): string {
+  const styleGuide = {
+    professional: 'Write in a professional, formal tone.',
+    casual: 'Write in a friendly, conversational tone.',
+    creative: 'Write in a creative, engaging tone with vivid descriptions.',
+  };
+
+  const lengthGuide = {
+    short: 'Keep the response concise, around 100-200 words.',
+    medium: 'Provide a moderate response, around 300-500 words.',
+    long: 'Provide a detailed response, around 800-1200 words.',
+  };
+
+  return `You are a professional content writer. ${styleGuide[style] || ''} ${lengthGuide[length] || ''}`;
+}
+```
+
+#### 步骤5: 添加速率限制中间件
+
+**`backend/src/middleware/rateLimit.ts`**
+
+```typescript
+import { Request, Response, NextFunction } from 'express';
+
+interface RateLimitOptions {
+  windowMs: number;
+  max: number;
+}
+
+interface RateLimitStore {
+  [key: string]: {
+    count: number;
+    resetTime: number;
+  };
+}
+
+const store: RateLimitStore = {};
+
+/**
+ * 简单的速率限制中间件
+ * 生产环境建议使用 Redis 存储
+ */
+export function rateLimiter(options: RateLimitOptions) {
+  const { windowMs, max } = options;
+
+  return (req: Request, res: Response, next: NextFunction) => {
+    // 使用 IP 作为标识（生产环境可结合用户 ID）
+    const key = req.ip || 'unknown';
+    const now = Date.now();
+
+    if (!store[key] || now > store[key].resetTime) {
+      store[key] = {
+        count: 1,
+        resetTime: now + windowMs,
+      };
+      return next();
+    }
+
+    if (store[key].count >= max) {
+      const retryAfter = Math.ceil((store[key].resetTime - now) / 1000);
+      res.setHeader('Retry-After', retryAfter);
+      return res.status(429).json({
+        success: false,
+        message: `Too many requests. Please try again in ${retryAfter} seconds.`,
+      });
+    }
+
+    store[key].count++;
+    next();
+  };
+}
+```
+
+#### 步骤6: 注册路由到主应用
+
+**`backend/src/app.ts`**（更新）
+
+```typescript
+import express from 'express';
+import dotenv from 'dotenv';
+import { corsMiddleware } from './middleware/cors';
+import { errorHandler } from './middleware/errorHandler';
+import feedbackRoutes from './routes/feedback';
+import healthRoutes from './routes/health';
+import authRoutes from './routes/auth';
+import toolsRoutes from './routes/tools';  // ← 新增
+import { startBackupCron } from './services/backupCron';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 8000;
+
+// Middleware
+app.use(express.json({ limit: '10mb' }));  // ← 增加请求体大小限制
+app.use(express.urlencoded({ extended: true }));
+app.use(corsMiddleware);
+
+// Routes
+app.use('/api', feedbackRoutes);
+app.use('/api', healthRoutes);
+app.use('/api', authRoutes);
+app.use('/api/tools', toolsRoutes);  // ← 新增工具路由
+
+// Error handler
+app.use(errorHandler);
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`📝 API: http://localhost:${PORT}/api`);
+  console.log(`🔧 Tools API: http://localhost:${PORT}/api/tools`);  // ← 新增
+  console.log(`💚 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`🔐 Auth API: http://localhost:${PORT}/api/auth`);
+
+  if (process.env.NODE_ENV === 'production') {
+    startBackupCron();
+  }
+});
+
+export default app;
+```
+
+---
+
+### 前端开发规范
+
+#### 前端调用后端 API
+
+**`frontend/src/lib/toolsApi.ts`**
+
+```typescript
+import axios from 'axios';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+export const toolsApi = axios.create({
+  baseURL: `${API_BASE_URL}/api/tools`,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 60000, // AI 请求可能较慢
+});
+
+// 请求拦截器：添加 token
+toolsApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// 响应拦截器：统一错误处理
+toolsApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 429) {
+      throw new Error('请求过于频繁，请稍后再试');
+    }
+    throw new Error(error.response?.data?.message || '服务暂时不可用');
+  }
+);
+
+/**
+ * AI Writer API
+ */
+export const aiWriterApi = {
+  generate: async (prompt: string, options?: {
+    style?: 'professional' | 'casual' | 'creative';
+    length?: 'short' | 'medium' | 'long';
+  }) => {
+    const response = await toolsApi.post('/ai-writer/generate', {
+      prompt,
+      ...options,
+    });
+    return response.data;
+  },
+
+  improve: async (content: string, instruction?: string) => {
+    const response = await toolsApi.post('/ai-writer/improve', {
+      content,
+      instruction,
+    });
+    return response.data;
+  },
+};
+```
+
+#### 前端组件示例
+
+**`frontend/src/components/tools/AIWriter/index.tsx`**
+
+```typescript
+'use client';
+
+import { useState, useMemo } from 'react';
+import { aiWriterApi } from '@/lib/toolsApi';
+
+interface AIWriterProps {
+  labels?: {
+    title?: string;
+    subtitle?: string;
+    promptPlaceholder?: string;
+    generateButton?: string;
+    generatingText?: string;
+    resultLabel?: string;
+    errorPrefix?: string;
+  };
+}
+
+const DEFAULT_LABELS = {
+  title: 'AI Writer',
+  subtitle: 'Generate high-quality content with AI',
+  promptPlaceholder: 'Describe what you want to write...',
+  generateButton: 'Generate',
+  generatingText: 'Generating...',
+  resultLabel: 'Generated Content',
+  errorPrefix: 'Error',
+};
+
+export default function AIWriter({ labels }: AIWriterProps) {
+  const mergedLabels = useMemo(() => ({
+    ...DEFAULT_LABELS,
+    ...labels,
+  }), [labels]);
+
+  const [prompt, setPrompt] = useState('');
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // 配置选项
+  const [style, setStyle] = useState<'professional' | 'casual' | 'creative'>('professional');
+  const [length, setLength] = useState<'short' | 'medium' | 'long'>('medium');
+
+  const handleGenerate = async () => {
+    if (!prompt.trim()) return;
+
+    setLoading(true);
+    setError(null);
+    setResult('');
+
+    try {
+      const response = await aiWriterApi.generate(prompt, { style, length });
+      if (response.success) {
+        setResult(response.data.content);
+      } else {
+        setError(response.message);
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full max-w-4xl mx-auto px-4 py-8">
+      {/* 标题 */}
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-neutral-900 mb-2">
+          {mergedLabels.title}
+        </h1>
+        <p className="text-lg text-gray-600">
+          {mergedLabels.subtitle}
+        </p>
+      </div>
+
+      {/* 输入区域 */}
+      <div className="card mb-6">
+        <textarea
+          className="textarea-field min-h-[150px]"
+          placeholder={mergedLabels.promptPlaceholder}
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          disabled={loading}
+        />
+
+        {/* 选项 */}
+        <div className="flex flex-wrap gap-4 mt-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Style</label>
+            <select
+              className="input-field"
+              value={style}
+              onChange={(e) => setStyle(e.target.value as any)}
+              disabled={loading}
+            >
+              <option value="professional">Professional</option>
+              <option value="casual">Casual</option>
+              <option value="creative">Creative</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Length</label>
+            <select
+              className="input-field"
+              value={length}
+              onChange={(e) => setLength(e.target.value as any)}
+              disabled={loading}
+            >
+              <option value="short">Short</option>
+              <option value="medium">Medium</option>
+              <option value="long">Long</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          className="btn-primary w-full mt-4"
+          onClick={handleGenerate}
+          disabled={loading || !prompt.trim()}
+        >
+          {loading ? mergedLabels.generatingText : mergedLabels.generateButton}
+        </button>
+      </div>
+
+      {/* 错误提示 */}
+      {error && (
+        <div className="bg-red-100 text-red-800 p-4 rounded-lg mb-6">
+          {mergedLabels.errorPrefix}: {error}
+        </div>
+      )}
+
+      {/* 结果区域 */}
+      {result && (
+        <div className="card">
+          <h3 className="text-lg font-semibold mb-3">{mergedLabels.resultLabel}</h3>
+          <div className="bg-gray-50 p-4 rounded-lg whitespace-pre-wrap">
+            {result}
+          </div>
+          <button
+            className="btn-secondary mt-4"
+            onClick={() => navigator.clipboard.writeText(result)}
+          >
+            Copy to Clipboard
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+---
+
+## 外部 AI API 接入指南
+
+### 支持的 AI 服务
+
+| 服务 | 接口类型 | 推荐场景 | 成本 |
+|------|---------|---------|------|
+| **OpenAI** | OpenAI 标准 | 通用场景、高质量输出 | 中等 |
+| **Claude** | Anthropic | 长文本、复杂推理 | 较高 |
+| **DeepSeek** | OpenAI 兼容 | 中文场景、性价比高 | 较低 |
+| **通义千问** | OpenAI 兼容 | 中文场景 | 较低 |
+| **智谱 AI** | OpenAI 兼容 | 中文场景 | 较低 |
+
+### 环境变量配置
+
+**`backend/.env`**
+
+```bash
+# ============================================
+# AI 服务配置
+# ============================================
+
+# OpenAI
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxx
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o-mini
+
+# Claude (Anthropic)
+CLAUDE_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxx
+CLAUDE_BASE_URL=https://api.anthropic.com
+CLAUDE_MODEL=claude-3-haiku-20240307
+
+# DeepSeek
+DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxxxxxx
+DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
+DEEPSEEK_MODEL=deepseek-chat
+
+# 通义千问 (阿里云)
+QWEN_API_KEY=sk-xxxxxxxxxxxxxxxxxxxx
+QWEN_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+QWEN_MODEL=qwen-turbo
+
+# 智谱 AI
+ZHIPU_API_KEY=xxxxxxxxxxxxxxxxxxxx
+ZHIPU_BASE_URL=https://open.bigmodel.cn/api/paas/v4
+ZHIPU_MODEL=glm-4-flash
+```
+
+**⚠️ 安全警告**：
+- `.env` 文件必须添加到 `.gitignore`
+- 生产环境使用环境变量或密钥管理服务
+- 定期轮换 API Key
+
+### API Key 安全最佳实践
+
+```typescript
+// ❌ 绝对禁止
+const apiKey = 'sk-xxxxxxxx'; // 硬编码
+
+// ❌ 禁止
+// 在前端代码中使用 API Key
+const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  headers: { 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_KEY}` }
+});
+
+// ✅ 正确做法
+// 只在后端使用，从环境变量读取
+const apiKey = process.env.OPENAI_API_KEY;
+if (!apiKey) {
+  throw new Error('OPENAI_API_KEY is not configured');
+}
+```
+
+### 多 AI 服务支持
+
+**`backend/src/services/ai/index.ts`**
+
+```typescript
+import { OpenAIService, openaiService, deepseekService } from './openaiService';
+import { aiConfig, validateAiConfig } from '../../config/ai';
+
+type AIProvider = 'openai' | 'deepseek' | 'qwen' | 'zhipu';
+
+/**
+ * AI 服务工厂
+ * 根据 provider 返回对应的服务实例
+ */
+export function getAIService(provider: AIProvider = 'openai'): OpenAIService {
+  switch (provider) {
+    case 'openai':
+      if (!validateAiConfig('openai')) {
+        throw new Error('OpenAI is not configured');
+      }
+      return openaiService;
+
+    case 'deepseek':
+      if (!validateAiConfig('deepseek')) {
+        throw new Error('DeepSeek is not configured');
+      }
+      return deepseekService;
+
+    case 'qwen':
+      return new OpenAIService(
+        process.env.QWEN_API_KEY || '',
+        process.env.QWEN_BASE_URL || '',
+        process.env.QWEN_MODEL || 'qwen-turbo'
+      );
+
+    case 'zhipu':
+      return new OpenAIService(
+        process.env.ZHIPU_API_KEY || '',
+        process.env.ZHIPU_BASE_URL || '',
+        process.env.ZHIPU_MODEL || 'glm-4-flash'
+      );
+
+    default:
+      throw new Error(`Unknown AI provider: ${provider}`);
+  }
+}
+
+/**
+ * 获取可用的 AI 服务列表
+ */
+export function getAvailableProviders(): AIProvider[] {
+  const providers: AIProvider[] = [];
+
+  if (validateAiConfig('openai')) providers.push('openai');
+  if (validateAiConfig('deepseek')) providers.push('deepseek');
+  if (process.env.QWEN_API_KEY) providers.push('qwen');
+  if (process.env.ZHIPU_API_KEY) providers.push('zhipu');
+
+  return providers;
+}
+```
+
+### 错误处理与重试
+
+**`backend/src/services/ai/retryWrapper.ts`**
+
+```typescript
+interface RetryOptions {
+  maxRetries?: number;
+  initialDelay?: number;
+  maxDelay?: number;
+  backoffMultiplier?: number;
+}
+
+/**
+ * 带重试的 AI 请求包装器
+ */
+export async function withRetry<T>(
+  fn: () => Promise<T>,
+  options: RetryOptions = {}
+): Promise<T> {
+  const {
+    maxRetries = 3,
+    initialDelay = 1000,
+    maxDelay = 10000,
+    backoffMultiplier = 2,
+  } = options;
+
+  let lastError: Error;
+  let delay = initialDelay;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      lastError = error;
+
+      // 不重试的错误
+      if (
+        error.message.includes('authentication') ||
+        error.message.includes('API key') ||
+        error.message.includes('invalid')
+      ) {
+        throw error;
+      }
+
+      // 最后一次尝试，直接抛出
+      if (attempt === maxRetries) {
+        throw error;
+      }
+
+      // 速率限制：等待更长时间
+      if (error.message.includes('rate limit')) {
+        delay = Math.min(delay * 3, maxDelay);
+      }
+
+      console.log(`AI request failed (attempt ${attempt}/${maxRetries}), retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      delay = Math.min(delay * backoffMultiplier, maxDelay);
+    }
+  }
+
+  throw lastError!;
+}
+```
+
+### 使用量监控（可选）
+
+**`backend/src/services/ai/usageTracker.ts`**
+
+```typescript
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+interface UsageRecord {
+  provider: string;
+  model: string;
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+  toolName: string;
+  userId?: number;
+}
+
+/**
+ * 记录 AI 使用量
+ * 可用于成本分析和监控
+ */
+export async function trackUsage(record: UsageRecord): Promise<void> {
+  try {
+    // 如果有 AIUsage 表，可以记录到数据库
+    // await prisma.aIUsage.create({ data: record });
+
+    // 或者简单地记录日志
+    console.log('[AI Usage]', JSON.stringify(record));
+  } catch (error) {
+    console.error('Failed to track AI usage:', error);
+  }
+}
+```
+
+---
+
+## 完整接入流程（前后端分离工具）
+
+### 流程总览
+
+```
+1. 后端开发
+   ├── 创建 AI 服务配置
+   ├── 实现工具 Controller
+   ├── 创建工具路由
+   └── 注册到主应用
+        ↓
+2. 前端开发
+   ├── 创建 API 调用模块
+   ├── 开发工具组件（独立项目）
+   ├── 测试功能
+   └── 复制到主项目
+        ↓
+3. 接入主项目
+   ├── 复制前端组件
+   ├── 创建页面
+   ├── 添加国际化翻译
+   └── 更新 tools.json
+        ↓
+4. 部署
+   ├── 配置生产环境变量
+   ├── 部署后端
+   ├── 部署前端
+   └── 验证功能
+```
+
+### 环境变量检查清单
+
+**后端 `.env`**：
+```bash
+# 数据库
+DATABASE_URL=postgresql://...
+
+# JWT
+JWT_SECRET=your-secret-key
+
+# AI 服务（至少配置一个）
+OPENAI_API_KEY=sk-...
+# 或
+DEEPSEEK_API_KEY=sk-...
+
+# 其他配置
+PORT=8000
+NODE_ENV=production
+```
+
+**前端 `.env.local`**：
+```bash
+# API 地址
+NEXT_PUBLIC_API_URL=https://api.yourdomain.com
+```
+
+### 测试检查清单
+
+```markdown
+## 后端测试
+- [ ] API 路由正常响应
+- [ ] 错误情况正确处理（无 API Key、无效输入等）
+- [ ] 速率限制生效
+- [ ] 超时处理正常
+
+## 前端测试
+- [ ] 正常请求成功
+- [ ] 加载状态显示
+- [ ] 错误提示正确
+- [ ] 网络异常处理
+
+## 集成测试
+- [ ] 端到端流程正常
+- [ ] 国际化切换正常
+- [ ] 响应式布局正常
+```
+
+---
+
+## 附录：AI 工具快速参考
+
+### 常见 AI 工具类型
+
+| 工具类型 | 示例 | 后端逻辑 |
+|---------|------|---------|
+| **文本生成** | AI Writer, Blog Generator | 单次 chat 调用 |
+| **文本改写** | Paraphraser, Grammar Fixer | 单次 chat 调用 |
+| **翻译工具** | AI Translator | 单次 chat 调用 |
+| **代码工具** | Code Explainer, Code Generator | 单次 chat 调用 |
+| **对话工具** | Chatbot | 多轮对话，需要上下文 |
+| **分析工具** | Sentiment Analyzer | 结构化输出 |
+
+### API 请求模板
+
+```typescript
+// 简单生成
+const result = await aiService.chat([
+  { role: 'system', content: 'You are a helpful assistant.' },
+  { role: 'user', content: userInput },
+]);
+
+// 带上下文的对话
+const result = await aiService.chat([
+  { role: 'system', content: 'You are a helpful assistant.' },
+  ...previousMessages,
+  { role: 'user', content: userInput },
+]);
+
+// 结构化输出
+const result = await aiService.chat([
+  { role: 'system', content: 'Return JSON format: { "sentiment": "positive|negative|neutral", "score": 0-100 }' },
+  { role: 'user', content: textToAnalyze },
+]);
+const parsed = JSON.parse(result.content);
+```
