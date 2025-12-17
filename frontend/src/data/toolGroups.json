@@ -1,0 +1,62 @@
+[
+  {
+    "id": "merge-pdf-group",
+    "slug": "merge-pdf",
+    "categoryId": "pdf-tools",
+    "icon": "📄",
+    "name": {
+      "en": "Merge PDF",
+      "zh": "合并PDF"
+    },
+    "description": {
+      "en": "Combine multiple PDF files into one document",
+      "zh": "将多个PDF文件合并为一个文档"
+    },
+    "order": 1
+  },
+  {
+    "id": "compress-pdf-group",
+    "slug": "compress-pdf",
+    "categoryId": "pdf-tools",
+    "icon": "🗜️",
+    "name": {
+      "en": "Compress PDF",
+      "zh": "压缩PDF"
+    },
+    "description": {
+      "en": "Reduce PDF file size for different purposes",
+      "zh": "针对不同用途减小PDF文件大小"
+    },
+    "order": 2
+  },
+  {
+    "id": "split-pdf-group",
+    "slug": "split-pdf",
+    "categoryId": "pdf-tools",
+    "icon": "✂️",
+    "name": {
+      "en": "Split PDF",
+      "zh": "拆分PDF"
+    },
+    "description": {
+      "en": "Split PDF files into separate documents",
+      "zh": "将PDF文件拆分为单独的文档"
+    },
+    "order": 3
+  },
+  {
+    "id": "pdf-to-image-group",
+    "slug": "pdf-to-image",
+    "categoryId": "pdf-tools",
+    "icon": "🖼️",
+    "name": {
+      "en": "PDF to Image",
+      "zh": "PDF转图片"
+    },
+    "description": {
+      "en": "Convert PDF pages to image formats",
+      "zh": "将PDF页面转换为图片格式"
+    },
+    "order": 4
+  }
+]

@@ -6,13 +6,68 @@
   },
   "home": {
     "hero": {
-      "title": "Free Tools in one box",
-      "subtitle": "Make your work easier with 30+ tools",
-      "description": "No sign-up required. 100% free."
+      "title": "Free Online Tools for PDF, Image, and More",
+      "subtitle": "Simple, fast, and secure tools to solve everyday tasks"
+    },
+    "search": {
+      "placeholder": "Search for tools...",
+      "button": "Search",
+      "resultsFor": "Search results for \"{query}\"",
+      "searchTools": "Search Tools",
+      "toolsFound": "{count} tools found",
+      "toolFound": "{count} tool found",
+      "noResults": "No tools found",
+      "tryDifferent": "Try searching with different keywords",
+      "backHome": "Back to Home"
+    },
+    "popularTools": {
+      "title": "Popular Tools",
+      "subtitle": "Most used tools by our community",
+      "comingSoon": "Coming Soon"
     },
     "categories": {
-      "title": "Explore Categories",
-      "tools": "tools"
+      "title": "Browse by Category",
+      "subtitle": "Find the perfect tool for your needs"
+    },
+    "useCases": {
+      "title": "Tools for Every Scenario",
+      "subtitle": "Optimized solutions for your specific needs",
+      "printing": {
+        "title": "For Printing",
+        "description": "Optimize files for high-quality printing"
+      },
+      "email": {
+        "title": "For Email",
+        "description": "Compress files to meet email size limits"
+      },
+      "social": {
+        "title": "For Social Media",
+        "description": "Resize and optimize for social platforms"
+      },
+      "office": {
+        "title": "For Office Work",
+        "description": "Professional tools for business tasks"
+      }
+    },
+    "whyToolibox": {
+      "title": "Why Choose TooliBox?",
+      "subtitle": "The best online tools platform for your daily needs",
+      "free": {
+        "title": "100% Free",
+        "description": "All tools are completely free to use, no hidden costs"
+      },
+      "noSignup": {
+        "title": "No Sign-up Required",
+        "description": "Start using tools immediately without registration"
+      },
+      "secure": {
+        "title": "Secure & Private",
+        "description": "Your files are processed securely and never stored"
+      },
+      "fast": {
+        "title": "Lightning Fast",
+        "description": "Optimized for speed with instant results"
+      }
     },
     "seeAll": "See all",
     "open": "Open"
@@ -21,7 +76,16 @@
     "breadcrumb": {
       "home": "Home"
     },
-    "description": "{count} free tools"
+    "description": "{count} free tools",
+    "coreTools": "Tool Groups",
+    "allTools": "Other Tools",
+    "descriptions": {
+      "pdf-tools": "PDF tools are essential for anyone working with digital documents. Whether you need to merge multiple PDFs for a presentation, compress large files for email, split documents into separate pages, or convert between formats, our comprehensive PDF toolkit has you covered. All tools work directly in your browser with no software installation required, ensuring your documents remain private and secure.",
+      "image-tools": "Transform and optimize your images with our powerful image processing tools. From resizing photos for social media to compressing images for faster website loading, our tools help you achieve professional results instantly. Support for all major image formats including JPG, PNG, GIF, and WebP ensures compatibility with any project.",
+      "text-tools": "Simplify your text processing workflow with AI-powered tools designed for content creators, students, and professionals. Our text simplifier uses advanced AI to make complex content more accessible while preserving key information. Perfect for improving readability, creating summaries, or adapting content for different audiences.",
+      "color-tools": "Discover the perfect colors for your design projects with our comprehensive color toolkit. Generate harmonious color palettes, convert between color formats (HEX, RGB, HSL), extract colors from images, and ensure accessibility with contrast checkers. Essential tools for designers, developers, and anyone working with digital colors.",
+      "ai-tools": "Harness the power of artificial intelligence to streamline your workflow. Our AI tools leverage cutting-edge machine learning models to help you with text processing, content generation, image analysis, and more. Experience the future of productivity with intelligent automation that saves time and enhances quality."
+    }
   },
   "tool": {
     "comingSoon": "Coming Soon",

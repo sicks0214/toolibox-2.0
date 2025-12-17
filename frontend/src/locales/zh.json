@@ -6,13 +6,68 @@
   },
   "home": {
     "hero": {
-      "title": "免费在线工具，为每个人",
-      "subtitle": "使用30多个工具让您的工作更轻松",
-      "description": "无需注册。100%免费。"
+      "title": "免费在线工具：PDF、图像等",
+      "subtitle": "简单、快速、安全的工具，解决日常任务"
+    },
+    "search": {
+      "placeholder": "搜索工具...",
+      "button": "搜索",
+      "resultsFor": "\"{query}\"的搜索结果",
+      "searchTools": "搜索工具",
+      "toolsFound": "找到 {count} 个工具",
+      "toolFound": "找到 {count} 个工具",
+      "noResults": "未找到工具",
+      "tryDifferent": "尝试使用不同的关键词搜索",
+      "backHome": "返回首页"
+    },
+    "popularTools": {
+      "title": "热门工具",
+      "subtitle": "社区最常用的工具",
+      "comingSoon": "即将推出"
     },
     "categories": {
-      "title": "浏览类目",
-      "tools": "个工具"
+      "title": "按类别浏览",
+      "subtitle": "找到满足您需求的完美工具"
+    },
+    "useCases": {
+      "title": "适用于各种场景的工具",
+      "subtitle": "针对您的特定需求优化的解决方案",
+      "printing": {
+        "title": "用于打印",
+        "description": "优化文件以实现高质量打印"
+      },
+      "email": {
+        "title": "用于邮件",
+        "description": "压缩文件以满足邮件大小限制"
+      },
+      "social": {
+        "title": "用于社交媒体",
+        "description": "调整大小并优化社交平台"
+      },
+      "office": {
+        "title": "用于办公",
+        "description": "专业的商务任务工具"
+      }
+    },
+    "whyToolibox": {
+      "title": "为什么选择 TooliBox？",
+      "subtitle": "满足您日常需求的最佳在线工具平台",
+      "free": {
+        "title": "100% 免费",
+        "description": "所有工具完全免费使用，无隐藏费用"
+      },
+      "noSignup": {
+        "title": "无需注册",
+        "description": "无需注册即可立即开始使用工具"
+      },
+      "secure": {
+        "title": "安全私密",
+        "description": "您的文件安全处理，永不存储"
+      },
+      "fast": {
+        "title": "闪电般快速",
+        "description": "针对速度优化，即时获得结果"
+      }
     },
     "seeAll": "查看全部",
     "open": "打开"
@@ -21,7 +76,16 @@
     "breadcrumb": {
       "home": "首页"
     },
-    "description": "{count}个免费工具"
+    "description": "{count}个免费工具",
+    "coreTools": "工具组",
+    "allTools": "其他工具",
+    "descriptions": {
+      "pdf-tools": "PDF工具对于处理数字文档的任何人来说都是必不可少的。无论您需要合并多个PDF用于演示、压缩大文件以便通过电子邮件发送、将文档拆分为单独的页面，还是在格式之间进行转换，我们全面的PDF工具包都能满足您的需求。所有工具都直接在浏览器中运行，无需安装软件，确保您的文档保持私密和安全。",
+      "image-tools": "使用我们强大的图像处理工具转换和优化您的图像。从调整社交媒体照片大小到压缩图像以加快网站加载速度，我们的工具帮助您即时获得专业效果。支持所有主要图像格式，包括JPG、PNG、GIF和WebP，确保与任何项目兼容。",
+      "text-tools": "使用专为内容创作者、学生和专业人士设计的AI驱动工具简化您的文本处理工作流程。我们的文本简化器使用先进的AI使复杂内容更易于理解，同时保留关键信息。非常适合提高可读性、创建摘要或为不同受众调整内容。",
+      "color-tools": "使用我们全面的颜色工具包为您的设计项目发现完美的颜色。生成和谐的调色板、在颜色格式之间转换（HEX、RGB、HSL）、从图像中提取颜色，并使用对比度检查器确保可访问性。设计师、开发人员和任何使用数字颜色的人的必备工具。",
+      "ai-tools": "利用人工智能的力量简化您的工作流程。我们的AI工具利用尖端的机器学习模型帮助您进行文本处理、内容生成、图像分析等。通过智能自动化体验未来的生产力，节省时间并提高质量。"
+    }
   },
   "tool": {
     "comingSoon": "即将推出",

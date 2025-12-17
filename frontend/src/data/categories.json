@@ -1,5 +1,35 @@
 [
   {
+    "id": "pdf-tools",
+    "slug": "pdf-tools",
+    "icon": "📄",
+    "name": {
+      "en": "PDF Tools",
+      "zh": "PDF 工具"
+    },
+    "description": {
+      "en": "Merge, compress, split and convert PDF files",
+      "zh": "合并、压缩、拆分和转换 PDF 文件"
+    },
+    "gradient": "linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%)",
+    "order": 1
+  },
+  {
+    "id": "image-tools",
+    "slug": "image-tools",
+    "icon": "🖼️",
+    "name": {
+      "en": "Image Tools",
+      "zh": "图像工具"
+    },
+    "description": {
+      "en": "Edit, compress and convert images",
+      "zh": "编辑、压缩和转换图像"
+    },
+    "gradient": "linear-gradient(135deg, #51CF66 0%, #2F9E44 100%)",
+    "order": 2
+  },
+  {
     "id": "text-tools",
     "slug": "text-tools",
     "icon": "📝",
@@ -11,67 +41,37 @@
       "en": "Process and manipulate text easily",
       "zh": "轻松处理和转换文本"
     },
-    "gradient": "linear-gradient(135deg, #4A9C82 0%, #2C3E3A 100%)",
-    "order": 1
-  },
-  {
-    "id": "file-tools",
-    "slug": "file-tools",
-    "icon": "📁",
-    "name": {
-      "en": "File Tools",
-      "zh": "文件工具"
-    },
-    "description": {
-      "en": "Convert and manage your files",
-      "zh": "转换和管理您的文件"
-    },
-    "gradient": "linear-gradient(135deg, #A8D5BA 0%, #4A9C82 100%)",
-    "order": 2
-  },
-  {
-    "id": "image-tools",
-    "slug": "image-tools",
-    "icon": "🖼️",
-    "name": {
-      "en": "Image Tools",
-      "zh": "图像工具"
-    },
-    "description": {
-      "en": "Edit and optimize images",
-      "zh": "编辑和优化图像"
-    },
-    "gradient": "linear-gradient(135deg, #FF9F66 0%, #4A9C82 100%)",
+    "gradient": "linear-gradient(135deg, #4DABF7 0%, #1971C2 100%)",
     "order": 3
   },
   {
-    "id": "generate-tools",
-    "slug": "generate-tools",
-    "icon": "⚡",
+    "id": "color-tools",
+    "slug": "color-tools",
+    "icon": "🎨",
     "name": {
-      "en": "Generate Tools",
-      "zh": "生成工具"
+      "en": "Color Tools",
+      "zh": "颜色工具"
     },
     "description": {
-      "en": "Generate passwords, UUIDs, and more",
-      "zh": "生成密码、UUID 等内容"
+      "en": "Color picker, converter and palette generator",
+      "zh": "颜色选择器、转换器和调色板生成器"
     },
-    "gradient": "linear-gradient(135deg, #4A9C82 0%, #A8D5BA 100%)",
+    "gradient": "linear-gradient(135deg, #FAB005 0%, #F59F00 100%)",
     "order": 4
   },
   {
-    "id": "developer-tools",
-    "slug": "developer-tools",
-    "icon": "💻",
+    "id": "ai-tools",
+    "slug": "ai-tools",
+    "icon": "🤖",
     "name": {
-      "en": "Developer Tools",
-      "zh": "开发者工具"
+      "en": "AI Tools",
+      "zh": "AI 工具"
     },
     "description": {
-      "en": "Essential tools for developers",
-      "zh": "开发者必备工具"
+      "en": "AI-powered tools for text, image and more",
+      "zh": "AI 驱动的文本、图像等工具"
     },
-    "gradient": "linear-gradient(135deg, #2C3E3A 0%, #4A9C82 100%)",
+    "gradient": "linear-gradient(135deg, #9775FA 0%, #7048E8 100%)",
     "order": 5
   }
 ]

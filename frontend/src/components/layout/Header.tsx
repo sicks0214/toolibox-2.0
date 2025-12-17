@@ -26,13 +26,16 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import tools from '@/data/tools.json'
+import toolGroups from '@/data/toolGroups.json'
 
-// Get tools by category
-const textTools = tools.filter(tool => tool.categoryId === 'text-tools')
-const fileTools = tools.filter(tool => tool.categoryId === 'file-tools')
-const imageTools = tools.filter(tool => tool.categoryId === 'image-tools')
-const generateTools = tools.filter(tool => tool.categoryId === 'generate-tools')
-const developerTools = tools.filter(tool => tool.categoryId === 'developer-tools')
+// Get tool groups by category
+const pdfGroups = toolGroups.filter(group => group.categoryId === 'pdf-tools').sort((a, b) => a.order - b.order)
+const imageGroups = toolGroups.filter(group => group.categoryId === 'image-tools').sort((a, b) => a.order - b.order)
+const textGroups = toolGroups.filter(group => group.categoryId === 'text-tools').sort((a, b) => a.order - b.order)
+const colorGroups = toolGroups.filter(group => group.categoryId === 'color-tools').sort((a, b) => a.order - b.order)
+
+// Helper to get tools by group
+const getToolsByGroup = (groupId: string) => tools.filter(tool => tool.groupId === groupId)
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -96,64 +99,56 @@ export default function Header() {
         <PopoverGroup className="hidden lg:flex lg:gap-x-10">
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              Text Tools
+              PDF Tools
               <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-visible rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
               <div className="p-4">
-                {textTools.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover:bg-secondary text-2xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="block font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                {pdfGroups.map((group) => {
+                  const groupTools = getToolsByGroup(group.id);
+                  return (
+                    <div key={group.id} className="group/item relative">
+                      <div className="flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors">
+                        <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover/item:bg-secondary text-2xl">
+                          {group.icon}
+                        </div>
+                        <div className="flex-auto">
+                          <div className="block font-semibold text-neutral">
+                            {group.name[locale as 'en' | 'zh']}
+                          </div>
+                          <p className="mt-1 text-gray-600">{group.description[locale as 'en' | 'zh']}</p>
+                        </div>
                       </div>
-                      <p className="mt-1 text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </PopoverPanel>
-          </Popover>
 
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              File Tools
-              <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-            </PopoverButton>
-
-            <PopoverPanel
-              transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
-            >
-              <div className="p-4">
-                {fileTools.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover:bg-secondary text-2xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="block font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                      {/* Submenu */}
+                      <div className="absolute left-full top-0 ml-2 hidden group-hover/item:block z-20">
+                        <div className="w-80 rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 p-3">
+                          {groupTools.map((tool) => (
+                            <Link
+                              key={tool.id}
+                              href={getLocalizedPath(getToolPath(tool))}
+                              className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                            >
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
+                                {tool.icon}
+                              </div>
+                              <div className="flex-auto">
+                                <div className="font-semibold text-neutral">
+                                  {tool.name[locale as 'en' | 'zh']}
+                                </div>
+                                <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                      <p className="mt-1 text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
                     </div>
-                  </Link>
-                ))}
+                  );
+                })}
               </div>
             </PopoverPanel>
           </Popover>
@@ -166,90 +161,156 @@ export default function Header() {
 
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-visible rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
               <div className="p-4">
-                {imageTools.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover:bg-secondary text-2xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="block font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                {imageGroups.map((group) => {
+                  const groupTools = getToolsByGroup(group.id);
+                  return (
+                    <div key={group.id} className="group/item relative">
+                      <div className="flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors">
+                        <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover/item:bg-secondary text-2xl">
+                          {group.icon}
+                        </div>
+                        <div className="flex-auto">
+                          <div className="block font-semibold text-neutral">
+                            {group.name[locale as 'en' | 'zh']}
+                          </div>
+                          <p className="mt-1 text-gray-600">{group.description[locale as 'en' | 'zh']}</p>
+                        </div>
                       </div>
-                      <p className="mt-1 text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                      <div className="absolute left-full top-0 ml-2 hidden group-hover/item:block z-20">
+                        <div className="w-80 rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 p-3">
+                          {groupTools.map((tool) => (
+                            <Link
+                              key={tool.id}
+                              href={getLocalizedPath(getToolPath(tool))}
+                              className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                            >
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
+                                {tool.icon}
+                              </div>
+                              <div className="flex-auto">
+                                <div className="font-semibold text-neutral">
+                                  {tool.name[locale as 'en' | 'zh']}
+                                </div>
+                                <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </Link>
-                ))}
+                  );
+                })}
               </div>
             </PopoverPanel>
           </Popover>
 
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              Generate Tools
+              Text Tools
               <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-visible rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
               <div className="p-4">
-                {generateTools.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover:bg-secondary text-2xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="block font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                {textGroups.map((group) => {
+                  const groupTools = getToolsByGroup(group.id);
+                  return (
+                    <div key={group.id} className="group/item relative">
+                      <div className="flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors">
+                        <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover/item:bg-secondary text-2xl">
+                          {group.icon}
+                        </div>
+                        <div className="flex-auto">
+                          <div className="block font-semibold text-neutral">
+                            {group.name[locale as 'en' | 'zh']}
+                          </div>
+                          <p className="mt-1 text-gray-600">{group.description[locale as 'en' | 'zh']}</p>
+                        </div>
                       </div>
-                      <p className="mt-1 text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                      <div className="absolute left-full top-0 ml-2 hidden group-hover/item:block z-20">
+                        <div className="w-80 rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 p-3">
+                          {groupTools.map((tool) => (
+                            <Link
+                              key={tool.id}
+                              href={getLocalizedPath(getToolPath(tool))}
+                              className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                            >
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
+                                {tool.icon}
+                              </div>
+                              <div className="flex-auto">
+                                <div className="font-semibold text-neutral">
+                                  {tool.name[locale as 'en' | 'zh']}
+                                </div>
+                                <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </Link>
-                ))}
+                  );
+                })}
               </div>
             </PopoverPanel>
           </Popover>
 
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              Developer Tools
+              Color Tools
               <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-visible rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
               <div className="p-4">
-                {developerTools.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover:bg-secondary text-2xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="block font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                {colorGroups.map((group) => {
+                  const groupTools = getToolsByGroup(group.id);
+                  return (
+                    <div key={group.id} className="group/item relative">
+                      <div className="flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-surface transition-colors">
+                        <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-surface group-hover/item:bg-secondary text-2xl">
+                          {group.icon}
+                        </div>
+                        <div className="flex-auto">
+                          <div className="block font-semibold text-neutral">
+                            {group.name[locale as 'en' | 'zh']}
+                          </div>
+                          <p className="mt-1 text-gray-600">{group.description[locale as 'en' | 'zh']}</p>
+                        </div>
                       </div>
-                      <p className="mt-1 text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                      <div className="absolute left-full top-0 ml-2 hidden group-hover/item:block z-20">
+                        <div className="w-80 rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 p-3">
+                          {groupTools.map((tool) => (
+                            <Link
+                              key={tool.id}
+                              href={getLocalizedPath(getToolPath(tool))}
+                              className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                            >
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
+                                {tool.icon}
+                              </div>
+                              <div className="flex-auto">
+                                <div className="font-semibold text-neutral">
+                                  {tool.name[locale as 'en' | 'zh']}
+                                </div>
+                                <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </Link>
-                ))}
+                  );
+                })}
               </div>
             </PopoverPanel>
           </Popover>
@@ -406,39 +467,22 @@ export default function Header() {
               <div className="space-y-2 py-6">
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    Text Tools
+                    PDF Tools
                     <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    {textTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
-
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    File Tools
-                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {fileTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
-                    ))}
+                    {pdfGroups.map((group) =>
+                      getToolsByGroup(group.id).map((tool) => (
+                        <Link
+                          key={tool.id}
+                          href={getLocalizedPath(getToolPath(tool))}
+                          className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        </Link>
+                      ))
+                    )}
                   </DisclosurePanel>
                 </Disclosure>
 
@@ -448,54 +492,60 @@ export default function Header() {
                     <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    {imageTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
-                    ))}
+                    {imageGroups.map((group) =>
+                      getToolsByGroup(group.id).map((tool) => (
+                        <Link
+                          key={tool.id}
+                          href={getLocalizedPath(getToolPath(tool))}
+                          className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        </Link>
+                      ))
+                    )}
                   </DisclosurePanel>
                 </Disclosure>
 
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    Generate Tools
+                    Text Tools
                     <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    {generateTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
-                    ))}
+                    {textGroups.map((group) =>
+                      getToolsByGroup(group.id).map((tool) => (
+                        <Link
+                          key={tool.id}
+                          href={getLocalizedPath(getToolPath(tool))}
+                          className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        </Link>
+                      ))
+                    )}
                   </DisclosurePanel>
                 </Disclosure>
 
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    Developer Tools
+                    Color Tools
                     <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    {developerTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
-                    ))}
+                    {colorGroups.map((group) =>
+                      getToolsByGroup(group.id).map((tool) => (
+                        <Link
+                          key={tool.id}
+                          href={getLocalizedPath(getToolPath(tool))}
+                          className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        </Link>
+                      ))
+                    )}
                   </DisclosurePanel>
                 </Disclosure>
               </div>

@@ -36,7 +36,7 @@ export default function CategoryCard({
   };
 
   return (
-    <Link href={getLocalizedPath(`/category/${slug}`)}>
+    <Link href={getLocalizedPath(`/${slug}`)}>
       <div
         className="category-card relative overflow-hidden group !p-6 min-h-[280px] flex flex-col"
         style={{ background: gradient }}

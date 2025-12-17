@@ -1,5 +1,281 @@
 [
   {
+    "id": "merge-pdf",
+    "slug": "merge-pdf",
+    "categoryId": "pdf-tools",
+    "groupId": "merge-pdf-group",
+    "icon": "📄",
+    "name": {
+      "en": "Merge PDF",
+      "zh": "合并PDF"
+    },
+    "description": {
+      "en": "Combine multiple PDF files into one",
+      "zh": "将多个PDF文件合并为一个"
+    },
+    "comingSoon": true,
+    "isPopular": true
+  },
+  {
+    "id": "merge-pdf-printing",
+    "slug": "merge-pdf-printing",
+    "categoryId": "pdf-tools",
+    "groupId": "merge-pdf-group",
+    "icon": "🖨️",
+    "name": {
+      "en": "Merge PDF for Printing",
+      "zh": "打印用PDF合并"
+    },
+    "description": {
+      "en": "Merge PDFs optimized for printing",
+      "zh": "合并PDF并优化打印"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "merge-pdf-bookmarks",
+    "slug": "merge-pdf-bookmarks",
+    "categoryId": "pdf-tools",
+    "groupId": "merge-pdf-group",
+    "icon": "🔖",
+    "name": {
+      "en": "Merge PDF Keep Bookmarks",
+      "zh": "合并PDF保留书签"
+    },
+    "description": {
+      "en": "Merge PDFs while preserving bookmarks",
+      "zh": "合并PDF时保留书签"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "merge-pdf-page-range",
+    "slug": "merge-pdf-page-range",
+    "categoryId": "pdf-tools",
+    "groupId": "merge-pdf-group",
+    "icon": "📑",
+    "name": {
+      "en": "Merge PDF by Page Range",
+      "zh": "按页面范围合并PDF"
+    },
+    "description": {
+      "en": "Merge specific page ranges from PDFs",
+      "zh": "合并PDF的特定页面范围"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "merge-pdf-email",
+    "slug": "merge-pdf-email",
+    "categoryId": "pdf-tools",
+    "groupId": "merge-pdf-group",
+    "icon": "📧",
+    "name": {
+      "en": "Merge PDF for Email Submission",
+      "zh": "邮件提交用PDF合并"
+    },
+    "description": {
+      "en": "Merge PDFs optimized for email",
+      "zh": "合并PDF并优化邮件发送"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "compress-pdf",
+    "slug": "compress-pdf",
+    "categoryId": "pdf-tools",
+    "groupId": "compress-pdf-group",
+    "icon": "🗜️",
+    "name": {
+      "en": "Compress PDF",
+      "zh": "压缩PDF"
+    },
+    "description": {
+      "en": "Reduce PDF file size",
+      "zh": "减小PDF文件大小"
+    },
+    "comingSoon": true,
+    "isPopular": true
+  },
+  {
+    "id": "compress-pdf-email",
+    "slug": "compress-pdf-email",
+    "categoryId": "pdf-tools",
+    "groupId": "compress-pdf-group",
+    "icon": "📧",
+    "name": {
+      "en": "Compress PDF for Email",
+      "zh": "邮件用PDF压缩"
+    },
+    "description": {
+      "en": "Compress PDF to email size limits",
+      "zh": "压缩PDF至邮件大小限制"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "compress-pdf-2mb",
+    "slug": "compress-pdf-2mb",
+    "categoryId": "pdf-tools",
+    "groupId": "compress-pdf-group",
+    "icon": "📦",
+    "name": {
+      "en": "Compress PDF Under 2MB",
+      "zh": "压缩PDF至2MB以下"
+    },
+    "description": {
+      "en": "Compress PDF to under 2MB",
+      "zh": "将PDF压缩至2MB以下"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "compress-pdf-lossless",
+    "slug": "compress-pdf-lossless",
+    "categoryId": "pdf-tools",
+    "groupId": "compress-pdf-group",
+    "icon": "💎",
+    "name": {
+      "en": "Compress PDF Without Quality Loss",
+      "zh": "无损压缩PDF"
+    },
+    "description": {
+      "en": "Compress PDF without losing quality",
+      "zh": "压缩PDF不损失质量"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "split-pdf",
+    "slug": "split-pdf",
+    "categoryId": "pdf-tools",
+    "groupId": "split-pdf-group",
+    "icon": "✂️",
+    "name": {
+      "en": "Split PDF",
+      "zh": "拆分PDF"
+    },
+    "description": {
+      "en": "Split PDF into multiple files",
+      "zh": "将PDF拆分为多个文件"
+    },
+    "comingSoon": true,
+    "isPopular": true
+  },
+  {
+    "id": "split-pdf-every-x-pages",
+    "slug": "split-pdf-every-x-pages",
+    "categoryId": "pdf-tools",
+    "groupId": "split-pdf-group",
+    "icon": "📄",
+    "name": {
+      "en": "Split PDF Every X Pages",
+      "zh": "每X页拆分PDF"
+    },
+    "description": {
+      "en": "Split PDF at regular page intervals",
+      "zh": "按固定页数间隔拆分PDF"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "split-pdf-page-range",
+    "slug": "split-pdf-page-range",
+    "categoryId": "pdf-tools",
+    "groupId": "split-pdf-group",
+    "icon": "📑",
+    "name": {
+      "en": "Split PDF by Page Range",
+      "zh": "按页面范围拆分PDF"
+    },
+    "description": {
+      "en": "Split PDF by specific page ranges",
+      "zh": "按特定页面范围拆分PDF"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "split-pdf-single-pages",
+    "slug": "split-pdf-single-pages",
+    "categoryId": "pdf-tools",
+    "groupId": "split-pdf-group",
+    "icon": "📃",
+    "name": {
+      "en": "Split PDF into Single Pages",
+      "zh": "拆分PDF为单页"
+    },
+    "description": {
+      "en": "Split each page into separate files",
+      "zh": "将每页拆分为单独文件"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "pdf-to-image",
+    "slug": "pdf-to-image",
+    "categoryId": "pdf-tools",
+    "groupId": "pdf-to-image-group",
+    "icon": "🖼️",
+    "name": {
+      "en": "PDF to Image",
+      "zh": "PDF转图片"
+    },
+    "description": {
+      "en": "Convert PDF pages to images",
+      "zh": "将PDF页面转换为图片"
+    },
+    "comingSoon": true,
+    "isPopular": true
+  },
+  {
+    "id": "pdf-to-jpg",
+    "slug": "pdf-to-jpg",
+    "categoryId": "pdf-tools",
+    "groupId": "pdf-to-image-group",
+    "icon": "🖼️",
+    "name": {
+      "en": "Convert PDF to JPG",
+      "zh": "PDF转JPG"
+    },
+    "description": {
+      "en": "Convert PDF pages to JPG images",
+      "zh": "将PDF页面转换为JPG图片"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "pdf-to-png",
+    "slug": "pdf-to-png",
+    "categoryId": "pdf-tools",
+    "groupId": "pdf-to-image-group",
+    "icon": "🖼️",
+    "name": {
+      "en": "Convert PDF to PNG",
+      "zh": "PDF转PNG"
+    },
+    "description": {
+      "en": "Convert PDF pages to PNG images",
+      "zh": "将PDF页面转换为PNG图片"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "pdf-to-powerpoint",
+    "slug": "pdf-to-powerpoint",
+    "categoryId": "pdf-tools",
+    "groupId": "pdf-to-image-group",
+    "icon": "📊",
+    "name": {
+      "en": "Convert PDF for PowerPoint",
+      "zh": "PDF转PowerPoint"
+    },
+    "description": {
+      "en": "Convert PDF for PowerPoint use",
+      "zh": "将PDF转换为PowerPoint格式"
+    },
+    "comingSoon": true
+  },
+  {
     "id": "text-simplifier",
     "slug": "text-simplifier",
     "categoryId": "text-tools",
@@ -12,7 +288,8 @@
       "en": "Simplify complex text with AI",
       "zh": "使用AI简化复杂文本"
     },
-    "comingSoon": false
+    "comingSoon": false,
+    "isPopular": true
   },
   {
     "id": "case-converter",
@@ -90,92 +367,92 @@
     "comingSoon": true
   },
   {
-    "id": "pdf-merger",
-    "slug": "pdf-merger",
-    "categoryId": "file-tools",
-    "icon": "📄",
+    "id": "json-formatter",
+    "slug": "json-formatter",
+    "categoryId": "text-tools",
+    "icon": "{ }",
     "name": {
-      "en": "PDF Merger",
-      "zh": "PDF合并工具"
+      "en": "JSON Formatter",
+      "zh": "JSON格式化工具"
     },
     "description": {
-      "en": "Merge multiple PDFs into one",
-      "zh": "将多个PDF合并为一个"
+      "en": "Format and validate JSON",
+      "zh": "格式化和验证JSON"
     },
     "comingSoon": true
   },
   {
-    "id": "pdf-to-image",
-    "slug": "pdf-to-image",
-    "categoryId": "file-tools",
-    "icon": "🖼️",
+    "id": "base64-encoder",
+    "slug": "base64-encoder",
+    "categoryId": "text-tools",
+    "icon": "🔐",
     "name": {
-      "en": "PDF to Image",
-      "zh": "PDF转图片"
+      "en": "Base64 Encoder",
+      "zh": "Base64编码工具"
     },
     "description": {
-      "en": "Convert PDF pages to images",
-      "zh": "将PDF页面转换为图片"
+      "en": "Encode and decode Base64",
+      "zh": "编码和解码Base64"
     },
     "comingSoon": true
   },
   {
-    "id": "file-compressor",
-    "slug": "file-compressor",
-    "categoryId": "file-tools",
-    "icon": "🗜️",
+    "id": "url-encoder",
+    "slug": "url-encoder",
+    "categoryId": "text-tools",
+    "icon": "🔗",
     "name": {
-      "en": "File Compressor",
-      "zh": "文件压缩工具"
+      "en": "URL Encoder",
+      "zh": "URL编码工具"
     },
     "description": {
-      "en": "Compress files to save space",
-      "zh": "压缩文件节省空间"
+      "en": "Encode and decode URLs",
+      "zh": "编码和解码URL"
     },
     "comingSoon": true
   },
   {
-    "id": "csv-to-json",
-    "slug": "csv-to-json",
-    "categoryId": "file-tools",
-    "icon": "🔄",
+    "id": "regex-tester",
+    "slug": "regex-tester",
+    "categoryId": "text-tools",
+    "icon": "🔍",
     "name": {
-      "en": "CSV to JSON",
-      "zh": "CSV转JSON"
+      "en": "Regex Tester",
+      "zh": "正则表达式测试"
     },
     "description": {
-      "en": "Convert CSV files to JSON format",
-      "zh": "将CSV文件转换为JSON格式"
+      "en": "Test regular expressions",
+      "zh": "测试正则表达式"
     },
     "comingSoon": true
   },
   {
-    "id": "excel-viewer",
-    "slug": "excel-viewer",
-    "categoryId": "file-tools",
-    "icon": "📊",
+    "id": "code-beautifier",
+    "slug": "code-beautifier",
+    "categoryId": "text-tools",
+    "icon": "✨",
     "name": {
-      "en": "Excel Viewer",
-      "zh": "Excel在线查看器"
+      "en": "Code Beautifier",
+      "zh": "代码美化工具"
     },
     "description": {
-      "en": "View Excel files online",
-      "zh": "在线查看Excel文件"
+      "en": "Beautify JavaScript, CSS, HTML",
+      "zh": "美化JavaScript、CSS、HTML"
     },
     "comingSoon": true
   },
   {
-    "id": "file-hash",
-    "slug": "file-hash",
-    "categoryId": "file-tools",
-    "icon": "#️⃣",
+    "id": "timestamp-converter",
+    "slug": "timestamp-converter",
+    "categoryId": "text-tools",
+    "icon": "⏰",
     "name": {
-      "en": "File Hash Calculator",
-      "zh": "文件哈希计算器"
+      "en": "Unix Timestamp Converter",
+      "zh": "Unix时间戳转换"
     },
     "description": {
-      "en": "Calculate MD5, SHA256 hashes",
-      "zh": "计算MD5、SHA256哈希值"
+      "en": "Convert Unix timestamps",
+      "zh": "转换Unix时间戳"
     },
     "comingSoon": true
   },
@@ -192,7 +469,8 @@
       "en": "Compress images without quality loss",
       "zh": "无损压缩图片"
     },
-    "comingSoon": true
+    "comingSoon": true,
+    "isPopular": true
   },
   {
     "id": "image-resizer",
@@ -207,7 +485,8 @@
       "en": "Resize images to any dimension",
       "zh": "调整图片到任意尺寸"
     },
-    "comingSoon": true
+    "comingSoon": true,
+    "isPopular": true
   },
   {
     "id": "image-converter",
@@ -257,22 +536,53 @@
   {
     "id": "color-picker",
     "slug": "color-picker",
-    "categoryId": "image-tools",
+    "categoryId": "color-tools",
     "icon": "🎨",
     "name": {
       "en": "Color Picker",
-      "zh": "颜色提取器"
+      "zh": "颜色选择器"
     },
     "description": {
-      "en": "Pick colors from images",
-      "zh": "从图片中提取颜色"
+      "en": "Pick and convert colors",
+      "zh": "选择和转换颜色"
+    },
+    "comingSoon": true,
+    "isPopular": true
+  },
+  {
+    "id": "gradient-generator",
+    "slug": "gradient-generator",
+    "categoryId": "color-tools",
+    "icon": "🌈",
+    "name": {
+      "en": "Gradient Generator",
+      "zh": "渐变色生成器"
+    },
+    "description": {
+      "en": "Create beautiful CSS gradients",
+      "zh": "创建美丽的CSS渐变"
+    },
+    "comingSoon": true
+  },
+  {
+    "id": "color-palette",
+    "slug": "color-palette",
+    "categoryId": "color-tools",
+    "icon": "🎨",
+    "name": {
+      "en": "Color Palette Generator",
+      "zh": "调色板生成器"
+    },
+    "description": {
+      "en": "Generate color palettes",
+      "zh": "生成配色方案"
     },
     "comingSoon": true
   },
   {
     "id": "password-generator",
     "slug": "password-generator",
-    "categoryId": "generate-tools",
+    "categoryId": "text-tools",
     "icon": "🔐",
     "name": {
       "en": "Password Generator",
@@ -287,7 +597,7 @@
   {
     "id": "uuid-generator",
     "slug": "uuid-generator",
-    "categoryId": "generate-tools",
+    "categoryId": "text-tools",
     "icon": "🆔",
     "name": {
       "en": "UUID Generator",
@@ -296,156 +606,6 @@
     "description": {
       "en": "Generate unique identifiers",
       "zh": "生成唯一标识符"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "fake-data-generator",
-    "slug": "fake-data-generator",
-    "categoryId": "generate-tools",
-    "icon": "🎲",
-    "name": {
-      "en": "Fake Data Generator",
-      "zh": "测试数据生成器"
-    },
-    "description": {
-      "en": "Generate fake data for testing",
-      "zh": "生成测试用假数据"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "lorem-image",
-    "slug": "lorem-image",
-    "categoryId": "generate-tools",
-    "icon": "🖼️",
-    "name": {
-      "en": "Lorem Image Generator",
-      "zh": "占位图片生成器"
-    },
-    "description": {
-      "en": "Generate placeholder images",
-      "zh": "生成占位图片"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "gradient-generator",
-    "slug": "gradient-generator",
-    "categoryId": "generate-tools",
-    "icon": "🌈",
-    "name": {
-      "en": "Gradient Generator",
-      "zh": "渐变色生成器"
-    },
-    "description": {
-      "en": "Create beautiful CSS gradients",
-      "zh": "创建美丽的CSS渐变"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "invoice-generator",
-    "slug": "invoice-generator",
-    "categoryId": "generate-tools",
-    "icon": "🧾",
-    "name": {
-      "en": "Invoice Generator",
-      "zh": "发票生成器"
-    },
-    "description": {
-      "en": "Generate professional invoices",
-      "zh": "生成专业发票"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "json-formatter",
-    "slug": "json-formatter",
-    "categoryId": "developer-tools",
-    "icon": "{ }",
-    "name": {
-      "en": "JSON Formatter",
-      "zh": "JSON格式化工具"
-    },
-    "description": {
-      "en": "Format and validate JSON",
-      "zh": "格式化和验证JSON"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "base64-encoder",
-    "slug": "base64-encoder",
-    "categoryId": "developer-tools",
-    "icon": "🔐",
-    "name": {
-      "en": "Base64 Encoder",
-      "zh": "Base64编码工具"
-    },
-    "description": {
-      "en": "Encode and decode Base64",
-      "zh": "编码和解码Base64"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "url-encoder",
-    "slug": "url-encoder",
-    "categoryId": "developer-tools",
-    "icon": "🔗",
-    "name": {
-      "en": "URL Encoder",
-      "zh": "URL编码工具"
-    },
-    "description": {
-      "en": "Encode and decode URLs",
-      "zh": "编码和解码URL"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "regex-tester",
-    "slug": "regex-tester",
-    "categoryId": "developer-tools",
-    "icon": "🔍",
-    "name": {
-      "en": "Regex Tester",
-      "zh": "正则表达式测试"
-    },
-    "description": {
-      "en": "Test regular expressions",
-      "zh": "测试正则表达式"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "code-beautifier",
-    "slug": "code-beautifier",
-    "categoryId": "developer-tools",
-    "icon": "✨",
-    "name": {
-      "en": "Code Beautifier",
-      "zh": "代码美化工具"
-    },
-    "description": {
-      "en": "Beautify JavaScript, CSS, HTML",
-      "zh": "美化JavaScript、CSS、HTML"
-    },
-    "comingSoon": true
-  },
-  {
-    "id": "timestamp-converter",
-    "slug": "timestamp-converter",
-    "categoryId": "developer-tools",
-    "icon": "⏰",
-    "name": {
-      "en": "Unix Timestamp Converter",
-      "zh": "Unix时间戳转换"
-    },
-    "description": {
-      "en": "Convert Unix timestamps",
-      "zh": "转换Unix时间戳"
     },
     "comingSoon": true
   }

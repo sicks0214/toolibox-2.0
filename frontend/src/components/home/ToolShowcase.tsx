@@ -61,7 +61,7 @@ export default function ToolShowcase({
           </h2>
         </div>
         <Link
-          href={getLocalizedPath(`/category/${category.slug}`)}
+          href={getLocalizedPath(`/${category.slug}`)}
           className="flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
         >
           {t('seeAll')}
