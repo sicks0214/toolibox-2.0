@@ -3,7 +3,6 @@
     "id": "merge-pdf",
     "slug": "merge-pdf",
     "categoryId": "pdf-tools",
-    "groupId": "merge-pdf-group",
     "icon": "📄",
     "name": {
       "en": "Merge PDF",
@@ -20,7 +19,6 @@
     "id": "merge-pdf-printing",
     "slug": "merge-pdf-printing",
     "categoryId": "pdf-tools",
-    "groupId": "merge-pdf-group",
     "icon": "🖨️",
     "name": {
       "en": "Merge PDF for Printing",
@@ -36,7 +34,6 @@
     "id": "merge-pdf-bookmarks",
     "slug": "merge-pdf-bookmarks",
     "categoryId": "pdf-tools",
-    "groupId": "merge-pdf-group",
     "icon": "🔖",
     "name": {
       "en": "Merge PDF Keep Bookmarks",
@@ -52,7 +49,6 @@
     "id": "merge-pdf-page-range",
     "slug": "merge-pdf-page-range",
     "categoryId": "pdf-tools",
-    "groupId": "merge-pdf-group",
     "icon": "📑",
     "name": {
       "en": "Merge PDF by Page Range",
@@ -68,7 +64,6 @@
     "id": "merge-pdf-email",
     "slug": "merge-pdf-email",
     "categoryId": "pdf-tools",
-    "groupId": "merge-pdf-group",
     "icon": "📧",
     "name": {
       "en": "Merge PDF for Email Submission",
@@ -84,7 +79,6 @@
     "id": "compress-pdf",
     "slug": "compress-pdf",
     "categoryId": "pdf-tools",
-    "groupId": "compress-pdf-group",
     "icon": "🗜️",
     "name": {
       "en": "Compress PDF",
@@ -101,7 +95,6 @@
     "id": "compress-pdf-email",
     "slug": "compress-pdf-email",
     "categoryId": "pdf-tools",
-    "groupId": "compress-pdf-group",
     "icon": "📧",
     "name": {
       "en": "Compress PDF for Email",
@@ -117,7 +110,6 @@
     "id": "compress-pdf-2mb",
     "slug": "compress-pdf-2mb",
     "categoryId": "pdf-tools",
-    "groupId": "compress-pdf-group",
     "icon": "📦",
     "name": {
       "en": "Compress PDF Under 2MB",
@@ -133,7 +125,6 @@
     "id": "compress-pdf-lossless",
     "slug": "compress-pdf-lossless",
     "categoryId": "pdf-tools",
-    "groupId": "compress-pdf-group",
     "icon": "💎",
     "name": {
       "en": "Compress PDF Without Quality Loss",
@@ -149,7 +140,6 @@
     "id": "split-pdf",
     "slug": "split-pdf",
     "categoryId": "pdf-tools",
-    "groupId": "split-pdf-group",
     "icon": "✂️",
     "name": {
       "en": "Split PDF",
@@ -166,7 +156,6 @@
     "id": "split-pdf-every-x-pages",
     "slug": "split-pdf-every-x-pages",
     "categoryId": "pdf-tools",
-    "groupId": "split-pdf-group",
     "icon": "📄",
     "name": {
       "en": "Split PDF Every X Pages",
@@ -182,7 +171,6 @@
     "id": "split-pdf-page-range",
     "slug": "split-pdf-page-range",
     "categoryId": "pdf-tools",
-    "groupId": "split-pdf-group",
     "icon": "📑",
     "name": {
       "en": "Split PDF by Page Range",
@@ -198,7 +186,6 @@
     "id": "split-pdf-single-pages",
     "slug": "split-pdf-single-pages",
     "categoryId": "pdf-tools",
-    "groupId": "split-pdf-group",
     "icon": "📃",
     "name": {
       "en": "Split PDF into Single Pages",
@@ -214,7 +201,6 @@
     "id": "pdf-to-image",
     "slug": "pdf-to-image",
     "categoryId": "pdf-tools",
-    "groupId": "pdf-to-image-group",
     "icon": "🖼️",
     "name": {
       "en": "PDF to Image",
@@ -231,7 +217,6 @@
     "id": "pdf-to-jpg",
     "slug": "pdf-to-jpg",
     "categoryId": "pdf-tools",
-    "groupId": "pdf-to-image-group",
     "icon": "🖼️",
     "name": {
       "en": "Convert PDF to JPG",
@@ -247,7 +232,6 @@
     "id": "pdf-to-png",
     "slug": "pdf-to-png",
     "categoryId": "pdf-tools",
-    "groupId": "pdf-to-image-group",
     "icon": "🖼️",
     "name": {
       "en": "Convert PDF to PNG",
@@ -263,7 +247,6 @@
     "id": "pdf-to-powerpoint",
     "slug": "pdf-to-powerpoint",
     "categoryId": "pdf-tools",
-    "groupId": "pdf-to-image-group",
     "icon": "📊",
     "name": {
       "en": "Convert PDF for PowerPoint",

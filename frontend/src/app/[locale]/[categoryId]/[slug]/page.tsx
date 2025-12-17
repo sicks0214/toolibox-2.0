@@ -7,7 +7,6 @@ import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import categories from '@/data/categories.json';
 import tools from '@/data/tools.json';
-import toolGroups from '@/data/toolGroups.json';
 
 interface ToolPageProps {
   params: {
@@ -20,19 +19,8 @@ interface ToolPageProps {
 export function generateStaticParams() {
   const params = [];
 
-  // Add all tool groups
-  toolGroups.forEach((group) => {
-    const category = categories.find((c) => c.id === group.categoryId);
-    if (category) {
-      params.push({
-        categoryId: category.slug,
-        slug: group.slug,
-      });
-    }
-  });
-
-  // Add all ungrouped tools
-  tools.filter((t) => !t.groupId).forEach((tool) => {
+  // Add all tools
+  tools.forEach((tool) => {
     const category = categories.find((c) => c.id === tool.categoryId);
     if (category) {
       params.push({
@@ -59,73 +47,9 @@ export default function ToolPage({ params }: ToolPageProps) {
     return locale === 'en' ? path : `/${locale}${path}`;
   };
 
-  // Try to find as tool group first
-  const group = toolGroups.find(
-    (g) => g.slug === slug && g.categoryId === category.id
-  );
-
-  if (group) {
-    // This is a GROUP page
-    const groupTools = tools.filter((t) => t.groupId === group.id);
-
-    return (
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 container mx-auto px-4 py-8">
-          <Breadcrumb
-            items={[
-              { label: t('category.breadcrumb.home'), href: '/' },
-              {
-                label: category.name[locale as 'en' | 'zh'],
-                href: `/${category.slug}`,
-              },
-              { label: group.name[locale as 'en' | 'zh'] },
-            ]}
-          />
-
-          <div className="text-center mb-12">
-            <div className="text-6xl mb-4">{group.icon}</div>
-            <h1 className="text-4xl font-bold text-neutral mb-4">
-              {group.name[locale as 'en' | 'zh']}
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              {group.description[locale as 'en' | 'zh']}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {groupTools.map((tool) => (
-              <Link
-                key={tool.id}
-                href={getLocalizedPath(
-                  `/${category.slug}/${group.slug}/${tool.slug}`
-                )}
-                className="card p-6 hover:border-primary border-2 border-transparent transition-all"
-              >
-                <div className="text-4xl mb-3">{tool.icon}</div>
-                <h3 className="text-xl font-semibold text-neutral mb-2">
-                  {tool.name[locale as 'en' | 'zh']}
-                </h3>
-                <p className="text-gray-600">
-                  {tool.description[locale as 'en' | 'zh']}
-                </p>
-                {tool.comingSoon && (
-                  <span className="inline-block mt-3 px-3 py-1 bg-accent/10 text-accent text-sm rounded-full">
-                    {t('home.popularTools.comingSoon')}
-                  </span>
-                )}
-              </Link>
-            ))}
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  // This is a TOOL page (ungrouped)
+  // Find the tool
   const tool = tools.find(
-    (t) => t.slug === slug && t.categoryId === category.id && !t.groupId
+    (t) => t.slug === slug && t.categoryId === category.id
   );
 
   if (!tool) {
