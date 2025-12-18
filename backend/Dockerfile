@@ -1,4 +1,4 @@
-FROM node:18-slim AS builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -19,10 +19,10 @@ RUN npx prisma generate
 RUN npm run build
 
 # Production stage
-FROM node:18-slim AS runner
+FROM node:18-alpine AS runner
 
-# Install OpenSSL for Prisma
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+# Install OpenSSL for Prisma (Alpine 3.x uses openssl3)
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 
