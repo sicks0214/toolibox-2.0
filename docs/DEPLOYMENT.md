@@ -23,7 +23,36 @@
 - PostgreSQL 14+ 数据库
 - 域名或 IP 访问（当前：82.29.67.124）
 
-### 2. 准备环境变量
+### 2. 关键技术说明
+
+**⚠️ 重要：本应用已针对生产部署进行优化**
+
+#### 前端构建（Next.js）
+- 使用 **standalone 输出模式**（next.config.js 已配置）
+- 多阶段 Docker 构建，优化镜像大小
+- 包含 i18n 国际化文件的完整追踪
+- 生产环境自动启用 SSR
+
+#### 后端构建（TypeScript + Express）
+- **已修复**：原 Dockerfile 存在 TypeScript 编译问题
+- 当前版本使用 **多阶段构建**：
+  - Builder 阶段：编译 TypeScript → JavaScript
+  - Runner 阶段：仅包含生产依赖和编译后的代码
+- 正确的入口点：`node dist/app.js`（不是 `src/app.ts`）
+- 自动生成 Prisma Client
+
+#### Docker 镜像特点
+```
+前端镜像：node:18-alpine (多阶段)
+  ├── 构建阶段：编译 Next.js
+  └── 运行阶段：仅包含 standalone 输出
+
+后端镜像：node:18-alpine (多阶段)
+  ├── 构建阶段：编译 TypeScript + 生成 Prisma Client
+  └── 运行阶段：仅包含编译后的 JS 文件
+```
+
+### 3. 准备环境变量
 
 在 VPS 上创建 `.env` 文件：
 
@@ -84,12 +113,21 @@ npx prisma generate
 ```bash
 cd /var/www/toolibox
 
-# 构建前端镜像
+# 构建前端镜像（包含 Next.js 编译）
 docker build -t toolibox/frontend-main ./frontend/main
 
-# 构建后端镜像
+# 构建后端镜像（包含 TypeScript 编译）
 docker build -t toolibox/backend-main ./backend
+
+# 验证镜像构建成功
+docker images | grep toolibox
 ```
+
+**构建说明：**
+- 前端构建时间约 3-5 分钟（包含依赖安装和 Next.js 编译）
+- 后端构建时间约 2-3 分钟（包含 TypeScript 编译和 Prisma 生成）
+- 如果构建失败，检查 `.env` 文件是否存在于项目根目录
+- 多阶段构建会自动优化镜像大小（前端约 200MB，后端约 150MB）
 
 ### 步骤 4：启动容器
 
@@ -303,6 +341,71 @@ npm run build
 docker build -t toolibox/frontend-main .
 ```
 
+### 问题 4：后端容器启动失败（TypeScript 相关）
+
+**症状**：容器启动后立即退出，日志显示 `Cannot find module` 或 TypeScript 错误
+
+**原因**：
+- 旧版本 Dockerfile 未编译 TypeScript
+- 尝试直接运行 `.ts` 文件
+
+**解决**：
+```bash
+# 确认使用的是最新的 Dockerfile（包含多阶段构建）
+cat backend/Dockerfile | grep "FROM node:18-alpine AS builder"
+
+# 如果没有看到 "AS builder"，说明 Dockerfile 需要更新
+# 最新版本应该包含：
+# 1. Builder 阶段：编译 TypeScript
+# 2. Runner 阶段：运行编译后的 JS
+# 3. 入口点：CMD ["node", "dist/app.js"]
+
+# 重新构建镜像
+docker compose build backend-main
+
+# 查看构建日志确认 TypeScript 编译成功
+docker compose logs backend-main | grep "✅"
+```
+
+### 问题 5：Prisma Client 生成失败
+
+**症状**：后端日志显示 `@prisma/client` 未找到
+
+**解决**：
+```bash
+# 进入后端容器
+docker exec -it toolibox-backend-main sh
+
+# 手动生成 Prisma Client
+npx prisma generate
+
+# 退出容器
+exit
+
+# 重启后端服务
+docker compose restart backend-main
+```
+
+### 问题 6：环境变量未生效
+
+**症状**：容器运行但功能异常，日志显示 `undefined` 环境变量
+
+**解决**：
+```bash
+# 确认 .env 文件在项目根目录
+ls -la /var/www/toolibox/.env
+
+# 检查 docker-compose.yml 是否正确引用环境变量
+cat docker-compose.yml | grep "env_file"
+
+# 重新启动容器（会重新加载环境变量）
+docker compose down
+docker compose up -d
+
+# 验证环境变量已加载
+docker exec toolibox-backend-main env | grep DATABASE_URL
+```
+
 ## 七、更新部署
 
 ### 更新代码
@@ -382,7 +485,96 @@ services:
           memory: 512M
 ```
 
-## 十、联系与支持
+## 十、关键修复说明（2025-12-18）
+
+### 🔧 后端 Dockerfile 重大修复
+
+**修复前的问题：**
+```dockerfile
+# ❌ 旧版本（会导致运行失败）
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npx prisma generate
+EXPOSE 8000
+CMD ["node", "src/server.js"]  # ❌ 错误：尝试运行 TypeScript 文件
+```
+
+**问题分析：**
+1. 后端代码是 TypeScript，但 Dockerfile 没有编译步骤
+2. 入口点指向 `src/server.js`，但实际文件是 `src/app.ts`
+3. 只安装生产依赖，无法编译 TypeScript
+4. 容器启动时会报错：`Cannot find module 'src/server.js'`
+
+**修复后的版本：**
+```dockerfile
+# ✅ 新版本（多阶段构建）
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+COPY tsconfig.json ./
+RUN npm ci  # 安装所有依赖（包括 TypeScript）
+COPY . .
+RUN npx prisma generate
+RUN npm run build  # 编译 TypeScript → dist/
+
+FROM node:18-alpine AS runner
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY prisma ./prisma
+RUN npx prisma generate
+COPY --from=builder /app/dist ./dist
+EXPOSE 8000
+CMD ["node", "dist/app.js"]  # ✅ 正确：运行编译后的 JS
+```
+
+**修复效果：**
+- ✅ TypeScript 正确编译为 JavaScript
+- ✅ 生产镜像只包含必要文件，体积更小
+- ✅ 入口点指向正确的编译后文件
+- ✅ Prisma Client 在两个阶段都正确生成
+
+### 📋 部署前检查清单
+
+在部署到 VPS 前，请确认以下内容：
+
+- [ ] 后端 Dockerfile 包含 `AS builder` 和 `AS runner` 两个阶段
+- [ ] 后端 Dockerfile 的 CMD 是 `["node", "dist/app.js"]`
+- [ ] 前端 next.config.js 包含 `output: 'standalone'`
+- [ ] 项目根目录有 .env 文件（从 .env.example 复制并填写真实值）
+- [ ] docker-compose.yml 正确引用环境变量
+- [ ] PostgreSQL 数据库已创建并可连接
+
+### 🎯 验证部署成功的标志
+
+部署成功后，应该看到：
+
+```bash
+# 1. 容器正常运行
+$ docker ps
+CONTAINER ID   IMAGE                      STATUS
+abc123         toolibox/frontend-main     Up 2 minutes
+def456         toolibox/backend-main      Up 2 minutes
+
+# 2. 后端健康检查通过
+$ curl http://localhost:8000/api/health
+{"success":true,"message":"Server is running","timestamp":"..."}
+
+# 3. 前端可访问
+$ curl http://localhost:3000
+<!DOCTYPE html>...
+
+# 4. 后端日志显示成功启动
+$ docker logs toolibox-backend-main
+✅ Server is running on port 8000
+📝 API: http://localhost:8000/api
+💚 Health check: http://localhost:8000/api/health
+```
+
+## 十一、联系与支持
 
 - VPS IP: 82.29.67.124
 - SSH 用户: toolibox
@@ -392,3 +584,5 @@ services:
 ---
 
 **部署完成后，Main 应用将作为 VPS 微前端架构的核心入口，为用户提供导航和工具展示功能。**
+
+**重要提示：** 本文档已更新，包含 2025-12-18 的关键修复。如果您使用的是旧版本代码，请确保更新 `backend/Dockerfile` 文件。

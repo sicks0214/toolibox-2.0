@@ -30,6 +30,7 @@ Thumbs.db
 
 # Database
 *.db
+*.db-journal
 *.sqlite
 
 # Temporary files
