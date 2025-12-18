@@ -42,25 +42,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  // Grouped tool pages for each locale
-  const groupedToolPages = locales.flatMap((locale) =>
-    tools.filter((t) => t.groupId).map((tool) => {
-      const group = toolGroups.find((g) => g.id === tool.groupId);
-      const category = categories.find((c) => c.id === tool.categoryId);
-      return {
-        url: locale === 'en'
-          ? `${baseUrl}/${category?.slug}/${group?.slug}/${tool.slug}`
-          : `${baseUrl}/${locale}/${category?.slug}/${group?.slug}/${tool.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.6,
-      };
-    })
-  );
-
-  // Ungrouped tool pages for each locale
-  const ungroupedToolPages = locales.flatMap((locale) =>
-    tools.filter((t) => !t.groupId).map((tool) => {
+  // Tool pages for each locale
+  const toolPages = locales.flatMap((locale) =>
+    tools.map((tool) => {
       const category = categories.find((c) => c.id === tool.categoryId);
       return {
         url: locale === 'en'
@@ -89,8 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...homepages,
     ...categoryPages,
     ...groupPages,
-    ...groupedToolPages,
-    ...ungroupedToolPages,
+    ...toolPages,
     ...staticPages,
   ];
 }
