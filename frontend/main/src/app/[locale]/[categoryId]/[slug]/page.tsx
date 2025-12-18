@@ -17,7 +17,7 @@ interface ToolPageProps {
 }
 
 export function generateStaticParams() {
-  const params = [];
+  const params: { categoryId: string; slug: string }[] = [];
 
   // Add all tools
   tools.forEach((tool) => {
