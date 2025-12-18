@@ -5,6 +5,9 @@ import { ReactNode } from 'react';
 import { AuthProvider } from '@/contexts/AuthContext';
 import '../globals.css';
 
+// 强制动态渲染
+export const dynamic = 'force-dynamic';
+
 export function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
 }
