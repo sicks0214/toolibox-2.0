@@ -6,17 +6,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model User {
   id              Int      @id @default(autoincrement())
-  email           String   @unique @db.VarChar(100)
-  username        String   @unique @db.VarChar(50)
-  password        String   @db.VarChar(255)
-  firstName       String?  @map("first_name") @db.VarChar(50)
-  lastName        String?  @map("last_name") @db.VarChar(50)
+  email           String   @unique
+  username        String   @unique
+  password        String
+  firstName       String?  @map("first_name")
+  lastName        String?  @map("last_name")
   isActive        Boolean  @default(true) @map("is_active")
   isEmailVerified Boolean  @default(false) @map("is_email_verified")
   lastLoginAt     DateTime? @map("last_login_at")
@@ -30,14 +30,14 @@ model User {
 
 model Feedback {
   id              Int      @id @default(autoincrement())
-  name            String?  @db.VarChar(100)
-  email           String   @db.VarChar(100)
-  subject         String?  @db.VarChar(200)
-  message         String   @db.Text
-  toolName        String?  @map("tool_name") @db.VarChar(100)
-  status          String   @default("pending") @db.VarChar(50)
-  userAgent       String?  @map("user_agent") @db.Text
-  ipAddress       String?  @map("ip_address") @db.VarChar(45)
+  name            String?
+  email           String
+  subject         String?
+  message         String
+  toolName        String?  @map("tool_name")
+  status          String   @default("pending")
+  userAgent       String?  @map("user_agent")
+  ipAddress       String?  @map("ip_address")
   createdAt       DateTime @default(now()) @map("created_at")
   backedUpToR2    Boolean  @default(false) @map("backed_up_to_r2")
 

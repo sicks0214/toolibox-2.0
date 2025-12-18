@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   // 禁用静态优化，强制使用SSR
   experimental: {
     outputFileTracingIncludes: {
@@ -16,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:8000/api/:path*',
+        destination: process.env.BACKEND_URL || 'http://localhost:8000/api/:path*',
       },
     ];
   },

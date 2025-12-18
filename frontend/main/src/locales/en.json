@@ -27,7 +27,8 @@
     },
     "categories": {
       "title": "Browse by Category",
-      "subtitle": "Find the perfect tool for your needs"
+      "subtitle": "Find the perfect tool for your needs",
+      "tools": "tools"
     },
     "useCases": {
       "title": "Tools for Every Scenario",

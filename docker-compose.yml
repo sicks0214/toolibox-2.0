@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Main frontend (导航/首页)
+  frontend-main:
+    build:
+      context: ./frontend/main
+      dockerfile: Dockerfile
+    image: toolibox/frontend-main
+    container_name: toolibox-frontend-main
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - BACKEND_URL=http://backend-main:8000/api
+    depends_on:
+      - backend-main
+    networks:
+      - toolibox-network
+
+  # Main backend (统一后端服务)
+  backend-main:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: toolibox/backend-main
+    container_name: toolibox-backend-main
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - R2_ACCOUNT_ID=${R2_ACCOUNT_ID}
+      - R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+      - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+      - R2_BUCKET_NAME=${R2_BUCKET_NAME}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    networks:
+      - toolibox-network
+
+networks:
+  toolibox-network:
+    name: toolibox-network
+    driver: bridge

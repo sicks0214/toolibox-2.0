@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { getToolUrl } from '@/config/toolRoutes';
 
 interface Tool {
   id: string;
@@ -40,7 +41,7 @@ export default function PopularTools({ tools }: PopularToolsProps) {
         {popularTools.map((tool) => (
           <Link
             key={tool.id}
-            href={`/${locale}/${tool.categoryId}/${tool.slug}`}
+            href={tool.comingSoon ? `/${locale}/${tool.categoryId}/${tool.slug}` : getToolUrl(tool.categoryId, tool.slug, locale)}
             className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 border border-gray-100"
           >
             <div className="flex items-start gap-4">

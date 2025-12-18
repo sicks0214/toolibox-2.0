@@ -27,7 +27,8 @@
     },
     "categories": {
       "title": "按类别浏览",
-      "subtitle": "找到满足您需求的完美工具"
+      "subtitle": "找到满足您需求的完美工具",
+      "tools": "个工具"
     },
     "useCases": {
       "title": "适用于各种场景的工具",

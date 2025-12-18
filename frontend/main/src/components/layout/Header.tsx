@@ -31,7 +31,6 @@ import tools from '@/data/tools.json'
 const pdfTools = tools.filter(tool => tool.categoryId === 'pdf-tools')
 const imageTools = tools.filter(tool => tool.categoryId === 'image-tools')
 const textTools = tools.filter(tool => tool.categoryId === 'text-tools')
-const colorTools = tools.filter(tool => tool.categoryId === 'color-tools')
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -207,43 +206,6 @@ export default function Header() {
             </PopoverPanel>
           </Popover>
 
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              Color Tools
-              <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-            </PopoverButton>
-
-            <PopoverPanel
-              transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
-            >
-              <div className="p-4 grid grid-cols-1 gap-2">
-                {colorTools.slice(0, 6).map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
-                    className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
-                      </div>
-                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
-                    </div>
-                  </Link>
-                ))}
-                <Link
-                  href={getLocalizedPath('/color-tools')}
-                  className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
-                >
-                  View all Color tools →
-                </Link>
-              </div>
-            </PopoverPanel>
-          </Popover>
         </PopoverGroup>
 
         {/* Language Dropdown & User Menu */}
@@ -452,24 +414,6 @@ export default function Header() {
                   </DisclosurePanel>
                 </Disclosure>
 
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    Color Tools
-                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {colorTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
               </div>
 
               {/* Mobile Language Selector */}
