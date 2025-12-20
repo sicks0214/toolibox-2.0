@@ -22,8 +22,9 @@ export default function ToolCard({ tool, locale }: ToolCardProps) {
   const description = tool.description[locale as 'en' | 'zh'];
 
   const getToolPath = () => {
-    const basePath = locale === 'en' ? '' : `/${locale}`;
-    return `/pdf-tools${basePath}/${tool.slug}`;
+    // basePath '/pdf-tools' 会被 Next.js 自动添加
+    // 由于 localePrefix: 'always'，所有语言都需要前缀
+    return `/${locale}/${tool.slug}`;
   };
 
   if (tool.comingSoon) {

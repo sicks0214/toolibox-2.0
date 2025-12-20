@@ -3,6 +3,8 @@ import cors from 'cors';
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3000',
+  'http://localhost:3001',
+  'http://82.29.67.124',
   'https://toolibox.com',
   'https://www.toolibox.com',
 ];

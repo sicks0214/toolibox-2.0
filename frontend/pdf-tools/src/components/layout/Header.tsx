@@ -34,10 +34,9 @@ export default function Header() {
       newPath = pathname.slice(locale.length + 1) || '/';
     }
 
-    // 构建新路径
-    const finalPath = newLocale === 'en'
-      ? `/pdf-tools${newPath}`
-      : `/pdf-tools/${newLocale}${newPath}`;
+    // 构建新路径（basePath '/pdf-tools' 会被 Next.js 自动添加）
+    // 由于 localePrefix: 'always'，所有语言都需要前缀
+    const finalPath = `/${newLocale}${newPath}`;
 
     startTransition(() => {
       router.push(finalPath);
@@ -57,7 +56,7 @@ export default function Header() {
             <span className="hidden sm:inline">Toolibox</span>
           </a>
 
-          <Link href="/pdf-tools" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl">📄</span>
             <span className="text-xl font-bold text-neutral">{t('title')}</span>
           </Link>

@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import categories from '@/data/categories.json';
 import tools from '@/data/tools.json';
+import { getToolUrl, isMicroserviceDeployed } from '@/config/toolRoutes';
 interface CategoryPageProps {
   params: {
     categoryId: string;
@@ -31,10 +32,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const categoryTools = tools.filter((t) => t.categoryId === category.id);
 
-  const getLocalizedPath = (path: string) => {
-    return locale === 'en' ? path : `/${locale}${path}`;
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -58,26 +55,47 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categoryTools.map((tool) => (
-              <Link
-                key={tool.id}
-                href={getLocalizedPath(`/${category.slug}/${tool.slug}`)}
-                className="card p-6 hover:border-primary border-2 border-transparent transition-all"
-              >
-                <div className="text-4xl mb-3">{tool.icon}</div>
-                <h3 className="text-xl font-semibold text-neutral mb-2">
-                  {tool.name[locale as 'en' | 'zh']}
-                </h3>
-                <p className="text-gray-600">
-                  {tool.description[locale as 'en' | 'zh']}
-                </p>
-                {tool.comingSoon && (
-                  <span className="inline-block mt-3 px-3 py-1 bg-accent/10 text-accent text-sm rounded-full">
-                    {t('home.popularTools.comingSoon')}
-                  </span>
-                )}
-              </Link>
-            ))}
+            {categoryTools.map((tool) => {
+              // 使用 toolRoutes 获取正确的工具路径
+              const toolHref = getToolUrl(category.id, tool.slug, locale);
+              // 判断是否是外部链接（微前端）
+              const isExternal = isMicroserviceDeployed(category.id) && !tool.comingSoon;
+
+              return isExternal ? (
+                <a
+                  key={tool.id}
+                  href={toolHref}
+                  className="card p-6 hover:border-primary border-2 border-transparent transition-all"
+                >
+                  <div className="text-4xl mb-3">{tool.icon}</div>
+                  <h3 className="text-xl font-semibold text-neutral mb-2">
+                    {tool.name[locale as 'en' | 'zh']}
+                  </h3>
+                  <p className="text-gray-600">
+                    {tool.description[locale as 'en' | 'zh']}
+                  </p>
+                </a>
+              ) : (
+                <Link
+                  key={tool.id}
+                  href={toolHref}
+                  className="card p-6 hover:border-primary border-2 border-transparent transition-all"
+                >
+                  <div className="text-4xl mb-3">{tool.icon}</div>
+                  <h3 className="text-xl font-semibold text-neutral mb-2">
+                    {tool.name[locale as 'en' | 'zh']}
+                  </h3>
+                  <p className="text-gray-600">
+                    {tool.description[locale as 'en' | 'zh']}
+                  </p>
+                  {tool.comingSoon && (
+                    <span className="inline-block mt-3 px-3 py-1 bg-accent/10 text-accent text-sm rounded-full">
+                      {t('home.popularTools.comingSoon')}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </section>
       </main>

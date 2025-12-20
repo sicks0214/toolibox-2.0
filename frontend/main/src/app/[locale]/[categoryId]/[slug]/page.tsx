@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import categories from '@/data/categories.json';
 import tools from '@/data/tools.json';
+import { getToolUrl, isMicroserviceDeployed } from '@/config/toolRoutes';
 
 interface ToolPageProps {
   params: {
@@ -58,7 +59,8 @@ export default function ToolPage({ params }: ToolPageProps) {
 
   // 如果工具已上线（comingSoon: false），重定向到实际工具页面
   if (!tool.comingSoon) {
-    const toolPath = locale === 'en' ? `/tools/${slug}` : `/${locale}/tools/${slug}`;
+    // 对于已部署微前端的工具，重定向到微前端路径
+    const toolPath = getToolUrl(category.id, slug, locale);
     redirect(toolPath);
   }
 

@@ -151,7 +151,7 @@ export default function Header() {
                 {imageTools.slice(0, 6).map((tool) => (
                   <Link
                     key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
+                    href={getToolPath(tool)}
                     className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
                   >
                     <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
@@ -189,7 +189,7 @@ export default function Header() {
                 {textTools.slice(0, 6).map((tool) => (
                   <Link
                     key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
+                    href={getToolPath(tool)}
                     className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
                   >
                     <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
@@ -392,7 +392,7 @@ export default function Header() {
                     {imageTools.map((tool) => (
                       <Link
                         key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
+                        href={getToolPath(tool)}
                         className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                         onClick={() => setMobileMenuOpen(false)}
                       >
@@ -411,7 +411,7 @@ export default function Header() {
                     {textTools.map((tool) => (
                       <Link
                         key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
+                        href={getToolPath(tool)}
                         className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                         onClick={() => setMobileMenuOpen(false)}
                       >
