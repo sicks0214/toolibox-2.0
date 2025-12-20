@@ -12,7 +12,7 @@
       "en": "Combine multiple PDF files into one",
       "zh": "将多个PDF文件合并为一个"
     },
-    "comingSoon": true,
+    "comingSoon": false,
     "isPopular": true
   },
   {
@@ -28,7 +28,7 @@
       "en": "Split PDF into multiple files",
       "zh": "将PDF拆分为多个文件"
     },
-    "comingSoon": true,
+    "comingSoon": false,
     "isPopular": true
   },
   {

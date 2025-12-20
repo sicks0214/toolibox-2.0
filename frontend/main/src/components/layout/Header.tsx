@@ -7,6 +7,7 @@ import { usePathname, useRouter } from '@/lib/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from '@/components/auth/LoginModal';
 import RegisterModal from '@/components/auth/RegisterModal';
+import { getToolUrl, getCategoryUrl, isMicroserviceDeployed } from '@/config/toolRoutes';
 import {
   Dialog,
   DialogPanel,
@@ -68,8 +69,14 @@ export default function Header() {
   };
 
   // Helper function to generate tool path with category
+  // 使用 toolRoutes 中的函数来获取正确的工具路径
   const getToolPath = (tool: any) => {
-    return `/${tool.categoryId}/${tool.slug}`;
+    return getToolUrl(tool.categoryId, tool.slug, locale);
+  };
+
+  // 判断链接是否是外部链接（微前端服务）
+  const isExternalLink = (tool: any) => {
+    return isMicroserviceDeployed(tool.categoryId) && !tool.comingSoon;
   };
 
   return (
@@ -104,9 +111,9 @@ export default function Header() {
             >
               <div className="p-4 grid grid-cols-1 gap-2">
                 {pdfTools.slice(0, 6).map((tool) => (
-                  <Link
+                  <a
                     key={tool.id}
-                    href={getLocalizedPath(getToolPath(tool))}
+                    href={getToolPath(tool)}
                     className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
                   >
                     <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
@@ -118,14 +125,14 @@ export default function Header() {
                       </div>
                       <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
                     </div>
-                  </Link>
+                  </a>
                 ))}
-                <Link
-                  href={getLocalizedPath('/pdf-tools')}
+                <a
+                  href={getCategoryUrl('pdf-tools', locale)}
                   className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
                 >
                   View all PDF tools →
-                </Link>
+                </a>
               </div>
             </PopoverPanel>
           </Popover>
@@ -364,14 +371,14 @@ export default function Header() {
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
                     {pdfTools.map((tool) => (
-                      <Link
+                      <a
                         key={tool.id}
-                        href={getLocalizedPath(getToolPath(tool))}
+                        href={getToolPath(tool)}
                         className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {tool.icon} {tool.name[locale as 'en' | 'zh']}
-                      </Link>
+                      </a>
                     ))}
                   </DisclosurePanel>
                 </Disclosure>

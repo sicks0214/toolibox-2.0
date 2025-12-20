@@ -586,3 +586,251 @@ $ docker logs toolibox-backend-main
 **部署完成后，Main 应用将作为 VPS 微前端架构的核心入口，为用户提供导航和工具展示功能。**
 
 **重要提示：** 本文档已更新，包含 2025-12-18 的关键修复。如果您使用的是旧版本代码，请确保更新 `backend/Dockerfile` 文件。
+
+---
+
+## 十二、微前端架构升级记录（2025-12-20）
+
+### 🎯 升级目标
+
+将 Toolibox 从单体应用升级为微前端架构：
+- 每个工具类别（PDF/Image/Text）作为独立容器运行
+- Main 应用作为导航入口，链接到各个微前端服务
+- 各服务独立部署、独立扩展
+
+### 📁 新增目录结构
+
+```
+toolibox-2.0/
+├── frontend/
+│   ├── main/                 # 主应用（导航入口）
+│   └── pdf-tools/            # PDF 工具微前端 ✅ 已完成
+│       ├── src/
+│       │   ├── app/
+│       │   │   └── [locale]/
+│       │   │       ├── page.tsx           # 首页
+│       │   │       ├── merge-pdf/page.tsx # 合并 PDF
+│       │   │       ├── split-pdf/page.tsx # 拆分 PDF
+│       │   │       └── compress-pdf/page.tsx
+│       │   ├── components/
+│       │   │   └── layout/
+│       │   │       ├── Header.tsx
+│       │   │       ├── Footer.tsx
+│       │   │       └── ToolCard.tsx
+│       │   ├── locales/
+│       │   │   ├── en.json
+│       │   │   └── zh.json
+│       │   ├── i18n.ts
+│       │   └── middleware.ts
+│       ├── public/
+│       ├── next.config.js
+│       ├── package.json
+│       ├── Dockerfile
+│       └── tailwind.config.js
+```
+
+### 🔧 关键技术实现
+
+#### 1. Next.js basePath 配置
+
+PDF Tools 运行在 `/pdf-tools` 子路径下：
+
+```javascript
+// frontend/pdf-tools/next.config.js
+const nextConfig = {
+  basePath: '/pdf-tools',
+  output: 'standalone',
+  async redirects() {
+    return [
+      { source: '/', destination: '/en', permanent: false },
+    ];
+  },
+};
+```
+
+#### 2. 国际化路由配置
+
+使用 `localePrefix: 'always'` 确保所有 URL 都包含语言前缀：
+
+```typescript
+// frontend/pdf-tools/src/middleware.ts
+export default createMiddleware({
+  locales: ['en', 'zh'],
+  defaultLocale: 'en',
+  localePrefix: 'always'  // 避免重定向循环
+});
+```
+
+#### 3. URL 路由设计
+
+| 路径 | 说明 |
+|------|------|
+| `/pdf-tools` | 307 重定向到 `/pdf-tools/en` |
+| `/pdf-tools/en` | PDF 工具首页（英文） |
+| `/pdf-tools/zh` | PDF 工具首页（中文） |
+| `/pdf-tools/en/merge-pdf` | 合并 PDF 工具（英文） |
+| `/pdf-tools/zh/merge-pdf` | 合并 PDF 工具（中文） |
+
+#### 4. Main 应用路由更新
+
+```typescript
+// frontend/main/src/config/toolRoutes.ts
+export const DEPLOYED_MICROSERVICES: string[] = [
+  'pdf-tools',  // PDF 工具微前端已部署
+  // 'image-tools',  // 待部署
+  // 'text-tools',   // 待部署
+];
+
+export function getToolUrl(categoryId: string, slug: string, locale: string = 'en'): string {
+  const basePath = CATEGORY_ROUTES[categoryId];
+
+  if (basePath && isMicroserviceDeployed(categoryId)) {
+    return `${basePath}/${locale}/${slug}`;  // 微前端路径
+  }
+
+  return `/${locale}/${categoryId}/${slug}`;  // 本地路由
+}
+```
+
+#### 5. Docker Compose 配置
+
+```yaml
+# docker-compose.yml 新增服务
+frontend-pdf-tools:
+  build:
+    context: ./frontend/pdf-tools
+    dockerfile: Dockerfile
+  image: toolibox/frontend-pdf-tools
+  restart: always
+  ports:
+    - "3001:3001"
+```
+
+### 🚀 本地测试验证
+
+#### 启动所有服务
+
+```bash
+docker compose up -d
+```
+
+#### 容器状态
+
+| 容器名 | 端口 | 状态 |
+|--------|------|------|
+| toolibox-frontend-main | 3000 | ✅ Running |
+| toolibox-frontend-pdf-tools | 3001 | ✅ Running |
+| toolibox-backend-main | 8000 | ✅ Running |
+
+#### 测试 URL
+
+```bash
+# Main 首页
+curl http://localhost:3000/  # 200 OK
+
+# PDF Tools 首页
+curl http://localhost:3001/pdf-tools/en  # 200 OK
+
+# 合并 PDF 工具
+curl http://localhost:3001/pdf-tools/en/merge-pdf  # 200 OK
+
+# 拆分 PDF 工具
+curl http://localhost:3001/pdf-tools/zh/split-pdf  # 200 OK
+```
+
+### 📝 已实现的 PDF 工具
+
+| 工具 | 路径 | 功能 | 状态 |
+|------|------|------|------|
+| 合并 PDF | `/pdf-tools/{locale}/merge-pdf` | 多个 PDF 合并为一个 | ✅ 可用 |
+| 拆分 PDF | `/pdf-tools/{locale}/split-pdf` | 按页拆分或提取页面 | ✅ 可用 |
+| 压缩 PDF | `/pdf-tools/{locale}/compress-pdf` | 减小 PDF 文件大小 | 🔲 待实现 |
+
+### 🔗 Main 与微前端的集成
+
+Main 首页的 PDF 工具链接已更新：
+
+- **Merge PDF** → `href="/pdf-tools/en/merge-pdf"` （跳转到微前端）
+- **Split PDF** → `href="/pdf-tools/en/split-pdf"` （跳转到微前端）
+- **Compress PDF** → `href="/en/pdf-tools/compress-pdf"` （Coming Soon，本地路由）
+
+### 🌐 VPS 部署 Nginx 配置
+
+```nginx
+# /etc/nginx/sites-available/toolibox.conf
+
+# Main 应用
+location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+}
+
+# PDF Tools 微前端
+location /pdf-tools/ {
+    proxy_pass http://127.0.0.1:3001/pdf-tools/;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+}
+
+# 后端 API
+location /api/ {
+    proxy_pass http://127.0.0.1:8000/api/;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+```
+
+### 📋 后续待完成
+
+1. **Image Tools 微前端**（端口 3002）
+   - compress-image
+   - resize-image
+   - convert-image
+
+2. **Text Tools 微前端**（端口 3003）
+   - case-converter
+   - word-counter
+   - text-diff
+
+3. **VPS 部署**
+   - 上传 PDF Tools 代码
+   - 构建 Docker 镜像
+   - 更新 Nginx 配置
+   - 验证生产环境
+
+### 🔄 架构升级总结
+
+```
+升级前（单体应用）：
+┌─────────────────────────────────────┐
+│           Main App (3000)           │
+│  ┌─────────┬─────────┬─────────┐   │
+│  │PDF Tools│Img Tools│Txt Tools│   │
+│  │(Coming) │(Coming) │(Coming) │   │
+│  └─────────┴─────────┴─────────┘   │
+└─────────────────────────────────────┘
+
+升级后（微前端架构）：
+┌─────────────────────────────────────┐
+│        Main App (3000) - 导航        │
+└───────────┬───────────┬─────────────┘
+            │           │
+    ┌───────▼───┐ ┌─────▼─────┐ ┌─────────┐
+    │ PDF Tools │ │Img Tools  │ │Txt Tools│
+    │   (3001)  │ │  (3002)   │ │ (3003)  │
+    │  ✅ 已完成 │ │ ⏳ 待开发  │ │ ⏳ 待开发│
+    └───────────┘ └───────────┘ └─────────┘
+```
+
+---
+
+**更新日期：** 2025-12-20
+**更新内容：** 完成 PDF Tools 微前端架构升级，包含合并 PDF 和拆分 PDF 功能

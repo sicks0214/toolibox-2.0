@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #4A9C82;
+    --color-background: #F5F7F2;
+    --color-neutral: #2C3E3A;
+    --color-secondary: #A8D5BA;
+    --color-accent: #FF9F66;
+    --color-surface: #E8F0EB;
+    --color-pdf: #FF6B6B;
+    --color-pdf-dark: #C92A2A;
+  }
+
+  body {
+    @apply bg-background text-neutral;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-pdf text-white px-6 py-3 rounded-lg hover:bg-pdf-dark transition-all font-semibold;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-neutral px-6 py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-all font-semibold;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .tool-card {
+    @apply card p-6 cursor-pointer hover:-translate-y-1;
+  }
+
+  .dropzone {
+    @apply border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer
+           hover:border-pdf hover:bg-red-50/30 transition-all duration-300;
+  }
+
+  .dropzone-active {
+    @apply border-pdf bg-red-50/50;
+  }
+
+  .file-item {
+    @apply flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200
+           hover:border-pdf/50 transition-all;
+  }
+}
