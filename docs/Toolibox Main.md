@@ -834,3 +834,166 @@ location /api/ {
 
 **更新日期：** 2025-12-20
 **更新内容：** 完成 PDF Tools 微前端架构升级，包含合并 PDF 和拆分 PDF 功能
+
+---
+
+## 十三、路由与语言切换问题修复（2025-12-20）
+
+### 🐛 发现的问题
+
+在完成微前端架构升级后，发现以下路由问题：
+
+#### 问题 1：PDF Tools 语言切换路径重复
+
+**症状**：切换语言后 URL 变成 `/pdf-tools/zh/pdf-tools/merge-pdf`
+
+**原因**：`localePrefix: 'always'` 配置下，Next.js 会自动添加 basePath，代码中不应再手动添加
+
+**修复文件**：
+- `frontend/pdf-tools/src/components/layout/Header.tsx`
+- `frontend/pdf-tools/src/components/ToolCard.tsx`
+
+```typescript
+// ❌ 修复前（Header.tsx）
+const finalPath = newLocale === 'en'
+  ? `/pdf-tools${newPath}`
+  : `/pdf-tools/${newLocale}${newPath}`;
+
+// ✅ 修复后
+const finalPath = `/${newLocale}${newPath}`;
+```
+
+```typescript
+// ❌ 修复前（ToolCard.tsx）
+const basePath = locale === 'en' ? '' : `/${locale}`;
+return `/pdf-tools${basePath}/${tool.slug}`;
+
+// ✅ 修复后
+return `/${locale}/${tool.slug}`;
+```
+
+#### 问题 2：Main 应用工具链接重复 locale
+
+**症状**：Image/Text 工具链接变成 `/zh/zh/image-tools/...`
+
+**原因**：`getToolUrl()` 已返回包含 locale 的路径，外层又用 `getLocalizedPath()` 包装
+
+**修复文件**：
+- `frontend/main/src/components/layout/Header.tsx`
+- `frontend/main/src/components/home/PopularTools.tsx`
+- `frontend/main/src/app/[locale]/[categoryId]/page.tsx`
+
+```typescript
+// ❌ 修复前
+href={getLocalizedPath(getToolPath(tool))}
+
+// ✅ 修复后
+href={getToolPath(tool)}
+```
+
+#### 问题 3：微前端链接使用错误的组件
+
+**症状**：点击 PDF 工具链接时页面不完全刷新
+
+**原因**：微前端是独立的 Next.js 应用，需要完整页面跳转
+
+**修复**：已部署的微前端工具使用 `<a>` 标签，未部署的使用 `<Link>`
+
+```tsx
+// ✅ PopularTools.tsx
+if (isExternal) {
+  return <a href={toolHref}>...</a>;  // 微前端用 <a>
+}
+return <Link href={toolHref}>...</Link>;  // 内部路由用 <Link>
+```
+
+#### 问题 4：Coming Soon 页面重定向错误
+
+**症状**：已上线工具从 Coming Soon 页面重定向到错误路径
+
+**修复文件**：`frontend/main/src/app/[locale]/[categoryId]/[slug]/page.tsx`
+
+```typescript
+// ❌ 修复前
+const toolPath = locale === 'en' ? `/tools/${slug}` : `/${locale}/tools/${slug}`;
+
+// ✅ 修复后
+const toolPath = getToolUrl(category.id, slug, locale);
+```
+
+#### 问题 5：CORS 配置缺少 VPS IP
+
+**修复文件**：`backend/src/middleware/cors.ts`
+
+```typescript
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://82.29.67.124',  // ✅ 新增
+  'https://toolibox.com',
+];
+```
+
+### 📋 修复后的文件清单
+
+| 文件 | 修复内容 |
+|------|----------|
+| `frontend/pdf-tools/src/components/layout/Header.tsx` | 语言切换路径 |
+| `frontend/pdf-tools/src/components/ToolCard.tsx` | 工具链接路径 |
+| `frontend/pdf-tools/src/app/[locale]/compress-pdf/page.tsx` | 添加国际化 |
+| `frontend/main/src/components/layout/Header.tsx` | 移除重复 locale |
+| `frontend/main/src/components/home/PopularTools.tsx` | 微前端用 `<a>` |
+| `frontend/main/src/app/[locale]/[categoryId]/page.tsx` | 工具链接路径 |
+| `frontend/main/src/app/[locale]/[categoryId]/[slug]/page.tsx` | 重定向路径 |
+| `backend/src/middleware/cors.ts` | 添加 VPS IP |
+
+### ⚠️ 开发注意事项
+
+#### basePath 与 localePrefix 的协作
+
+当使用 `basePath: '/pdf-tools'` 和 `localePrefix: 'always'` 时：
+
+1. **Next.js Link/router 会自动添加 basePath**
+2. **代码中的路径不应包含 basePath**
+3. **所有语言（包括默认语言 en）都需要 locale 前缀**
+
+```
+代码中写：         /${locale}/${slug}
+Next.js 生成：     /pdf-tools/${locale}/${slug}
+```
+
+#### 微前端链接规则
+
+```tsx
+// 在 Main 应用中引用微前端
+if (isMicroserviceDeployed(categoryId)) {
+  // 微前端：使用 <a> 标签进行完整页面跳转
+  return <a href={getToolUrl(categoryId, slug, locale)}>...</a>;
+} else {
+  // 内部路由：使用 <Link> 进行客户端导航
+  return <Link href={path}>...</Link>;
+}
+```
+
+### ✅ 验证测试
+
+修复后的路由测试：
+
+```bash
+# 主站语言切换
+http://localhost:3000/en → http://localhost:3000/zh  ✅
+
+# PDF Tools 语言切换
+http://localhost:3001/pdf-tools/en → http://localhost:3001/pdf-tools/zh  ✅
+
+# PDF 工具页面语言切换
+http://localhost:3001/pdf-tools/en/merge-pdf → http://localhost:3001/pdf-tools/zh/merge-pdf  ✅
+
+# 从主站跳转到 PDF 工具
+http://localhost:3000 → /pdf-tools/en/merge-pdf  ✅
+```
+
+---
+
+**修复日期：** 2025-12-20
+**修复内容：** 解决语言切换和微前端路由问题
