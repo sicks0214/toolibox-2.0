@@ -310,22 +310,37 @@ curl http://localhost:8000/api/health
 ssh toolibox@82.29.67.124
 cd /var/www/toolibox
 
-# 2. 拉取最新代码
+# 2. 备份环境变量
+cp .env .env.backup
+
+# 3. 检查并清理旧容器
+docker ps  # 查看运行中的容器
+docker stop <old-container-name> && docker rm <old-container-name>  # 如有冲突
+
+# 4. 重置本地修改并拉取最新代码
+git reset --hard HEAD
+rm -f backend/src/routes/pdf.ts  # 删除可能存在的旧测试文件
 git pull origin main
 
-# 3. 停止旧容器
+# 5. 停止旧容器
 docker compose down
 
-# 4. 重新构建
+# 6. 重新构建镜像
 docker compose build
 
-# 5. 启动新容器
+# 7. 启动新容器
 docker compose up -d
 
-# 6. 验证
+# 8. 验证部署
 docker ps
-curl http://82.29.67.124/api/health
+curl http://localhost:8000/api/health
+curl -X POST http://localhost:8000/api/pdf/merge
 ```
+
+**注意事项**:
+- 如遇到端口冲突,先停止占用端口的旧容器
+- 如遇到文件冲突,删除冲突文件后重新拉取
+- 确保 `.env` 文件配置正确（数据库、R2凭证等）
 
 ### 5.3 常用命令
 
@@ -551,6 +566,14 @@ cat backend/Dockerfile | grep "dist/app.js"
 修改后: 用户上传 → 后端API → 后端pdf-lib处理 → 返回结果
 ```
 
+**VPS部署成功** (2025-12-22):
+- ✅ 从GitHub拉取最新v3.0代码
+- ✅ 重新构建Docker镜像（包含新依赖）
+- ✅ 3个容器正常运行（main:3000, pdf-tools:3001, backend:8000）
+- ✅ 所有API端点测试通过
+- ✅ 外部访问正常（http://82.29.67.124）
+- ✅ PDF合并/分割/压缩API已上线
+
 ### 2025-12-20 (v2.1)
 
 **路由修复**:
@@ -589,15 +612,17 @@ cat backend/Dockerfile | grep "dist/app.js"
 
 部署后验证：
 
-- [ ] `docker ps` 显示 3 个容器运行中
-- [ ] `curl http://82.29.67.124/` 返回 200
-- [ ] `curl http://82.29.67.124/api/health` 返回 JSON
-- [ ] `curl http://82.29.67.124/api/pdf/merge` 返回 400 (需要文件)
-- [ ] `curl http://82.29.67.124/pdf-tools/en` 返回 200
+- [x] `docker ps` 显示 3 个容器运行中 ✅
+- [x] `curl http://82.29.67.124/` 返回 200 ✅
+- [x] `curl http://82.29.67.124/api/health` 返回 JSON ✅
+- [x] `curl http://82.29.67.124/api/pdf/merge` 返回 400 (需要文件) ✅
+- [x] `curl http://82.29.67.124/pdf-tools/en` 返回 200 ✅
 - [ ] `curl http://82.29.67.124/pdf-tools/zh/merge-pdf` 返回 200
 - [ ] 浏览器中语言切换正常工作
 - [ ] 从主站点击 PDF 工具可正常跳转
 - [ ] PDF合并功能正常工作（上传→处理→下载）
+
+**最新验证时间**: 2025-12-22 08:06 UTC
 
 ---
 
