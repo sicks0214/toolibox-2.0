@@ -54,6 +54,8 @@ services:
       - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
       - R2_BUCKET_NAME=${R2_BUCKET_NAME}
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - toolibox-network
 
