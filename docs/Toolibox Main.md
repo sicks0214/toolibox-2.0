@@ -1,6 +1,6 @@
-# Toolibox 2.0 技术文档
+# Toolibox 3.0 技术文档
 
-> 免费在线工具聚合平台 - 微前端架构
+> 免费在线工具聚合平台 - 微前端 + 后端API架构
 
 ---
 
@@ -23,7 +23,7 @@
 
 | 项目 | 值 |
 |------|-----|
-| 项目名称 | Toolibox 2.0 |
+| 项目名称 | Toolibox 3.0 |
 | VPS IP | 82.29.67.124 |
 | SSH 用户 | toolibox |
 | 项目目录 | /var/www/toolibox |
@@ -38,8 +38,12 @@
 | 样式 | Tailwind CSS |
 | 国际化 | next-intl |
 | 后端框架 | Express.js |
+| 后端语言 | TypeScript |
+| 文件上传 | Multer |
+| PDF处理 | pdf-lib |
 | 数据库 ORM | Prisma |
 | 数据库 | PostgreSQL (生产) / SQLite (开发) |
+| 对象存储 | Cloudflare R2 |
 | 容器化 | Docker + Docker Compose |
 | 反向代理 | Nginx |
 
@@ -48,9 +52,21 @@
 | 模块 | 状态 | 说明 |
 |------|------|------|
 | Main 应用 | ✅ 已完成 | 导航入口、用户认证、反馈系统 |
-| PDF Tools | ✅ 已完成 | 合并/拆分 PDF |
+| PDF Tools | ✅ 已完成 | 合并/拆分/压缩 PDF（后端API处理） |
 | Image Tools | ⏳ 待开发 | 图片压缩/调整/转换 |
 | Text Tools | ⏳ 待开发 | 大小写转换/字数统计 |
+
+### 1.4 后端API端点
+
+| 端点 | 方法 | 功能 | 状态 |
+|------|------|------|------|
+| `/api/health` | GET | 健康检查 | ✅ |
+| `/api/auth/*` | POST/GET/PUT | 用户认证系统 | ✅ |
+| `/api/feedback` | POST | 反馈收集 | ✅ |
+| `/api/simplify` | POST | AI文本简化 | ✅ |
+| `/api/pdf/merge` | POST | PDF合并 | ✅ |
+| `/api/pdf/split` | POST | PDF分割 | ✅ |
+| `/api/pdf/compress` | POST | PDF压缩 | ✅ |
 
 ---
 
@@ -107,11 +123,12 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 
-    # 后端 API
+    # 后端 API（支持100MB文件上传）
     location /api/ {
         proxy_pass http://127.0.0.1:8000/api/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
+        client_max_body_size 100M;
     }
 }
 ```
@@ -223,11 +240,26 @@ toolibox-2.0/
 │   ├── src/
 │   │   ├── app.ts                 # 入口文件
 │   │   ├── controllers/           # 控制器
+│   │   │   ├── authController.ts
+│   │   │   ├── feedbackController.ts
+│   │   │   └── pdfController.ts   # PDF处理控制器 ✨新增
 │   │   ├── routes/                # 路由
+│   │   │   ├── auth.ts
+│   │   │   ├── feedback.ts
+│   │   │   ├── health.ts
+│   │   │   ├── simplify.ts
+│   │   │   └── pdf.ts             # PDF路由 ✨新增
 │   │   ├── middleware/            # 中间件
+│   │   │   ├── auth.ts
+│   │   │   ├── cors.ts
+│   │   │   ├── errorHandler.ts
+│   │   │   └── upload.ts          # 文件上传中间件 ✨新增
 │   │   └── services/              # 服务
+│   │       ├── backupCron.ts
+│   │       └── r2Service.ts
 │   ├── prisma/
 │   │   └── schema.prisma          # 数据库模型
+│   ├── tmp/                       # 临时文件目录 ✨新增
 │   ├── Dockerfile
 │   └── package.json
 │
@@ -318,6 +350,42 @@ docker exec -it toolibox-backend-main sh
 ---
 
 ## 六、开发规范
+
+### 6.0 架构原则（v3.0重要）
+
+**前后端职责严格分离**：
+
+| 层级 | 职责 | 禁止事项 |
+|------|------|---------|
+| **微前端** | 纯UI展示、用户交互、文件上传 | ❌ 禁止任何PDF/Image/Text处理逻辑 |
+| **统一后端** | 所有核心处理逻辑 | PDF合并/压缩/分割、图像处理、文本处理 |
+
+**为什么要后端处理？**
+- ✅ 安全性：防止客户端代码被篡改
+- ✅ 性能：大文件处理不阻塞浏览器
+- ✅ 一致性：所有用户获得相同的处理结果
+- ✅ 可扩展：便于添加R2存储、队列等功能
+
+**前端调用示例**：
+```typescript
+// ✅ 正确：前端只负责上传和展示
+const mergePDFs = async () => {
+  const formData = new FormData();
+  files.forEach(f => formData.append('files', f.file));
+
+  const response = await fetch('/api/pdf/merge', {
+    method: 'POST',
+    body: formData
+  });
+
+  const blob = await response.blob();
+  setResult(blob);
+};
+
+// ❌ 错误：前端不应该处理PDF
+import { PDFDocument } from 'pdf-lib';
+const pdf = await PDFDocument.load(arrayBuffer); // 禁止
+```
 
 ### 6.1 basePath 与 localePrefix 规则
 
@@ -456,6 +524,33 @@ cat backend/Dockerfile | grep "dist/app.js"
 
 ## 八、更新日志
 
+### 2025-12-22 (v3.0) ✨ 架构升级
+
+**微前端 + 后端API架构**:
+- ✅ PDF处理从客户端迁移到后端
+- ✅ 添加Multer文件上传中间件
+- ✅ 添加pdf-lib后端PDF处理
+- ✅ 实现PDF合并/分割/压缩API
+- ✅ 集成Cloudflare R2存储支持
+- ✅ 临时文件自动清理机制
+- ✅ 支持100MB文件上传
+
+**新增文件**:
+- `backend/src/middleware/upload.ts` - 文件上传配置
+- `backend/src/controllers/pdfController.ts` - PDF处理逻辑
+- `backend/src/routes/pdf.ts` - PDF API路由
+
+**修改文件**:
+- `backend/package.json` - 添加multer和pdf-lib依赖
+- `backend/src/app.ts` - 注册PDF路由
+- `frontend/pdf-tools/src/app/[locale]/merge-pdf/page.tsx` - 改为API调用
+
+**架构变化**:
+```
+修改前: 用户上传 → 浏览器pdf-lib处理 → 下载
+修改后: 用户上传 → 后端API → 后端pdf-lib处理 → 返回结果
+```
+
 ### 2025-12-20 (v2.1)
 
 **路由修复**:
@@ -497,12 +592,14 @@ cat backend/Dockerfile | grep "dist/app.js"
 - [ ] `docker ps` 显示 3 个容器运行中
 - [ ] `curl http://82.29.67.124/` 返回 200
 - [ ] `curl http://82.29.67.124/api/health` 返回 JSON
+- [ ] `curl http://82.29.67.124/api/pdf/merge` 返回 400 (需要文件)
 - [ ] `curl http://82.29.67.124/pdf-tools/en` 返回 200
 - [ ] `curl http://82.29.67.124/pdf-tools/zh/merge-pdf` 返回 200
 - [ ] 浏览器中语言切换正常工作
 - [ ] 从主站点击 PDF 工具可正常跳转
+- [ ] PDF合并功能正常工作（上传→处理→下载）
 
 ---
 
-**文档版本**: 2.1
-**最后更新**: 2025-12-20
+**文档版本**: 3.0
+**最后更新**: 2025-12-22

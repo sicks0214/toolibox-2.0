@@ -6,6 +6,7 @@ import feedbackRoutes from './routes/feedback';
 import healthRoutes from './routes/health';
 import authRoutes from './routes/auth';
 import simplifyRoutes from './routes/simplify';
+import pdfRoutes from './routes/pdf';
 import { startBackupCron } from './services/backupCron';
 
 // Load environment variables
@@ -24,6 +25,7 @@ app.use('/api', feedbackRoutes);
 app.use('/api', healthRoutes);
 app.use('/api', authRoutes);
 app.use('/api', simplifyRoutes);
+app.use('/api', pdfRoutes);
 
 // Error handler
 app.use(errorHandler);

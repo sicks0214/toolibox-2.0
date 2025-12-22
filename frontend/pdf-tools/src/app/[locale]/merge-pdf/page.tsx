@@ -3,7 +3,6 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useTranslations, useLocale } from 'next-intl';
-import { PDFDocument } from 'pdf-lib';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import {
@@ -76,17 +75,24 @@ export default function MergePDFPage() {
     setError(null);
 
     try {
-      const mergedPdf = await PDFDocument.create();
+      // 创建FormData并添加文件
+      const formData = new FormData();
+      files.forEach(({ file }) => {
+        formData.append('files', file);
+      });
 
-      for (const { file } of files) {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuffer);
-        const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-        pages.forEach((page) => mergedPdf.addPage(page));
+      // 调用后端API
+      const response = await fetch('/api/pdf/merge', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to merge PDFs');
       }
 
-      const mergedPdfBytes = await mergedPdf.save();
-      const blob = new Blob([new Uint8Array(mergedPdfBytes)], { type: 'application/pdf' });
+      // 获取返回的PDF文件
+      const blob = await response.blob();
       setResult(blob);
     } catch (err) {
       console.error('Merge error:', err);

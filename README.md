@@ -1,41 +1,38 @@
-# TooliBox - Free Tools in one box
+# TooliBox 3.0 - Free Tools in one box
 
 TooliBox is a free online tool aggregation platform providing 30+ tools for text processing, file conversion, image editing, and more.
 
 ## 🚀 Features
 
 - **5 Categories**: Text Tools, File Tools, Image Tools, Generate Tools, Developer Tools
-- **30 Tool Placeholders**: All tools are in "Coming Soon" status in this version
+- **Microservices Architecture**: Independent frontend services for each tool category
+- **Backend API Processing**: All PDF/Image/Text processing handled securely on the server
 - **Multilingual**: English and Chinese support with easy language switching
 - **Feedback System**: Complete feedback submission with PostgreSQL storage and Cloudflare R2 backup
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
 - **No Sign-up Required**: All tools are free to use without registration
 
-## 📦 Project Structure
+## 📦 Project Structure (v3.0)
 
 ```
 toolibox/
-├── frontend/          # Next.js frontend application
-│   ├── src/
-│   │   ├── app/       # Next.js App Router pages
-│   │   ├── components/ # React components
-│   │   ├── data/      # Static data files
-│   │   ├── lib/       # Utility functions
-│   │   └── locales/   # Internationalization files
-│   └── package.json
+├── frontend/
+│   ├── main/              # Main navigation hub (port 3000)
+│   └── pdf-tools/         # PDF tools microservice (port 3001)
 │
-├── backend/           # Node.js + Express backend API
+├── backend/               # Unified backend API (port 8000)
 │   ├── src/
-│   │   ├── routes/    # API routes
-│   │   ├── controllers/ # Request handlers
-│   │   ├── services/  # Business logic
-│   │   ├── middleware/ # Express middleware
-│   │   └── config/    # Configuration files
-│   ├── prisma/        # Prisma schema and migrations
-│   └── package.json
+│   │   ├── routes/        # API routes (auth, feedback, pdf, etc.)
+│   │   ├── controllers/   # Request handlers (pdfController, etc.)
+│   │   ├── middleware/    # Express middleware (upload, auth, cors)
+│   │   └── services/      # Business logic (R2 backup, etc.)
+│   └── prisma/            # Database schema
 │
-└── nginx/             # Nginx configuration
-    └── toolibox.conf
+├── nginx/                 # Nginx reverse proxy configuration
+├── docker-compose.yml     # Container orchestration
+└── docs/                  # Documentation
+    ├── Toolibox Main.md
+    └── Toolibox_3.0_VPS.md
 ```
 
 ## 🛠️ Tech Stack
@@ -46,7 +43,6 @@ toolibox/
 - **Styling**: Tailwind CSS
 - **Internationalization**: next-intl
 - **Icons**: Lucide React
-- **HTTP Client**: Axios
 
 ### Backend
 - **Runtime**: Node.js
@@ -54,10 +50,28 @@ toolibox/
 - **Language**: TypeScript
 - **Database**: PostgreSQL
 - **ORM**: Prisma
+- **File Upload**: Multer
+- **PDF Processing**: pdf-lib
 - **Storage**: Cloudflare R2
 - **Scheduler**: node-cron
 
-## 🚦 Getting Started
+## 🎯 Implemented Features
+
+### ✅ Completed
+- Main navigation and landing pages
+- User authentication (JWT-based)
+- Feedback system with R2 backup
+- **PDF Merge** (backend API processing)
+- **PDF Split** (backend API processing)
+- **PDF Compress** (backend API processing)
+- AI-powered text simplification (DeepSeek)
+
+### ⏳ Coming Soon
+- Image tools (compress, resize, convert)
+- Text tools (case converter, word counter)
+- And 20+ more tools...
+
+## 🚦 Getting Started (Local Development)
 
 ### Prerequisites
 
