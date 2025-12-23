@@ -1,6 +1,6 @@
 # Toolibox 3.0 技术文档
 
-> 免费在线工具聚合平台 - 微前端 + 后端API架构
+> Main - 微前端 + 后端API架构
 
 ---
 
@@ -157,15 +157,6 @@ DATABASE_URL="postgresql://toolibox_user:password@localhost:5432/toolibox"
 JWT_SECRET="your-jwt-secret-key"
 JWT_EXPIRES_IN="7d"
 
-# Cloudflare R2 存储
-R2_ACCOUNT_ID="your-account-id"
-R2_ACCESS_KEY_ID="your-access-key"
-R2_SECRET_ACCESS_KEY="your-secret-key"
-R2_BUCKET_NAME="toolibox-backups"
-
-# DeepSeek AI API（可选）
-DEEPSEEK_API_KEY="your-api-key"
-
 # 环境标识
 NODE_ENV="production"
 ```
@@ -269,97 +260,7 @@ toolibox-2.0/
 ├── docker-compose.yml             # 容器编排
 ├── .env.example                   # 环境变量模板
 └── docs/
-    └── Toolibox Main.md           # 本文档
-```
-
----
-
-## 五、快速部署
-
-### 5.1 首次部署
-
-```bash
-# 1. SSH 登录
-ssh toolibox@82.29.67.124
-
-# 2. 克隆代码
-cd /var/www
-git clone https://github.com/sicks0214/toolibox-2.0.git toolibox
-cd toolibox
-
-# 3. 配置环境变量
-cp .env.example .env
-nano .env  # 填写真实值
-
-# 4. 构建镜像
-docker compose build
-
-# 5. 启动服务
-docker compose up -d
-
-# 6. 验证部署
-docker ps
-curl http://localhost:3000
-curl http://localhost:8000/api/health
-```
-
-### 5.2 更新部署
-
-```bash
-# 1. SSH 登录并进入目录
-ssh toolibox@82.29.67.124
-cd /var/www/toolibox
-
-# 2. 备份环境变量
-cp .env .env.backup
-
-# 3. 检查并清理旧容器
-docker ps  # 查看运行中的容器
-docker stop <old-container-name> && docker rm <old-container-name>  # 如有冲突
-
-# 4. 重置本地修改并拉取最新代码
-git reset --hard HEAD
-rm -f backend/src/routes/pdf.ts  # 删除可能存在的旧测试文件
-git pull origin main
-
-# 5. 停止旧容器
-docker compose down
-
-# 6. 重新构建镜像
-docker compose build
-
-# 7. 启动新容器
-docker compose up -d
-
-# 8. 验证部署
-docker ps
-curl http://localhost:8000/api/health
-curl -X POST http://localhost:8000/api/pdf/merge
-```
-
-**注意事项**:
-- 如遇到端口冲突,先停止占用端口的旧容器
-- 如遇到文件冲突,删除冲突文件后重新拉取
-- 确保 `.env` 文件配置正确（数据库、R2凭证等）
-
-### 5.3 常用命令
-
-```bash
-# 查看容器状态
-docker ps
-
-# 查看日志
-docker compose logs -f
-docker compose logs -f backend-main
-
-# 重启服务
-docker compose restart
-
-# 停止服务
-docker compose down
-
-# 进入容器
-docker exec -it toolibox-backend-main sh
+    └── Toolibox_3.0_Main.md       # 本文档
 ```
 
 ---
@@ -372,12 +273,12 @@ docker exec -it toolibox-backend-main sh
 
 | 层级 | 职责 | 禁止事项 |
 |------|------|---------|
-| **微前端** | 纯UI展示、用户交互、文件上传 | ❌ 禁止任何PDF/Image/Text处理逻辑 |
+| **微前端** | 纯UI展示、文件上传 | ❌ 禁止任何PDF/Image/Text处理逻辑 |
 | **统一后端** | 所有核心处理逻辑 | PDF合并/压缩/分割、图像处理、文本处理 |
 
 **为什么要后端处理？**
 - ✅ 安全性：防止客户端代码被篡改
-- ✅ 性能：大文件处理不阻塞浏览器
+- ✅ 性能：大文件处理不经过浏览器
 - ✅ 一致性：所有用户获得相同的处理结果
 - ✅ 可扩展：便于添加R2存储、队列等功能
 
