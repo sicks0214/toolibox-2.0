@@ -1,13 +1,10 @@
-import { notFound, redirect } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { ArrowLeft, Mail } from 'lucide-react';
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import categories from '@/data/categories.json';
-import tools from '@/data/tools.json';
-import { getToolUrl, isMicroserviceDeployed } from '@/config/toolRoutes';
+import SchemaRenderer from '@/components/tool/SchemaRenderer';
+import { fetchPlugin, PluginData } from '@/lib/api';
 
 interface ToolPageProps {
   params: {
@@ -17,57 +14,71 @@ interface ToolPageProps {
   };
 }
 
-export function generateStaticParams() {
-  const params: { categoryId: string; slug: string }[] = [];
+// 分类映射
+const categoryMap: Record<string, string> = {
+  'pdf-tools': 'pdf',
+  'image-tools': 'image'
+};
 
-  // Add all tools
-  tools.forEach((tool) => {
-    const category = categories.find((c) => c.id === tool.categoryId);
-    if (category) {
-      params.push({
-        categoryId: category.slug,
-        slug: tool.slug,
-      });
+const categoryNames: Record<string, Record<string, string>> = {
+  'pdf-tools': { en: 'PDF Tools', zh: 'PDF 工具', es: 'Herramientas PDF' },
+  'image-tools': { en: 'Image Tools', zh: '图像工具', es: 'Herramientas de imagen' }
+};
+
+export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
+  const { categoryId, slug, locale } = params;
+  const baseUrl = 'https://toolibox.com';
+
+  try {
+    const response = await fetchPlugin(slug, locale);
+    if (!response.success) {
+      return { title: 'Tool Not Found' };
     }
-  });
 
-  return params;
+    const plugin = response.data;
+    const canonicalUrl = `${baseUrl}/${locale}/${categoryId}/${slug}`;
+
+    return {
+      title: `${plugin.title} - Toolibox`,
+      description: plugin.description,
+      alternates: {
+        canonical: canonicalUrl,
+        languages: {
+          'en': `${baseUrl}/en/${categoryId}/${slug}`,
+          'zh': `${baseUrl}/zh/${categoryId}/${slug}`,
+          'es': `${baseUrl}/es/${categoryId}/${slug}`,
+        }
+      },
+      openGraph: {
+        title: plugin.title,
+        description: plugin.description,
+        url: canonicalUrl,
+        siteName: 'Toolibox',
+        locale: locale,
+        type: 'website',
+      },
+    };
+  } catch {
+    return { title: 'Tool Not Found' };
+  }
 }
 
-export default function ToolPage({ params }: ToolPageProps) {
-  const t = useTranslations();
-  const { categoryId: categorySlug, slug, locale } = params;
+export default async function ToolPage({ params }: ToolPageProps) {
+  const { categoryId, slug, locale } = params;
 
-  const category = categories.find((c) => c.slug === categorySlug);
+  let plugin: PluginData;
 
-  if (!category) {
+  try {
+    const response = await fetchPlugin(slug, locale);
+    if (!response.success) {
+      notFound();
+    }
+    plugin = response.data;
+  } catch {
     notFound();
   }
 
-  const getLocalizedPath = (path: string) => {
-    return locale === 'en' ? path : `/${locale}${path}`;
-  };
-
-  // Find the tool
-  const tool = tools.find(
-    (t) => t.slug === slug && t.categoryId === category.id
-  );
-
-  if (!tool) {
-    notFound();
-  }
-
-  // 如果工具已上线（comingSoon: false），重定向到实际工具页面
-  if (!tool.comingSoon) {
-    // 对于已部署微前端的工具，重定向到微前端路径
-    const toolPath = getToolUrl(category.id, slug, locale);
-    redirect(toolPath);
-  }
-
-  // 获取相关工具（同类目的其他工具，最多显示3个）
-  const relatedTools = tools
-    .filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id)
-    .slice(0, 3);
+  const categoryName = categoryNames[categoryId]?.[locale] || categoryId;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -75,81 +86,37 @@ export default function ToolPage({ params }: ToolPageProps) {
       <main className="flex-1 container mx-auto px-4 py-8">
         <Breadcrumb
           items={[
-            { label: t('category.breadcrumb.home'), href: '/' },
-            {
-              label: category.name[locale as 'en' | 'zh'],
-              href: `/${category.slug}`,
-            },
-            { label: tool.name[locale as 'en' | 'zh'] },
+            { label: locale === 'zh' ? '首页' : locale === 'es' ? 'Inicio' : 'Home', href: `/${locale}` },
+            { label: categoryName, href: `/${locale}/${categoryId}` },
+            { label: plugin.title },
           ]}
         />
 
-        <div className="max-w-3xl mx-auto text-center py-16">
-          {/* Icon and Title */}
-          <div className="text-6xl mb-6">{tool.icon}</div>
-          <h1 className="text-3xl font-bold text-neutral mb-8">
-            {tool.name[locale as 'en' | 'zh']}
-          </h1>
-
-          {/* Coming Soon Message */}
-          <div className="bg-accent/10 border-2 border-accent rounded-xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-accent mb-4">
-              🚧 {t('tool.comingSoon')} 🚧
-            </h2>
-            <p className="text-gray-700 mb-2">{t('tool.underDevelopment')}</p>
-            <p className="text-gray-600">{t('tool.notifyReady')}</p>
+        <div className="max-w-4xl mx-auto">
+          {/* 工具标题 */}
+          <div className="text-center mb-8">
+            <span className="text-6xl mb-4 block">{plugin.icon}</span>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{plugin.h1 || plugin.title}</h1>
+            <p className="text-lg text-gray-600">{plugin.description}</p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link
-              href={getLocalizedPath(`/${category.slug}`)}
-              className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-white border-2 border-primary text-primary rounded-lg hover:bg-surface transition-all"
-            >
-              <ArrowLeft size={20} />
-              <span>
-                {t('tool.backTo', {
-                  category: category.name[locale as 'en' | 'zh'],
-                })}
-              </span>
-            </Link>
-            <Link
-              href={getLocalizedPath('/feedback')}
-              className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-all"
-            >
-              <Mail size={20} />
-              <span>{t('tool.requestAccess')}</span>
-            </Link>
+          {/* 工具操作区 */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <SchemaRenderer plugin={plugin} locale={locale} />
           </div>
 
-          {/* About Tool */}
-          <div className="bg-surface rounded-xl p-6 text-left mb-8">
-            <h3 className="text-lg font-semibold text-neutral mb-2">
-              {t('tool.aboutTool')}
-            </h3>
-            <p className="text-gray-700">
-              {tool.description[locale as 'en' | 'zh']}
-            </p>
-          </div>
-
-          {/* Related Tools */}
-          {relatedTools.length > 0 && (
-            <div className="text-left">
-              <h3 className="text-lg font-semibold text-neutral mb-4">
-                {t('tool.relatedTools')}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {relatedTools.map((relatedTool) => (
-                  <Link
-                    key={relatedTool.id}
-                    href={getLocalizedPath(`/${category.slug}/${relatedTool.slug}`)}
-                    className="card p-4 hover:border-primary border-2 border-transparent text-center"
-                  >
-                    <div className="text-3xl mb-2">{relatedTool.icon}</div>
-                    <p className="text-sm font-medium text-neutral">
-                      {relatedTool.name[locale as 'en' | 'zh']}
-                    </p>
-                  </Link>
+          {/* FAQ 区域 */}
+          {plugin.faq && plugin.faq.length > 0 && (
+            <div className="bg-gray-50 rounded-2xl p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                {locale === 'zh' ? '常见问题' : locale === 'es' ? 'Preguntas frecuentes' : 'FAQ'}
+              </h2>
+              <div className="space-y-4">
+                {plugin.faq.map((item, index) => (
+                  <div key={index} className="bg-white rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">{item.question}</h3>
+                    <p className="text-gray-600">{item.answer}</p>
+                  </div>
                 ))}
               </div>
             </div>

@@ -1,0 +1,15 @@
+{
+  "upload": {
+    "multiple": false,
+    "maxFiles": 1,
+    "types": ["image/jpeg", "image/png", "image/webp"],
+    "maxSize": 52428800
+  },
+  "options": [],
+  "submitText": {
+    "en": "Remove Background",
+    "zh": "去除背景",
+    "es": "Eliminar fondo"
+  },
+  "outputType": "file"
+}

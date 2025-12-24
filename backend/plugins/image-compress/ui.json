@@ -1,0 +1,38 @@
+{
+  "title": {
+    "en": "Compress Image",
+    "zh": "压缩图片",
+    "es": "Comprimir imagen"
+  },
+  "description": {
+    "en": "Compress images to reduce file size while maintaining quality",
+    "zh": "压缩图片以减小文件大小，同时保持质量",
+    "es": "Comprime imágenes para reducir el tamaño del archivo manteniendo la calidad"
+  },
+  "h1": {
+    "en": "Compress Image Online",
+    "zh": "在线压缩图片",
+    "es": "Comprimir imagen en línea"
+  },
+  "icon": "🗜️",
+  "faq": {
+    "en": [
+      {
+        "question": "What quality level should I use?",
+        "answer": "80% is recommended for a good balance between size and quality."
+      }
+    ],
+    "zh": [
+      {
+        "question": "应该使用什么质量级别？",
+        "answer": "建议使用 80%，在大小和质量之间取得良好平衡。"
+      }
+    ],
+    "es": [
+      {
+        "question": "¿Qué nivel de calidad debo usar?",
+        "answer": "Se recomienda 80% para un buen equilibrio entre tamaño y calidad."
+      }
+    ]
+  }
+}

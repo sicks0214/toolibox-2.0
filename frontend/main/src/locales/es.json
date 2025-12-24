@@ -1,0 +1,205 @@
+{
+  "header": {
+    "about": "Acerca de",
+    "feedback": "Comentarios",
+    "language": "Idioma"
+  },
+  "home": {
+    "hero": {
+      "title": "Herramientas en línea gratuitas para PDF, imágenes y más",
+      "subtitle": "Herramientas simples, rápidas y seguras para resolver tareas cotidianas"
+    },
+    "search": {
+      "placeholder": "Buscar herramientas...",
+      "button": "Buscar",
+      "resultsFor": "Resultados de búsqueda para \"{query}\"",
+      "searchTools": "Buscar herramientas",
+      "toolsFound": "{count} herramientas encontradas",
+      "toolFound": "{count} herramienta encontrada",
+      "noResults": "No se encontraron herramientas",
+      "tryDifferent": "Intenta buscar con diferentes palabras clave",
+      "backHome": "Volver al inicio"
+    },
+    "popularTools": {
+      "title": "Herramientas populares",
+      "subtitle": "Las herramientas más utilizadas por nuestra comunidad",
+      "comingSoon": "Próximamente"
+    },
+    "categories": {
+      "title": "Explorar por categoría",
+      "subtitle": "Encuentra la herramienta perfecta para tus necesidades",
+      "tools": "herramientas"
+    },
+    "useCases": {
+      "title": "Herramientas para cada escenario",
+      "subtitle": "Soluciones optimizadas para tus necesidades específicas",
+      "printing": {
+        "title": "Para imprimir",
+        "description": "Optimiza archivos para impresión de alta calidad"
+      },
+      "email": {
+        "title": "Para correo electrónico",
+        "description": "Comprime archivos para cumplir con los límites de tamaño"
+      },
+      "social": {
+        "title": "Para redes sociales",
+        "description": "Redimensiona y optimiza para plataformas sociales"
+      },
+      "office": {
+        "title": "Para trabajo de oficina",
+        "description": "Herramientas profesionales para tareas empresariales"
+      }
+    },
+    "whyToolibox": {
+      "title": "¿Por qué elegir TooliBox?",
+      "subtitle": "La mejor plataforma de herramientas en línea para tus necesidades diarias",
+      "free": {
+        "title": "100% Gratis",
+        "description": "Todas las herramientas son completamente gratuitas, sin costos ocultos"
+      },
+      "noSignup": {
+        "title": "Sin registro",
+        "description": "Comienza a usar las herramientas inmediatamente sin registrarte"
+      },
+      "secure": {
+        "title": "Seguro y privado",
+        "description": "Tus archivos se procesan de forma segura y nunca se almacenan"
+      },
+      "fast": {
+        "title": "Súper rápido",
+        "description": "Optimizado para velocidad con resultados instantáneos"
+      }
+    },
+    "seeAll": "Ver todo",
+    "open": "Abrir"
+  },
+  "category": {
+    "breadcrumb": {
+      "home": "Inicio"
+    },
+    "description": "{count} herramientas gratuitas",
+    "coreTools": "Grupos de herramientas",
+    "allTools": "Otras herramientas",
+    "descriptions": {
+      "pdf-tools": "Las herramientas PDF son esenciales para cualquiera que trabaje con documentos digitales. Ya sea que necesites combinar múltiples PDFs para una presentación, comprimir archivos grandes para correo electrónico, dividir documentos en páginas separadas o convertir entre formatos, nuestro completo kit de herramientas PDF te tiene cubierto.",
+      "image-tools": "Transforma y optimiza tus imágenes con nuestras potentes herramientas de procesamiento de imágenes. Desde redimensionar fotos para redes sociales hasta comprimir imágenes para una carga más rápida del sitio web, nuestras herramientas te ayudan a lograr resultados profesionales al instante.",
+      "text-tools": "Simplifica tu flujo de trabajo de procesamiento de texto con herramientas impulsadas por IA diseñadas para creadores de contenido, estudiantes y profesionales.",
+      "color-tools": "Descubre los colores perfectos para tus proyectos de diseño con nuestro completo kit de herramientas de color.",
+      "ai-tools": "Aprovecha el poder de la inteligencia artificial para optimizar tu flujo de trabajo."
+    }
+  },
+  "tool": {
+    "comingSoon": "Próximamente",
+    "underDevelopment": "Esta herramienta está actualmente en desarrollo.",
+    "notifyReady": "¡Te notificaremos cuando esté lista!",
+    "backTo": "Volver a {category}",
+    "requestAccess": "Solicitar acceso anticipado",
+    "aboutTool": "Acerca de esta herramienta:",
+    "relatedTools": "Herramientas relacionadas:"
+  },
+  "footer": {
+    "copyright": "© 2025 TooliBox. Todos los derechos reservados.",
+    "about": "Acerca de",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
+    "feedback": "Comentarios"
+  },
+  "about": {
+    "title": "Acerca de TooliBox",
+    "intro": "TooliBox es una plataforma de herramientas en línea gratuita diseñada para facilitar tus tareas diarias.",
+    "mission": "Nuestra misión:",
+    "missions": [
+      "Proporcionar herramientas 100% gratuitas",
+      "Sin registro requerido",
+      "Rápido y seguro",
+      "Enfocado en la privacidad"
+    ]
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "lastUpdated": "Última actualización: {date}",
+    "sections": {
+      "collection": {
+        "title": "Información que recopilamos",
+        "content": "No recopilamos ninguna información personal a menos que la proporciones voluntariamente a través de nuestro formulario de comentarios."
+      },
+      "usage": {
+        "title": "Cómo usamos tus datos",
+        "content": "Cualquier dato que proporciones a través de formularios de comentarios se utiliza únicamente para mejorar nuestros servicios."
+      },
+      "thirdParty": {
+        "title": "Servicios de terceros",
+        "content": "Usamos Cloudflare para la entrega de contenido y protección DDoS."
+      }
+    }
+  },
+  "terms": {
+    "title": "Términos de servicio",
+    "lastUpdated": "Última actualización: {date}",
+    "sections": {
+      "acceptance": {
+        "title": "Aceptación de términos",
+        "content": "Al usar TooliBox, aceptas estos Términos de servicio."
+      },
+      "license": {
+        "title": "Licencia de uso",
+        "content": "TooliBox te otorga una licencia personal, no exclusiva y no transferible para usar nuestras herramientas solo para fines legales."
+      },
+      "disclaimer": {
+        "title": "Descargo de responsabilidad",
+        "content": "Nuestras herramientas se proporcionan 'tal cual' sin ninguna garantía."
+      }
+    }
+  },
+  "feedback": {
+    "title": "Envíanos tus comentarios",
+    "name": "Nombre",
+    "nameOptional": "Nombre (Opcional)",
+    "email": "Correo electrónico",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "submit": "Enviar comentarios",
+    "success": "¡Gracias por tus comentarios!",
+    "error": "Error al enviar comentarios. Por favor, inténtalo de nuevo.",
+    "required": "Este campo es obligatorio"
+  },
+  "languages": {
+    "en": "English",
+    "zh": "中文",
+    "es": "Español"
+  },
+  "tools": {
+    "text-simplifier": {
+      "title": "Simplificador de texto con IA",
+      "subtitle": "Simplifica texto complejo con asistencia de IA",
+      "originalText": "Texto original",
+      "simplifiedText": "Texto simplificado",
+      "originalTextPlaceholder": "Ingresa o pega tu texto aquí (hasta 20,000 caracteres)...",
+      "simplifiedTextPlaceholder": "El texto simplificado aparecerá aquí...",
+      "simplificationSettings": "Configuración de simplificación",
+      "keywordsLabel": "Palabras clave a preservar (Opcional)",
+      "keywordsPlaceholder": "Palabras clave a preservar (separadas por comas, opcional)",
+      "simplifyButton": "Simplificar texto",
+      "copyButton": "Copiar",
+      "copied": "¡Copiado!",
+      "exportButton": "Exportar",
+      "exportTxt": "Exportar como TXT",
+      "exportMd": "Exportar como MD",
+      "exportDocx": "Exportar como DOCX",
+      "levelLight": "Ligero",
+      "levelMedium": "Medio",
+      "levelHeavy": "Intenso",
+      "levelDescription": "Nivel de simplificación",
+      "processing": "Procesando...",
+      "error": "Ocurrió un error",
+      "success": "¡Simplificado exitosamente!",
+      "charCount": "caracteres",
+      "words": "palabras",
+      "characters": "caracteres",
+      "clear": "Limpiar",
+      "uploadFile": "Subir archivo",
+      "textExceedsLimit": "¡El texto excede la longitud máxima!",
+      "poweredBy": "Impulsado por DeepSeek AI • Máximo {max} caracteres"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "upload": {
+    "multiple": false,
+    "maxFiles": 1,
+    "types": ["image/jpeg", "image/png", "image/webp"],
+    "maxSize": 52428800
+  },
+  "options": [
+    {
+      "name": "quality",
+      "type": "range",
+      "label": { "en": "Quality (%)", "zh": "质量 (%)", "es": "Calidad (%)" },
+      "min": 10,
+      "max": 100,
+      "default": 80
+    }
+  ],
+  "submitText": {
+    "en": "Compress Image",
+    "zh": "压缩图片",
+    "es": "Comprimir imagen"
+  },
+  "outputType": "file"
+}

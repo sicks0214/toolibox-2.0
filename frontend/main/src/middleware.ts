@@ -2,7 +2,7 @@ import createMiddleware from 'next-intl/middleware';
 
 export default createMiddleware({
   // 支持的语言列表
-  locales: ['en', 'zh'],
+  locales: ['en', 'zh', 'es'],
 
   // 默认语言
   defaultLocale: 'en',

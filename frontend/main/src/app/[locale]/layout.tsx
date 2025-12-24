@@ -9,7 +9,7 @@ import '../globals.css';
 export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'zh' }];
+  return [{ locale: 'en' }, { locale: 'zh' }, { locale: 'es' }];
 }
 
 export default async function LocaleLayout({
@@ -20,7 +20,7 @@ export default async function LocaleLayout({
   params: { locale: string };
 }) {
   // 验证语言参数
-  const locales = ['en', 'zh'];
+  const locales = ['en', 'zh', 'es'];
   if (!locales.includes(locale)) {
     notFound();
   }

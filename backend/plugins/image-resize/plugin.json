@@ -1,0 +1,6 @@
+{
+  "slug": "resize",
+  "category": "image",
+  "apiPath": "/api/image/resize",
+  "order": 1
+}

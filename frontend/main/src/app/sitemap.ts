@@ -5,7 +5,7 @@ import toolGroups from '@/data/toolGroups.json';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://toolibox.com';
-  const locales = ['en', 'zh'];
+  const locales = ['en', 'zh', 'es'];
 
   // Homepage for each locale
   const homepages = locales.map((locale) => ({

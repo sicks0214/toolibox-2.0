@@ -49,6 +49,7 @@ export default function Header() {
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'zh', name: '中文' },
+    { code: 'es', name: 'Español' },
   ];
 
   const switchLanguage = (newLocale: string) => {
@@ -121,9 +122,9 @@ export default function Header() {
                     </div>
                     <div className="flex-auto">
                       <div className="font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                        {tool.name[locale as 'en' | 'zh' | 'es'] || tool.name['en']}
                       </div>
-                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh' | 'es'] || tool.description['en']}</p>
                     </div>
                   </a>
                 ))}
@@ -159,9 +160,9 @@ export default function Header() {
                     </div>
                     <div className="flex-auto">
                       <div className="font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                        {tool.name[locale as 'en' | 'zh' | 'es'] || tool.name['en']}
                       </div>
-                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh' | 'es'] || tool.description['en']}</p>
                     </div>
                   </Link>
                 ))}
@@ -197,9 +198,9 @@ export default function Header() {
                     </div>
                     <div className="flex-auto">
                       <div className="font-semibold text-neutral">
-                        {tool.name[locale as 'en' | 'zh']}
+                        {tool.name[locale as 'en' | 'zh' | 'es'] || tool.name['en']}
                       </div>
-                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh']}</p>
+                      <p className="mt-0.5 text-xs text-gray-600">{tool.description[locale as 'en' | 'zh' | 'es'] || tool.description['en']}</p>
                     </div>
                   </Link>
                 ))}
@@ -377,7 +378,7 @@ export default function Header() {
                         className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        {tool.icon} {tool.name[locale as 'en' | 'zh' | 'es'] || tool.name['en']}
                       </a>
                     ))}
                   </DisclosurePanel>
@@ -396,7 +397,7 @@ export default function Header() {
                         className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        {tool.icon} {tool.name[locale as 'en' | 'zh' | 'es'] || tool.name['en']}
                       </Link>
                     ))}
                   </DisclosurePanel>
@@ -415,7 +416,7 @@ export default function Header() {
                         className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        {tool.icon} {tool.name[locale as 'en' | 'zh']}
+                        {tool.icon} {tool.name[locale as 'en' | 'zh' | 'es'] || tool.name['en']}
                       </Link>
                     ))}
                   </DisclosurePanel>

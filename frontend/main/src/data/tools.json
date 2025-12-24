@@ -1,7 +1,7 @@
 [
   {
     "id": "merge-pdf",
-    "slug": "merge-pdf",
+    "slug": "merge",
     "categoryId": "pdf-tools",
     "icon": "📄",
     "name": {
@@ -17,7 +17,7 @@
   },
   {
     "id": "split-pdf",
-    "slug": "split-pdf",
+    "slug": "split",
     "categoryId": "pdf-tools",
     "icon": "✂️",
     "name": {
@@ -33,7 +33,7 @@
   },
   {
     "id": "compress-pdf",
-    "slug": "compress-pdf",
+    "slug": "compress",
     "categoryId": "pdf-tools",
     "icon": "🗜️",
     "name": {
@@ -44,76 +44,28 @@
       "en": "Reduce PDF file size",
       "zh": "减小PDF文件大小"
     },
-    "comingSoon": true,
+    "comingSoon": false,
     "isPopular": true
   },
   {
-    "id": "case-converter",
-    "slug": "case-converter",
-    "categoryId": "text-tools",
-    "icon": "🔤",
+    "id": "pdf-to-jpg",
+    "slug": "pdf-to-jpg",
+    "categoryId": "pdf-tools",
+    "icon": "🖼️",
     "name": {
-      "en": "Case Converter",
-      "zh": "大小写转换器"
+      "en": "PDF to JPG",
+      "zh": "PDF转JPG"
     },
     "description": {
-      "en": "Convert text case instantly",
-      "zh": "快速转换文本大小写"
+      "en": "Convert PDF pages to JPG images",
+      "zh": "将PDF页面转换为JPG图片"
     },
-    "comingSoon": true,
-    "isPopular": true
-  },
-  {
-    "id": "word-counter",
-    "slug": "word-counter",
-    "categoryId": "text-tools",
-    "icon": "🔢",
-    "name": {
-      "en": "Word Counter",
-      "zh": "字数统计"
-    },
-    "description": {
-      "en": "Count words, characters and lines",
-      "zh": "统计字数、字符和行数"
-    },
-    "comingSoon": true,
-    "isPopular": true
-  },
-  {
-    "id": "text-diff",
-    "slug": "text-diff",
-    "categoryId": "text-tools",
-    "icon": "⚖️",
-    "name": {
-      "en": "Text Diff",
-      "zh": "文本差异对比"
-    },
-    "description": {
-      "en": "Compare two texts side by side",
-      "zh": "并排比较两段文本"
-    },
-    "comingSoon": true,
-    "isPopular": true
-  },
-  {
-    "id": "compress-image",
-    "slug": "compress-image",
-    "categoryId": "image-tools",
-    "icon": "🗜️",
-    "name": {
-      "en": "Compress Image",
-      "zh": "压缩图片"
-    },
-    "description": {
-      "en": "Compress images without quality loss",
-      "zh": "无损压缩图片"
-    },
-    "comingSoon": true,
+    "comingSoon": false,
     "isPopular": true
   },
   {
     "id": "resize-image",
-    "slug": "resize-image",
+    "slug": "resize",
     "categoryId": "image-tools",
     "icon": "📐",
     "name": {
@@ -124,12 +76,12 @@
       "en": "Resize images to any dimension",
       "zh": "调整图片到任意尺寸"
     },
-    "comingSoon": true,
+    "comingSoon": false,
     "isPopular": true
   },
   {
     "id": "convert-image",
-    "slug": "convert-image",
+    "slug": "convert",
     "categoryId": "image-tools",
     "icon": "🔄",
     "name": {
@@ -140,7 +92,39 @@
       "en": "Convert between JPG, PNG, WEBP",
       "zh": "在JPG、PNG、WEBP间转换"
     },
-    "comingSoon": true,
+    "comingSoon": false,
+    "isPopular": true
+  },
+  {
+    "id": "compress-image",
+    "slug": "compress",
+    "categoryId": "image-tools",
+    "icon": "🗜️",
+    "name": {
+      "en": "Compress Image",
+      "zh": "压缩图片"
+    },
+    "description": {
+      "en": "Compress images without quality loss",
+      "zh": "无损压缩图片"
+    },
+    "comingSoon": false,
+    "isPopular": true
+  },
+  {
+    "id": "remove-bg",
+    "slug": "remove-bg",
+    "categoryId": "image-tools",
+    "icon": "✨",
+    "name": {
+      "en": "Remove Background",
+      "zh": "去除背景"
+    },
+    "description": {
+      "en": "Remove image background automatically",
+      "zh": "自动去除图片背景"
+    },
+    "comingSoon": false,
     "isPopular": true
   }
 ]

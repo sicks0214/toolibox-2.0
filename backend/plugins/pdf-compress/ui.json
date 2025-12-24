@@ -1,0 +1,38 @@
+{
+  "title": {
+    "en": "Compress PDF",
+    "zh": "压缩 PDF",
+    "es": "Comprimir PDF"
+  },
+  "description": {
+    "en": "Reduce PDF file size while maintaining quality",
+    "zh": "在保持质量的同时减小 PDF 文件大小",
+    "es": "Reduce el tamaño del archivo PDF manteniendo la calidad"
+  },
+  "h1": {
+    "en": "Compress PDF Files",
+    "zh": "压缩 PDF 文件",
+    "es": "Comprimir archivos PDF"
+  },
+  "icon": "🗜️",
+  "faq": {
+    "en": [
+      {
+        "question": "How much can the file size be reduced?",
+        "answer": "Compression ratio varies depending on the PDF content, typically 10-50%."
+      }
+    ],
+    "zh": [
+      {
+        "question": "文件大小可以减少多少？",
+        "answer": "压缩比取决于 PDF 内容，通常为 10-50%。"
+      }
+    ],
+    "es": [
+      {
+        "question": "¿Cuánto se puede reducir el tamaño del archivo?",
+        "answer": "La relación de compresión varía según el contenido del PDF, típicamente 10-50%."
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "upload": {
+    "multiple": false,
+    "maxFiles": 1,
+    "types": ["pdf"],
+    "maxSize": 104857600
+  },
+  "options": [],
+  "submitText": {
+    "en": "Split PDF",
+    "zh": "拆分 PDF",
+    "es": "Dividir PDF"
+  },
+  "outputType": "zip"
+}

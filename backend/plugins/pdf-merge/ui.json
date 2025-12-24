@@ -1,0 +1,50 @@
+{
+  "title": {
+    "en": "Merge PDF",
+    "zh": "合并 PDF",
+    "es": "Combinar PDF"
+  },
+  "description": {
+    "en": "Combine multiple PDF files into one document quickly and easily",
+    "zh": "快速轻松地将多个 PDF 文件合并为一个文档",
+    "es": "Combina múltiples archivos PDF en un solo documento de forma rápida y sencilla"
+  },
+  "h1": {
+    "en": "Merge PDF Files",
+    "zh": "合并 PDF 文件",
+    "es": "Combinar archivos PDF"
+  },
+  "icon": "📄",
+  "faq": {
+    "en": [
+      {
+        "question": "How many PDF files can I merge?",
+        "answer": "You can merge up to 20 PDF files at once."
+      },
+      {
+        "question": "Is there a file size limit?",
+        "answer": "Each file can be up to 100MB."
+      }
+    ],
+    "zh": [
+      {
+        "question": "我可以合并多少个 PDF 文件？",
+        "answer": "您一次最多可以合并 20 个 PDF 文件。"
+      },
+      {
+        "question": "文件大小有限制吗？",
+        "answer": "每个文件最大 100MB。"
+      }
+    ],
+    "es": [
+      {
+        "question": "¿Cuántos archivos PDF puedo combinar?",
+        "answer": "Puedes combinar hasta 20 archivos PDF a la vez."
+      },
+      {
+        "question": "¿Hay un límite de tamaño de archivo?",
+        "answer": "Cada archivo puede tener hasta 100MB."
+      }
+    ]
+  }
+}

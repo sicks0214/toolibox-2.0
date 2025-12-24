@@ -1,0 +1,6 @@
+{
+  "slug": "remove-bg",
+  "category": "image",
+  "apiPath": "/api/image/remove-bg",
+  "order": 4
+}

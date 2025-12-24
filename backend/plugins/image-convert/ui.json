@@ -1,0 +1,38 @@
+{
+  "title": {
+    "en": "Convert Image",
+    "zh": "转换图片格式",
+    "es": "Convertir imagen"
+  },
+  "description": {
+    "en": "Convert images between JPG, PNG, and WEBP formats",
+    "zh": "在 JPG、PNG 和 WEBP 格式之间转换图片",
+    "es": "Convierte imágenes entre formatos JPG, PNG y WEBP"
+  },
+  "h1": {
+    "en": "Convert Image Format",
+    "zh": "转换图片格式",
+    "es": "Convertir formato de imagen"
+  },
+  "icon": "🔄",
+  "faq": {
+    "en": [
+      {
+        "question": "Which formats can I convert to?",
+        "answer": "You can convert to JPG, PNG, or WEBP format."
+      }
+    ],
+    "zh": [
+      {
+        "question": "可以转换成哪些格式？",
+        "answer": "可以转换为 JPG、PNG 或 WEBP 格式。"
+      }
+    ],
+    "es": [
+      {
+        "question": "¿A qué formatos puedo convertir?",
+        "answer": "Puedes convertir a formato JPG, PNG o WEBP."
+      }
+    ]
+  }
+}

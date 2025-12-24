@@ -1,0 +1,26 @@
+{
+  "upload": {
+    "multiple": false,
+    "maxFiles": 1,
+    "types": ["image/jpeg", "image/png", "image/webp"],
+    "maxSize": 52428800
+  },
+  "options": [
+    {
+      "name": "format",
+      "type": "select",
+      "label": { "en": "Output Format", "zh": "输出格式", "es": "Formato de salida" },
+      "choices": [
+        { "value": "jpg", "label": "JPG" },
+        { "value": "png", "label": "PNG" },
+        { "value": "webp", "label": "WEBP" }
+      ]
+    }
+  ],
+  "submitText": {
+    "en": "Convert Image",
+    "zh": "转换图片",
+    "es": "Convertir imagen"
+  },
+  "outputType": "file"
+}

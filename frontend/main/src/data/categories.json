@@ -23,25 +23,10 @@
       "zh": "图像工具"
     },
     "description": {
-      "en": "Edit, compress and convert images",
-      "zh": "编辑、压缩和转换图像"
+      "en": "Resize, compress, convert images and remove background",
+      "zh": "调整尺寸、压缩、转换图像和去除背景"
     },
     "gradient": "linear-gradient(135deg, #51CF66 0%, #2F9E44 100%)",
     "order": 2
-  },
-  {
-    "id": "text-tools",
-    "slug": "text-tools",
-    "icon": "📝",
-    "name": {
-      "en": "Text Tools",
-      "zh": "文本工具"
-    },
-    "description": {
-      "en": "Process and manipulate text easily",
-      "zh": "轻松处理和转换文本"
-    },
-    "gradient": "linear-gradient(135deg, #4DABF7 0%, #1971C2 100%)",
-    "order": 3
   }
 ]

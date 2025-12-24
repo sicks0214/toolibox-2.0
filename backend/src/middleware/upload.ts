@@ -28,12 +28,32 @@ const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCa
   }
 };
 
-// 配置multer
+// PDF上传配置
 export const upload = multer({
   storage,
   fileFilter,
   limits: {
     fileSize: 100 * 1024 * 1024, // 100MB
     files: 20 // 最多20个文件
+  }
+});
+
+// 图片文件过滤器
+const imageFileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed (JPG, PNG, WEBP, GIF)'));
+  }
+};
+
+// 图片上传配置
+export const imageUpload = multer({
+  storage,
+  fileFilter: imageFileFilter,
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB
+    files: 10
   }
 });
