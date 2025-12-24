@@ -1,6 +1,0 @@
-{
-  "slug": "compress",
-  "category": "image",
-  "apiPath": "/api/image/compress",
-  "order": 3
-}

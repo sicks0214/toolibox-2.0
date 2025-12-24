@@ -1,6 +1,0 @@
-{
-  "slug": "compress",
-  "category": "pdf",
-  "apiPath": "/api/pdf/compress",
-  "order": 3
-}
