@@ -5,9 +5,8 @@
 
 // 已部署的微前端服务列表
 export const DEPLOYED_MICROSERVICES: string[] = [
-  'pdf-tools',  // PDF 工具微前端已部署
+  // 'pdf-tools',  // 未部署
   // 'image-tools',  // 未部署
-  // 'text-tools',   // 未部署
 ];
 
 // 工具类别到微前端子路径的映射
