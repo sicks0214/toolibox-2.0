@@ -39,6 +39,9 @@ RUN npx prisma generate
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
 
+# Copy plugins directory
+COPY plugins ./plugins
+
 EXPOSE 8000
 
 ENV NODE_ENV=production
