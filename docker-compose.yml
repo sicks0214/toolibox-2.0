@@ -19,21 +19,6 @@ services:
     networks:
       - toolibox-network
 
-  # PDF Tools frontend (PDF 工具微前端)
-  frontend-pdf-tools:
-    build:
-      context: ./frontend/pdf-tools
-      dockerfile: Dockerfile
-    image: toolibox/frontend-pdf-tools
-    container_name: toolibox-frontend-pdf-tools
-    restart: always
-    ports:
-      - "3001:3001"
-    environment:
-      - NODE_ENV=production
-    networks:
-      - toolibox-network
-
   # Main backend (统一后端服务)
   backend-main:
     build:
