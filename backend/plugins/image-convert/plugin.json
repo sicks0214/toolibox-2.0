@@ -1,6 +1,0 @@
-{
-  "slug": "convert",
-  "category": "image",
-  "apiPath": "/api/image/convert",
-  "order": 2
-}

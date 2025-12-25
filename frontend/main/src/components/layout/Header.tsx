@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname, useRouter } from '@/lib/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from '@/components/auth/LoginModal';
 import RegisterModal from '@/components/auth/RegisterModal';
-import { getToolUrl, getCategoryUrl, isMicroserviceDeployed } from '@/config/toolRoutes';
 import {
   Dialog,
   DialogPanel,
@@ -26,11 +25,19 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import tools from '@/data/tools.json'
+import { PluginData } from '@/lib/api';
 
-// Get tools by category
-const pdfTools = tools.filter(tool => tool.categoryId === 'pdf-tools')
-const imageTools = tools.filter(tool => tool.categoryId === 'image-tools')
+// 分类元数据
+const categoryMeta: Record<string, { name: Record<string, string>; categoryId: string }> = {
+  pdf: {
+    name: { en: 'PDF Tools', zh: 'PDF 工具', es: 'Herramientas PDF' },
+    categoryId: 'pdf-tools'
+  },
+  image: {
+    name: { en: 'Image Tools', zh: '图像工具', es: 'Herramientas de imagen' },
+    categoryId: 'image-tools'
+  }
+};
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -39,11 +46,34 @@ export default function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [plugins, setPlugins] = useState<PluginData[]>([]);
+  const [categories, setCategories] = useState<Record<string, PluginData[]>>({});
   const t = useTranslations('header');
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout, loading: authLoading } = useAuth();
+
+  // 从 API 获取插件
+  useEffect(() => {
+    const fetchPlugins = async () => {
+      try {
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_BASE_URL}/api/plugins?lang=${locale}`);
+        const data = await response.json();
+        if (data.success) {
+          setPlugins(data.data.plugins);
+          setCategories(data.data.categories);
+        }
+      } catch (error) {
+        console.error('Failed to fetch plugins:', error);
+      }
+    };
+    fetchPlugins();
+  }, [locale]);
+
+  const pdfTools = categories['pdf'] || [];
+  const imageTools = categories['image'] || [];
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -59,7 +89,6 @@ export default function Header() {
 
     setIsLanguageMenuOpen(false);
     startTransition(() => {
-      // next-intl's router will automatically handle locale prefix
       router.replace(pathname, { locale: newLocale });
     });
   };
@@ -68,15 +97,13 @@ export default function Header() {
     return locale === 'en' ? path : `/${locale}${path}`;
   };
 
-  // Helper function to generate tool path with category
-  // 使用 toolRoutes 中的函数来获取正确的工具路径
-  const getToolPath = (tool: any) => {
-    return getToolUrl(tool.categoryId, tool.slug, locale);
+  const getToolPath = (tool: PluginData) => {
+    const categoryId = categoryMeta[tool.category]?.categoryId || `${tool.category}-tools`;
+    return `/${categoryId}/${tool.slug}`;
   };
 
-  // 判断链接是否是外部链接（微前端服务）
-  const isExternalLink = (tool: any) => {
-    return isMicroserviceDeployed(tool.categoryId) && !tool.comingSoon;
+  const getCategoryUrl = (categoryId: string) => {
+    return getLocalizedPath(`/${categoryId}`);
   };
 
   return (
@@ -99,81 +126,85 @@ export default function Header() {
           </button>
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-10">
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              PDF Tools
-              <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-            </PopoverButton>
+          {pdfTools.length > 0 && (
+            <Popover className="relative">
+              <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
+                {categoryMeta.pdf.name[locale] || 'PDF Tools'}
+                <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
+              </PopoverButton>
 
-            <PopoverPanel
-              transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
-            >
-              <div className="p-4 grid grid-cols-1 gap-2">
-                {pdfTools.slice(0, 6).map((tool) => (
-                  <a
-                    key={tool.id}
-                    href={getToolPath(tool)}
-                    className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
-                  >
-                    <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="font-semibold text-neutral">
-                        {(tool.name as Record<string, string>)[locale] || tool.name['en']}
+              <PopoverPanel
+                transition
+                className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              >
+                <div className="p-4 grid grid-cols-1 gap-2">
+                  {pdfTools.slice(0, 6).map((tool) => (
+                    <Link
+                      key={tool.slug}
+                      href={getToolPath(tool)}
+                      className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                    >
+                      <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
+                        {tool.icon}
                       </div>
-                      <p className="mt-0.5 text-xs text-gray-600">{(tool.description as Record<string, string>)[locale] || tool.description['en']}</p>
-                    </div>
-                  </a>
-                ))}
-                <a
-                  href={getCategoryUrl('pdf-tools', locale)}
-                  className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
-                >
-                  View all PDF tools →
-                </a>
-              </div>
-            </PopoverPanel>
-          </Popover>
-
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              Image Tools
-              <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-            </PopoverButton>
-
-            <PopoverPanel
-              transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
-            >
-              <div className="p-4 grid grid-cols-1 gap-2">
-                {imageTools.slice(0, 6).map((tool) => (
+                      <div className="flex-auto">
+                        <div className="font-semibold text-neutral">
+                          {tool.title}
+                        </div>
+                        <p className="mt-0.5 text-xs text-gray-600">{tool.description}</p>
+                      </div>
+                    </Link>
+                  ))}
                   <Link
-                    key={tool.id}
-                    href={getToolPath(tool)}
-                    className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                    href={getCategoryUrl('pdf-tools')}
+                    className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
                   >
-                    <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
-                      {tool.icon}
-                    </div>
-                    <div className="flex-auto">
-                      <div className="font-semibold text-neutral">
-                        {(tool.name as Record<string, string>)[locale] || tool.name['en']}
-                      </div>
-                      <p className="mt-0.5 text-xs text-gray-600">{(tool.description as Record<string, string>)[locale] || tool.description['en']}</p>
-                    </div>
+                    {locale === 'zh' ? '查看所有 PDF 工具 →' : locale === 'es' ? 'Ver todas las herramientas PDF →' : 'View all PDF tools →'}
                   </Link>
-                ))}
-                <Link
-                  href={getLocalizedPath('/image-tools')}
-                  className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
-                >
-                  View all Image tools →
-                </Link>
-              </div>
-            </PopoverPanel>
-          </Popover>
+                </div>
+              </PopoverPanel>
+            </Popover>
+          )}
+
+          {imageTools.length > 0 && (
+            <Popover className="relative">
+              <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
+                {categoryMeta.image.name[locale] || 'Image Tools'}
+                <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
+              </PopoverButton>
+
+              <PopoverPanel
+                transition
+                className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              >
+                <div className="p-4 grid grid-cols-1 gap-2">
+                  {imageTools.slice(0, 6).map((tool) => (
+                    <Link
+                      key={tool.slug}
+                      href={getToolPath(tool)}
+                      className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
+                    >
+                      <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
+                        {tool.icon}
+                      </div>
+                      <div className="flex-auto">
+                        <div className="font-semibold text-neutral">
+                          {tool.title}
+                        </div>
+                        <p className="mt-0.5 text-xs text-gray-600">{tool.description}</p>
+                      </div>
+                    </Link>
+                  ))}
+                  <Link
+                    href={getCategoryUrl('image-tools')}
+                    className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
+                  >
+                    {locale === 'zh' ? '查看所有图像工具 →' : locale === 'es' ? 'Ver todas las herramientas de imagen →' : 'View all Image tools →'}
+                  </Link>
+                </div>
+              </PopoverPanel>
+            </Popover>
+          )}
 
         </PopoverGroup>
 
@@ -326,43 +357,47 @@ export default function Header() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    PDF Tools
-                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {pdfTools.map((tool) => (
-                      <a
-                        key={tool.id}
-                        href={getToolPath(tool)}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {(tool.name as Record<string, string>)[locale] || tool.name['en']}
-                      </a>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
+                {pdfTools.length > 0 && (
+                  <Disclosure as="div" className="-mx-3">
+                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
+                      {categoryMeta.pdf.name[locale] || 'PDF Tools'}
+                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
+                    </DisclosureButton>
+                    <DisclosurePanel className="mt-2 space-y-2">
+                      {pdfTools.map((tool) => (
+                        <Link
+                          key={tool.slug}
+                          href={getToolPath(tool)}
+                          className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {tool.icon} {tool.title}
+                        </Link>
+                      ))}
+                    </DisclosurePanel>
+                  </Disclosure>
+                )}
 
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    Image Tools
-                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {imageTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={getToolPath(tool)}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {tool.icon} {(tool.name as Record<string, string>)[locale] || tool.name['en']}
-                      </Link>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
+                {imageTools.length > 0 && (
+                  <Disclosure as="div" className="-mx-3">
+                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
+                      {categoryMeta.image.name[locale] || 'Image Tools'}
+                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
+                    </DisclosureButton>
+                    <DisclosurePanel className="mt-2 space-y-2">
+                      {imageTools.map((tool) => (
+                        <Link
+                          key={tool.slug}
+                          href={getToolPath(tool)}
+                          className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {tool.icon} {tool.title}
+                        </Link>
+                      ))}
+                    </DisclosurePanel>
+                  </Disclosure>
+                )}
 
               </div>
 

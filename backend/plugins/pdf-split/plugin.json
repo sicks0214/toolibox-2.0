@@ -1,6 +1,0 @@
-{
-  "slug": "split",
-  "category": "pdf",
-  "apiPath": "/api/pdf/split",
-  "order": 2
-}
