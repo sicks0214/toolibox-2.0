@@ -50,6 +50,7 @@ export interface PluginData {
       max?: number;
       default?: any;
       choices?: Array<{ value: string; label: string }>;
+      checkboxLabel?: string;
     }>;
     submitText: string;
     outputType: string;
