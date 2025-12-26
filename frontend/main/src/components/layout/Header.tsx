@@ -26,18 +26,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { PluginData } from '@/lib/api';
-
-// 分类元数据
-const categoryMeta: Record<string, { name: Record<string, string>; categoryId: string }> = {
-  pdf: {
-    name: { en: 'PDF Tools', zh: 'PDF 工具', es: 'Herramientas PDF' },
-    categoryId: 'pdf-tools'
-  },
-  image: {
-    name: { en: 'Image Tools', zh: '图像工具', es: 'Herramientas de imagen' },
-    categoryId: 'image-tools'
-  }
-};
+import { categories as categoryConfig, getCategoryName, CategoryConfig } from '@/config/categories';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -72,8 +61,14 @@ export default function Header() {
     fetchPlugins();
   }, [locale]);
 
+  const pdfCategory = categoryConfig.find(c => c.apiCategory === 'pdf')!;
+  const imageCategory = categoryConfig.find(c => c.apiCategory === 'image')!;
   const pdfTools = categories['pdf'] || [];
   const imageTools = categories['image'] || [];
+
+  const getToolPath = (tool: PluginData, cat: CategoryConfig) => {
+    return `/${cat.id}/${tool.slug}`;
+  };
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -97,13 +92,8 @@ export default function Header() {
     return locale === 'en' ? path : `/${locale}${path}`;
   };
 
-  const getToolPath = (tool: PluginData) => {
-    const categoryId = categoryMeta[tool.category]?.categoryId || `${tool.category}-tools`;
-    return `/${categoryId}/${tool.slug}`;
-  };
-
-  const getCategoryUrl = (categoryId: string) => {
-    return getLocalizedPath(`/${categoryId}`);
+  const getCategoryUrl = (cat: CategoryConfig) => {
+    return getLocalizedPath(`/${cat.id}`);
   };
 
   return (
@@ -129,7 +119,7 @@ export default function Header() {
           {/* PDF Tools */}
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              📄 {categoryMeta.pdf.name[locale] || 'PDF Tools'}
+              {pdfCategory.icon} {getCategoryName(pdfCategory, locale)}
               <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
             </PopoverButton>
 
@@ -143,7 +133,7 @@ export default function Header() {
                     {pdfTools.slice(0, 6).map((tool) => (
                       <Link
                         key={tool.slug}
-                        href={getToolPath(tool)}
+                        href={getToolPath(tool, pdfCategory)}
                         className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
                       >
                         <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
@@ -164,7 +154,7 @@ export default function Header() {
                   </p>
                 )}
                 <Link
-                  href={getCategoryUrl('pdf-tools')}
+                  href={getCategoryUrl(pdfCategory)}
                   className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
                 >
                   {locale === 'zh' ? '查看所有 PDF 工具 →' : locale === 'es' ? 'Ver todas las herramientas PDF →' : 'View all PDF tools →'}
@@ -176,7 +166,7 @@ export default function Header() {
           {/* Image Tools */}
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-base font-semibold text-neutral hover:text-primary transition-colors">
-              🖼️ {categoryMeta.image.name[locale] || 'Image Tools'}
+              {imageCategory.icon} {getCategoryName(imageCategory, locale)}
               <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
             </PopoverButton>
 
@@ -190,7 +180,7 @@ export default function Header() {
                     {imageTools.slice(0, 6).map((tool) => (
                       <Link
                         key={tool.slug}
-                        href={getToolPath(tool)}
+                        href={getToolPath(tool, imageCategory)}
                         className="flex items-center gap-x-4 rounded-lg p-3 text-sm hover:bg-surface transition-colors"
                       >
                         <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-surface text-xl">
@@ -211,7 +201,7 @@ export default function Header() {
                   </p>
                 )}
                 <Link
-                  href={getCategoryUrl('image-tools')}
+                  href={getCategoryUrl(imageCategory)}
                   className="text-center py-2 text-sm font-semibold text-primary hover:text-primary/80"
                 >
                   {locale === 'zh' ? '查看所有图像工具 →' : locale === 'es' ? 'Ver todas las herramientas de imagen →' : 'View all Image tools →'}
@@ -374,7 +364,7 @@ export default function Header() {
                 {/* PDF Tools */}
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    📄 {categoryMeta.pdf.name[locale] || 'PDF Tools'}
+                    {pdfCategory.icon} {getCategoryName(pdfCategory, locale)}
                     <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
@@ -382,7 +372,7 @@ export default function Header() {
                       pdfTools.map((tool) => (
                         <Link
                           key={tool.slug}
-                          href={getToolPath(tool)}
+                          href={getToolPath(tool, pdfCategory)}
                           className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                           onClick={() => setMobileMenuOpen(false)}
                         >
@@ -395,7 +385,7 @@ export default function Header() {
                       </p>
                     )}
                     <Link
-                      href={getCategoryUrl('pdf-tools')}
+                      href={getCategoryUrl(pdfCategory)}
                       className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-primary hover:bg-surface"
                       onClick={() => setMobileMenuOpen(false)}
                     >
@@ -407,7 +397,7 @@ export default function Header() {
                 {/* Image Tools */}
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-semibold text-neutral hover:bg-surface">
-                    🖼️ {categoryMeta.image.name[locale] || 'Image Tools'}
+                    {imageCategory.icon} {getCategoryName(imageCategory, locale)}
                     <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
@@ -415,7 +405,7 @@ export default function Header() {
                       imageTools.map((tool) => (
                         <Link
                           key={tool.slug}
-                          href={getToolPath(tool)}
+                          href={getToolPath(tool, imageCategory)}
                           className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-neutral hover:bg-surface"
                           onClick={() => setMobileMenuOpen(false)}
                         >
@@ -428,7 +418,7 @@ export default function Header() {
                       </p>
                     )}
                     <Link
-                      href={getCategoryUrl('image-tools')}
+                      href={getCategoryUrl(imageCategory)}
                       className="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-primary hover:bg-surface"
                       onClick={() => setMobileMenuOpen(false)}
                     >

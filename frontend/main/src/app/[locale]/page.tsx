@@ -10,6 +10,7 @@ import UseCases from '@/components/home/UseCases';
 import WhyToolibox from '@/components/home/WhyToolibox';
 import SearchTools from '@/components/home/SearchTools';
 import { fetchPlugins, PluginData } from '@/lib/api';
+import { categories as categoryConfig, getCategoryByApiCategory, getCategoryName, getCategoryDescription } from '@/config/categories';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const { locale } = params;
@@ -55,56 +56,18 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   };
 }
 
-// 分类元数据
-const categoryMeta: Record<string, { name: Record<string, string>; gradient: string }> = {
-  pdf: {
-    name: { en: 'PDF Tools', zh: 'PDF 工具', es: 'Herramientas PDF' },
-    gradient: 'linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%)'
-  },
-  image: {
-    name: { en: 'Image Tools', zh: '图像工具', es: 'Herramientas de imagen' },
-    gradient: 'linear-gradient(135deg, #51CF66 0%, #2F9E44 100%)'
-  }
-};
-
-// 分类页面入口
-const categoryPages = [
-  {
-    id: 'pdf-tools',
-    name: { en: 'PDF Tools', zh: 'PDF 工具', es: 'Herramientas PDF' },
-    description: {
-      en: 'Merge, compress, split and convert PDF files',
-      zh: '合并、压缩、拆分和转换 PDF 文件',
-      es: 'Fusionar, comprimir, dividir y convertir archivos PDF'
-    },
-    icon: '📄',
-    gradient: 'linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%)'
-  },
-  {
-    id: 'image-tools',
-    name: { en: 'Image Tools', zh: '图像工具', es: 'Herramientas de imagen' },
-    description: {
-      en: 'Resize, compress, convert images and remove background',
-      zh: '调整尺寸、压缩、转换图像和去除背景',
-      es: 'Redimensionar, comprimir, convertir imágenes y eliminar fondo'
-    },
-    icon: '🖼️',
-    gradient: 'linear-gradient(135deg, #51CF66 0%, #2F9E44 100%)'
-  }
-];
-
 export default async function HomePage({ params }: { params: { locale: string } }) {
   const t = await getTranslations('home');
   const locale = params.locale || 'en';
 
   let plugins: PluginData[] = [];
-  let categories: Record<string, PluginData[]> = {};
+  let pluginCategories: Record<string, PluginData[]> = {};
 
   try {
     const response = await fetchPlugins(locale);
     if (response.success) {
       plugins = response.data.plugins;
-      categories = response.data.categories;
+      pluginCategories = response.data.categories;
     }
   } catch (error) {
     console.error('Failed to fetch plugins:', error);
@@ -136,7 +99,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {categoryPages.map((cat) => (
+            {categoryConfig.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/${locale}/${cat.id}`}
@@ -150,11 +113,11 @@ export default async function HomePage({ params }: { params: { locale: string } 
                     {cat.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 group-hover:text-primary transition-colors">
-                    {cat.name[locale as 'en' | 'zh' | 'es'] || cat.name['en']}
+                    {getCategoryName(cat, locale)}
                   </h3>
                 </div>
                 <p className="text-gray-600">
-                  {cat.description[locale as 'en' | 'zh' | 'es'] || cat.description['en']}
+                  {getCategoryDescription(cat, locale)}
                 </p>
               </Link>
             ))}
@@ -163,16 +126,19 @@ export default async function HomePage({ params }: { params: { locale: string } 
 
         <section className="container mx-auto px-12 md:px-16 lg:px-24 py-16">
           <div className="space-y-12">
-            {Object.entries(categories).map(([category, tools]) => (
-              <CategorySection
-                key={category}
-                category={category}
-                categoryName={categoryMeta[category]?.name[locale] || category}
-                gradient={categoryMeta[category]?.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}
-                tools={tools}
-                locale={locale}
-              />
-            ))}
+            {Object.entries(pluginCategories).map(([apiCategory, tools]) => {
+              const catConfig = getCategoryByApiCategory(apiCategory);
+              return (
+                <CategorySection
+                  key={apiCategory}
+                  category={apiCategory}
+                  categoryName={catConfig ? getCategoryName(catConfig, locale) : apiCategory}
+                  gradient={catConfig?.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}
+                  tools={tools}
+                  locale={locale}
+                />
+              );
+            })}
           </div>
         </section>
 

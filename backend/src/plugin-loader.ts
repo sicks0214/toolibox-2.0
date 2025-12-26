@@ -14,6 +14,7 @@ export interface PluginUI {
   h1: Record<string, string>;
   icon: string;
   faq: Record<string, Array<{ question: string; answer: string }>>;
+  categoryName?: Record<string, string>;
 }
 
 export interface PluginSchema {
@@ -127,12 +128,17 @@ export function formatPluginForAPI(plugin: Plugin, lang: string = 'en') {
     h1: ui.h1?.[lang] || ui.h1?.['en'] || '',
     icon: ui.icon || '🔧',
     faq: ui.faq?.[lang] || ui.faq?.['en'] || [],
+    categoryName: ui.categoryName?.[lang] || ui.categoryName?.['en'] || '',
     schema: {
       ...schema,
       submitText: schema.submitText?.[lang] || schema.submitText?.['en'] || 'Submit',
       options: schema.options?.map(opt => ({
         ...opt,
-        label: opt.label?.[lang] || opt.label?.['en'] || opt.name
+        label: opt.label?.[lang] || opt.label?.['en'] || opt.name,
+        choices: opt.choices?.map((choice: any) => ({
+          value: choice.value,
+          label: choice.label?.[lang] || choice.label?.['en'] || choice.value
+        }))
       })) || []
     }
   };

@@ -207,6 +207,19 @@ function renderOptionInput(
   onChange: (value: any) => void
 ) {
   switch (opt.type) {
+    case 'checkbox':
+      return (
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={value || false}
+            onChange={(e) => onChange(e.target.checked)}
+            className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+          />
+          <span className="text-sm text-gray-700">{opt.checkboxLabel || opt.label}</span>
+        </label>
+      );
+
     case 'number':
       return (
         <input

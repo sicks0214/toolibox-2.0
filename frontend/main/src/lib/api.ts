@@ -33,6 +33,7 @@ export interface PluginData {
   h1: string;
   icon: string;
   faq: Array<{ question: string; answer: string }>;
+  categoryName?: string;
   schema: {
     upload: {
       multiple: boolean;
