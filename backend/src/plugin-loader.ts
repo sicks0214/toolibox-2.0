@@ -116,21 +116,45 @@ export function getPluginsByCategory(plugins: Plugin[], category: string): Plugi
   return plugins.filter(p => p.config.category === category);
 }
 
+function extractLocaleValue(value: any, lang: string): any {
+  if (!value) return value;
+
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    if (value[lang] !== undefined) {
+      return extractLocaleValue(value[lang], lang);
+    }
+    if (value['en'] !== undefined) {
+      return extractLocaleValue(value['en'], lang);
+    }
+    const result: any = {};
+    for (const key in value) {
+      result[key] = extractLocaleValue(value[key], lang);
+    }
+    return result;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(item => extractLocaleValue(item, lang));
+  }
+
+  return value;
+}
+
 export function formatPluginForAPI(plugin: Plugin, lang: string = 'en') {
   const { config, ui, schema } = plugin;
+
+  const processedUi: any = {};
+  for (const key in ui) {
+    processedUi[key] = extractLocaleValue(ui[key], lang);
+  }
 
   return {
     slug: config.slug,
     category: config.category,
     apiPath: config.apiPath,
     order: config.order,
-    ...ui,
-    title: ui.title?.[lang] || ui.title?.['en'] || config.slug,
-    description: ui.description?.[lang] || ui.description?.['en'] || '',
-    h1: ui.h1?.[lang] || ui.h1?.['en'] || '',
+    ...processedUi,
     icon: ui.icon || '🔧',
-    faq: ui.faq?.[lang] || ui.faq?.['en'] || [],
-    categoryName: ui.categoryName?.[lang] || ui.categoryName?.['en'] || '',
     schema: {
       ...schema,
       submitText: schema.submitText?.[lang] || schema.submitText?.['en'] || 'Submit',
