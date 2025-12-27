@@ -98,16 +98,64 @@ export default async function ToolPage({ params }: ToolPageProps) {
             <span className="text-6xl mb-4 block">{plugin.icon}</span>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">{plugin.h1 || plugin.title}</h1>
             <p className="text-lg text-gray-600">{plugin.description}</p>
+            {plugin.subtitle && (
+              <p className="text-md text-gray-500 mt-2">{plugin.subtitle}</p>
+            )}
           </div>
+
+          {/* 功能列表 */}
+          {plugin.features && plugin.features.length > 0 && (
+            <div className="bg-blue-50 rounded-2xl p-6 mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                {locale === 'zh' ? '功能特性' : locale === 'es' ? 'Características' : 'Features'}
+              </h2>
+              <ul className="space-y-2">
+                {plugin.features.map((feature, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-blue-600 mr-2">✓</span>
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* 上传说明 */}
+          {plugin.upload && (
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+              <p className="text-gray-700">{plugin.upload}</p>
+            </div>
+          )}
 
           {/* 工具操作区 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <SchemaRenderer plugin={plugin} locale={locale} />
           </div>
 
+          {/* 操作说明 */}
+          {plugin.actions && plugin.actions.length > 0 && (
+            <div className="bg-green-50 rounded-2xl p-6 mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                {locale === 'zh' ? '操作步骤' : locale === 'es' ? 'Pasos' : 'Steps'}
+              </h2>
+              <ol className="space-y-2 list-decimal list-inside">
+                {plugin.actions.map((action, index) => (
+                  <li key={index} className="text-gray-700">{action}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* 反馈信息 */}
+          {plugin.feedback && (
+            <div className="bg-purple-50 border-l-4 border-purple-400 p-4 mb-8">
+              <p className="text-gray-700">{plugin.feedback}</p>
+            </div>
+          )}
+
           {/* FAQ 区域 */}
           {plugin.faq && plugin.faq.length > 0 && (
-            <div className="bg-gray-50 rounded-2xl p-8">
+            <div className="bg-gray-50 rounded-2xl p-8 mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {locale === 'zh' ? '常见问题' : locale === 'es' ? 'Preguntas frecuentes' : 'FAQ'}
               </h2>
@@ -119,6 +167,37 @@ export default async function ToolPage({ params }: ToolPageProps) {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* 使用场景 */}
+          {plugin.useCases && plugin.useCases.length > 0 && (
+            <div className="bg-indigo-50 rounded-2xl p-6 mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                {locale === 'zh' ? '使用场景' : locale === 'es' ? 'Casos de uso' : 'Use Cases'}
+              </h2>
+              <ul className="space-y-2">
+                {plugin.useCases.map((useCase, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-indigo-600 mr-2">•</span>
+                    <span className="text-gray-700">{useCase}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* 使用方法 */}
+          {plugin.howTo && plugin.howTo.length > 0 && (
+            <div className="bg-teal-50 rounded-2xl p-6 mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                {locale === 'zh' ? '使用方法' : locale === 'es' ? 'Cómo usar' : 'How To Use'}
+              </h2>
+              <ol className="space-y-2 list-decimal list-inside">
+                {plugin.howTo.map((step, index) => (
+                  <li key={index} className="text-gray-700">{step}</li>
+                ))}
+              </ol>
             </div>
           )}
         </div>
