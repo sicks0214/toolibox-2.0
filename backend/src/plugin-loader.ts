@@ -15,14 +15,7 @@ export interface PluginUI {
   icon: string;
   faq: Record<string, Array<{ question: string; answer: string }>>;
   categoryName?: Record<string, string>;
-  subtitle?: Record<string, string>;
-  features?: Record<string, string[]>;
-  breadcrumb?: Record<string, string>;
-  upload?: Record<string, string>;
-  actions?: Record<string, string[]>;
-  feedback?: Record<string, string>;
-  useCases?: Record<string, string[]>;
-  howTo?: Record<string, string[]>;
+  [key: string]: any;
 }
 
 export interface PluginSchema {
@@ -137,14 +130,7 @@ export function formatPluginForAPI(plugin: Plugin, lang: string = 'en') {
     icon: ui.icon || '🔧',
     faq: ui.faq?.[lang] || ui.faq?.['en'] || [],
     categoryName: ui.categoryName?.[lang] || ui.categoryName?.['en'] || '',
-    subtitle: ui.subtitle?.[lang] || ui.subtitle?.['en'],
-    features: ui.features?.[lang] || ui.features?.['en'],
-    breadcrumb: ui.breadcrumb?.[lang] || ui.breadcrumb?.['en'],
-    upload: ui.upload?.[lang] || ui.upload?.['en'],
-    actions: ui.actions?.[lang] || ui.actions?.['en'],
-    feedback: ui.feedback?.[lang] || ui.feedback?.['en'],
-    useCases: ui.useCases?.[lang] || ui.useCases?.['en'],
-    howTo: ui.howTo?.[lang] || ui.howTo?.['en'],
+    ...ui,
     schema: {
       ...schema,
       submitText: schema.submitText?.[lang] || schema.submitText?.['en'] || 'Submit',

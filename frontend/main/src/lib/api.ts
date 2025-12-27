@@ -34,14 +34,7 @@ export interface PluginData {
   icon: string;
   faq: Array<{ question: string; answer: string }>;
   categoryName?: string;
-  subtitle?: string;
-  features?: string[];
-  breadcrumb?: string;
-  upload?: string;
-  actions?: string[];
-  feedback?: string;
-  useCases?: string[];
-  howTo?: string[];
+  [key: string]: any;
   schema: {
     upload: {
       multiple: boolean;
