@@ -110,7 +110,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                 {locale === 'zh' ? '功能特性' : locale === 'es' ? 'Características' : 'Features'}
               </h2>
               <ul className="space-y-2">
-                {plugin.features.map((feature, index) => (
+                {plugin.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-start">
                     <span className="text-blue-600 mr-2">✓</span>
                     <span className="text-gray-700">{feature}</span>
@@ -139,7 +139,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                 {locale === 'zh' ? '操作步骤' : locale === 'es' ? 'Pasos' : 'Steps'}
               </h2>
               <ol className="space-y-2 list-decimal list-inside">
-                {plugin.actions.map((action, index) => (
+                {plugin.actions.map((action: string, index: number) => (
                   <li key={index} className="text-gray-700">{action}</li>
                 ))}
               </ol>
@@ -177,7 +177,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                 {locale === 'zh' ? '使用场景' : locale === 'es' ? 'Casos de uso' : 'Use Cases'}
               </h2>
               <ul className="space-y-2">
-                {plugin.useCases.map((useCase, index) => (
+                {plugin.useCases.map((useCase: string, index: number) => (
                   <li key={index} className="flex items-start">
                     <span className="text-indigo-600 mr-2">•</span>
                     <span className="text-gray-700">{useCase}</span>
@@ -194,7 +194,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                 {locale === 'zh' ? '使用方法' : locale === 'es' ? 'Cómo usar' : 'How To Use'}
               </h2>
               <ol className="space-y-2 list-decimal list-inside">
-                {plugin.howTo.map((step, index) => (
+                {plugin.howTo.map((step: string, index: number) => (
                   <li key={index} className="text-gray-700">{step}</li>
                 ))}
               </ol>
