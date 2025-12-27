@@ -120,12 +120,16 @@ function extractLocaleValue(value: any, lang: string): any {
   if (!value) return value;
 
   if (typeof value === 'object' && !Array.isArray(value)) {
+    // Check if this object has language keys
     if (value[lang] !== undefined) {
+      console.log(`[extractLocaleValue] Found ${lang} key, extracting:`, value[lang]);
       return extractLocaleValue(value[lang], lang);
     }
     if (value['en'] !== undefined) {
+      console.log(`[extractLocaleValue] No ${lang} key, falling back to 'en':`, value['en']);
       return extractLocaleValue(value['en'], lang);
     }
+    // Otherwise, recursively process all keys
     const result: any = {};
     for (const key in value) {
       result[key] = extractLocaleValue(value[key], lang);
